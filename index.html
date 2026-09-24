@@ -1,0 +1,3329 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#052e21" />
+<meta name="description" content="Zakat Quest — game edukasi petualangan tentang zakat untuk pelajar SMP & SMA. Enam bab cerita bergambar, kuis, mini-game, dan kalkulator zakat lengkap." />
+<title>Zakat Quest — Petualangan Cahaya Berbagi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23064e3b'/%3E%3Cpath d='M32 12l4.6 9.4 10.4 1.5-7.5 7.3 1.8 10.3L32 35.6l-9.3 4.9 1.8-10.3-7.5-7.3 10.4-1.5z' fill='%23fbbf24'/%3E%3C/svg%3E" />
+<style>
+/* ============================================================
+   ZAKAT QUEST — Design tokens
+   ============================================================ */
+:root{
+  --emerald-900:#052e21;
+  --emerald-800:#064e3b;
+  --emerald-700:#066b50;
+  --emerald-600:#059669;
+  --emerald-500:#10b981;
+  --emerald-300:#6ee7b7;
+  --gold-600:#d97706;
+  --gold-500:#f59e0b;
+  --gold-400:#fbbf24;
+  --gold-200:#fde68a;
+  --cream:#fffbeb;
+  --sand:#fef3c7;
+  --ink:#06231a;
+  --ink-soft:#1f4438;
+  --rose-500:#f43f5e;
+  --rose-600:#e11d48;
+  --sky-400:#38bdf8;
+  --violet-400:#a78bfa;
+
+  --paper:#ffffff;
+  --paper-2:#f6fdf9;
+  --line:rgba(6,78,59,.14);
+  --shadow-sm:0 2px 6px rgba(3,32,23,.10);
+  --shadow-md:0 10px 30px -8px rgba(3,32,23,.32);
+  --shadow-lg:0 26px 60px -18px rgba(3,32,23,.5);
+  --glow-gold:0 0 0 4px rgba(251,191,36,.28), 0 12px 34px -10px rgba(217,119,6,.65);
+
+  --r-sm:10px; --r-md:16px; --r-lg:24px; --r-xl:34px;
+  --font-display:'Baloo 2', 'Trebuchet MS', system-ui, sans-serif;
+  --font-body:'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --t-fast:.18s cubic-bezier(.34,1.56,.64,1);
+  --t-mid:.34s cubic-bezier(.22,1,.36,1);
+  --t-slow:.6s cubic-bezier(.22,1,.36,1);
+
+  --stage-w:min(1120px, 100vw);
+}
+
+*,*::before,*::after{box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  margin:0;
+  font-family:var(--font-body);
+  color:var(--ink);
+  background:var(--emerald-900);
+  -webkit-font-smoothing:antialiased;
+  overflow:hidden;
+  overscroll-behavior:none;
+  touch-action:manipulation;
+}
+button{font:inherit;color:inherit;}
+h1,h2,h3,h4{font-family:var(--font-display);margin:0;line-height:1.12;letter-spacing:-.01em;}
+p{margin:0;}
+:focus-visible{outline:3px solid var(--gold-400);outline-offset:3px;border-radius:6px;}
+
+[hidden]{display:none !important;}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;}
+
+/* ============================================================
+   Sky / parallax backdrop
+   ============================================================ */
+#sky{position:fixed;inset:0;z-index:0;overflow:hidden;background:
+   radial-gradient(120% 90% at 50% 110%, #0a5c43 0%, #063a2b 42%, #04241b 72%, #021512 100%);}
+#sky .glowdisc{
+  position:absolute;left:50%;top:14%;width:min(70vw,620px);aspect-ratio:1;transform:translate(-50%,-50%);
+  background:radial-gradient(circle, rgba(251,191,36,.30) 0%, rgba(251,191,36,.10) 38%, transparent 68%);
+  filter:blur(6px);animation:breathe 9s ease-in-out infinite;
+}
+@keyframes breathe{0%,100%{opacity:.75;transform:translate(-50%,-50%) scale(1);}50%{opacity:1;transform:translate(-50%,-50%) scale(1.09);}}
+
+#stars{position:absolute;inset:0;}
+.star{position:absolute;background:#fff;border-radius:50%;opacity:.7;animation:twinkle var(--dur,4s) ease-in-out infinite;animation-delay:var(--dly,0s);}
+@keyframes twinkle{0%,100%{opacity:.18;transform:scale(.7);}50%{opacity:.95;transform:scale(1.25);}}
+
+.shooting{position:absolute;width:150px;height:2px;background:linear-gradient(90deg,transparent,#fff,transparent);opacity:0;border-radius:2px;animation:shoot 9s linear infinite;}
+@keyframes shoot{0%{opacity:0;transform:translate(0,0) rotate(18deg) scaleX(.2);}4%{opacity:.9;}14%{opacity:0;transform:translate(420px,150px) rotate(18deg) scaleX(1);}100%{opacity:0;}}
+
+.skyline{position:absolute;left:0;right:0;bottom:0;width:100%;display:block;}
+.skyline.back{opacity:.34;transform:translateY(6px) scale(1.02);}
+.skyline.mid{opacity:.62;}
+.layer-par{will-change:transform;transition:transform .5s cubic-bezier(.22,1,.36,1);}
+
+/* floating lanterns */
+.lantern{position:absolute;bottom:-90px;width:34px;animation:rise var(--rise,20s) linear infinite;opacity:.0;}
+@keyframes rise{
+  0%{transform:translateY(0) rotate(-3deg);opacity:0;}
+  8%{opacity:.85;}
+  50%{transform:translateY(-52vh) rotate(4deg);}
+  92%{opacity:.5;}
+  100%{transform:translateY(-108vh) rotate(-2deg);opacity:0;}
+}
+
+/* geometric pattern overlay */
+#pattern{position:absolute;inset:0;opacity:.055;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23fde68a' stroke-width='1.2'%3E%3Cpath d='M40 2l38 38-38 38L2 40z'/%3E%3Cpath d='M40 16l24 24-24 24-24-24z'/%3E%3Ccircle cx='40' cy='40' r='7'/%3E%3C/g%3E%3C/svg%3E");
+  background-size:80px 80px;}
+
+/* ============================================================
+   Stage & screens
+   ============================================================ */
+#app{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;align-items:center;}
+.stage{position:relative;width:var(--stage-w);height:100%;margin:0 auto;}
+.screen{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  padding:14px clamp(12px,3vw,26px) 18px;
+  opacity:0;visibility:hidden;pointer-events:none;
+  transform:translateY(22px) scale(.985);
+  transition:opacity var(--t-mid), transform var(--t-mid), visibility var(--t-mid);
+  overflow:hidden;
+}
+.screen.active{opacity:1;visibility:visible;pointer-events:auto;transform:none;}
+.screen.leaving{opacity:0;transform:translateY(-18px) scale(.985);}
+.scroller{overflow-y:auto;overflow-x:hidden;flex:1;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:rgba(251,191,36,.5) transparent;padding-right:4px;}
+.scroller::-webkit-scrollbar{width:9px;}
+.scroller::-webkit-scrollbar-thumb{background:rgba(251,191,36,.45);border-radius:9px;border:2px solid transparent;background-clip:padding-box;}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+.btn{
+  position:relative;display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  padding:13px 24px;border:0;border-radius:var(--r-lg);cursor:pointer;
+  font-family:var(--font-display);font-weight:700;font-size:1.02rem;letter-spacing:.01em;
+  background:linear-gradient(180deg,var(--gold-400),var(--gold-600));
+  color:#3a2405;box-shadow:0 5px 0 #a4590a, var(--shadow-md);
+  transition:transform var(--t-fast), box-shadow var(--t-fast), filter var(--t-fast);
+  overflow:hidden;user-select:none;-webkit-tap-highlight-color:transparent;
+}
+.btn:hover{transform:translateY(-2px);filter:brightness(1.06);box-shadow:0 7px 0 #a4590a, var(--shadow-lg);}
+.btn:active{transform:translateY(4px);box-shadow:0 1px 0 #a4590a, var(--shadow-sm);}
+.btn[disabled]{opacity:.5;cursor:not-allowed;transform:none;filter:grayscale(.4);}
+.btn .ico{font-size:1.18em;line-height:1;}
+.btn.ghost{background:rgba(255,255,255,.09);color:var(--cream);box-shadow:inset 0 0 0 1.6px rgba(253,230,138,.42);}
+.btn.ghost:hover{background:rgba(255,255,255,.17);}
+.btn.emerald{background:linear-gradient(180deg,var(--emerald-500),var(--emerald-700));color:#eafff6;box-shadow:0 5px 0 #044a37, var(--shadow-md);}
+.btn.emerald:active{box-shadow:0 1px 0 #044a37;}
+.btn.danger{background:linear-gradient(180deg,#fb7185,var(--rose-600));color:#fff;box-shadow:0 5px 0 #9f1239, var(--shadow-md);}
+.btn.sm{padding:9px 16px;font-size:.9rem;border-radius:var(--r-md);box-shadow:0 3px 0 rgba(0,0,0,.25);}
+.btn.block{width:100%;}
+.btn .shine{position:absolute;top:0;left:-130%;width:55%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);}
+.btn:hover .shine{animation:shine .8s ease;}
+@keyframes shine{to{left:135%;}}
+
+.ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,.55);transform:scale(0);animation:rip .6s ease-out forwards;pointer-events:none;}
+@keyframes rip{to{transform:scale(2.6);opacity:0;}}
+
+.iconbtn{width:44px;height:44px;border-radius:50%;border:0;display:grid;place-items:center;cursor:pointer;
+  background:rgba(255,255,255,.10);color:var(--cream);box-shadow:inset 0 0 0 1.5px rgba(253,230,138,.38);
+  transition:transform var(--t-fast),background var(--t-fast);font-size:1.16rem;}
+.iconbtn:hover{background:rgba(255,255,255,.2);transform:translateY(-2px) rotate(-6deg);}
+.iconbtn:active{transform:scale(.92);}
+
+/* ============================================================
+   Panels & shared pieces
+   ============================================================ */
+.panel{
+  background:linear-gradient(180deg, rgba(255,255,255,.97), rgba(246,253,249,.94));
+  border-radius:var(--r-xl);box-shadow:var(--shadow-lg);
+  border:1px solid rgba(255,255,255,.7);position:relative;overflow:hidden;
+}
+.panel::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='46' height='46'%3E%3Cg fill='none' stroke='%23064e3b' stroke-width='.9'%3E%3Cpath d='M23 1l22 22-22 22L1 23z'/%3E%3C/g%3E%3C/svg%3E");
+  opacity:.05;}
+.glass{
+  background:rgba(4,40,30,.52);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border:1px solid rgba(253,230,138,.24);border-radius:var(--r-lg);color:var(--cream);
+}
+.pill{display:inline-flex;align-items:center;gap:7px;padding:6px 14px;border-radius:999px;
+  font-size:.78rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;}
+.pill.gold{background:rgba(251,191,36,.18);color:var(--gold-200);box-shadow:inset 0 0 0 1.4px rgba(251,191,36,.45);}
+.pill.emerald{background:rgba(16,185,129,.16);color:var(--emerald-300);box-shadow:inset 0 0 0 1.4px rgba(16,185,129,.42);}
+.pill.solid{background:var(--emerald-800);color:var(--gold-200);}
+/* Pil & tombol hantu memakai warna terang; di atas panel putih harus digelapkan. */
+.panel .pill.gold{color:var(--gold-600);background:rgba(251,191,36,.20);}
+.panel .pill.emerald{color:var(--emerald-700);background:rgba(16,185,129,.16);}
+.panel .btn.ghost{background:rgba(6,78,59,.06);color:var(--ink);box-shadow:inset 0 0 0 1.6px var(--line);}
+.panel .btn.ghost:hover{background:rgba(6,78,59,.12);}
+.field input:disabled,.inputwrap:has(input:disabled){opacity:.5;}
+.inputwrap.off{background:#f1f5f4;}
+
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--line),transparent);margin:16px 0;}
+.kicker{font-size:.74rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-500);}
+
+/* ============================================================
+   TITLE SCREEN
+   ============================================================ */
+#screen-title{justify-content:center;align-items:center;text-align:center;overflow-y:auto;}
+.title-wrap{display:flex;flex-direction:column;align-items:center;gap:8px;max-width:640px;width:100%;}
+.logo-badge{position:relative;width:clamp(120px,22vw,168px);aspect-ratio:1;margin-bottom:2px;}
+.logo-badge .ring{position:absolute;inset:0;animation:spin 26s linear infinite;}
+.logo-badge .ring.rev{animation-direction:reverse;animation-duration:34s;inset:11px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.logo-badge .core{position:absolute;inset:26%;display:grid;place-items:center;animation:pulse 3.4s ease-in-out infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.09);}}
+
+.game-title{
+  font-size:clamp(2.6rem,9vw,4.6rem);font-weight:800;line-height:.94;
+  background:linear-gradient(180deg,#fff 10%,var(--gold-200) 48%,var(--gold-500) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 6px 16px rgba(217,119,6,.45));
+  animation:titleIn 1s cubic-bezier(.22,1,.36,1) both;
+}
+@keyframes titleIn{from{opacity:0;transform:translateY(26px) scale(.9);filter:blur(8px);}to{opacity:1;transform:none;filter:blur(0);}}
+.game-sub{color:var(--gold-200);font-weight:600;letter-spacing:.28em;text-transform:uppercase;font-size:clamp(.62rem,2.2vw,.82rem);
+  animation:fadeUp .9s .25s both;}
+.title-tag{color:rgba(255,251,235,.72);font-size:.95rem;max-width:44ch;margin-top:10px;animation:fadeUp .9s .4s both;line-height:1.55;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+.title-actions{display:flex;flex-wrap:wrap;gap:11px;justify-content:center;margin-top:22px;animation:fadeUp .9s .55s both;}
+.title-foot{margin-top:20px;display:flex;gap:9px;flex-wrap:wrap;justify-content:center;animation:fadeUp .9s .7s both;}
+.saved-note{color:var(--emerald-300);font-size:.82rem;font-weight:600;}
+
+/* ============================================================
+   HUD (top bar)
+   ============================================================ */
+.hud{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:var(--r-lg);flex-wrap:wrap;}
+.hud .grow{flex:1;min-width:8px;}
+.hud-stat{display:flex;align-items:center;gap:7px;font-weight:800;font-size:.95rem;color:var(--cream);
+  font-family:var(--font-display);}
+.hud-stat .ico{font-size:1.15rem;}
+.hearts{display:flex;gap:3px;}
+.heart{width:22px;height:22px;transition:transform .3s,opacity .3s,filter .3s;}
+.heart.lost{opacity:.25;filter:grayscale(1);transform:scale(.7);}
+.heart.hit{animation:heartBreak .6s ease;}
+@keyframes heartBreak{0%{transform:scale(1.4);}30%{transform:scale(.8) rotate(-12deg);}100%{transform:scale(.7);}}
+
+.timerbar{height:9px;border-radius:9px;background:rgba(255,255,255,.14);overflow:hidden;position:relative;box-shadow:inset 0 1px 3px rgba(0,0,0,.35);}
+.timerbar > i{display:block;height:100%;border-radius:9px;background:linear-gradient(90deg,var(--emerald-300),var(--gold-400));
+  transition:width .25s linear, background .3s;}
+.timerbar.warn > i{background:linear-gradient(90deg,var(--gold-400),var(--rose-500));animation:warnPulse .55s ease-in-out infinite;}
+@keyframes warnPulse{0%,100%{filter:brightness(1);}50%{filter:brightness(1.55);}}
+
+/* ============================================================
+   WORLD MAP
+   ============================================================ */
+#screen-map .map-head{display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap;}
+.map-canvas{position:relative;flex:1;min-height:0;border-radius:var(--r-xl);overflow:hidden;
+  background:linear-gradient(180deg,#0b6047 0%, #074a37 55%, #05372a 100%);
+  box-shadow:var(--shadow-lg), inset 0 0 0 1.5px rgba(253,230,138,.2);}
+.map-canvas .mapsvg{position:absolute;inset:0;width:100%;height:100%;}
+.map-path{fill:none;stroke:rgba(253,230,138,.28);stroke-width:8;stroke-linecap:round;stroke-dasharray:1 16;}
+.map-path-done{fill:none;stroke:var(--gold-400);stroke-width:8;stroke-linecap:round;
+  filter:drop-shadow(0 0 7px rgba(251,191,36,.75));transition:stroke-dashoffset 1.4s cubic-bezier(.22,1,.36,1);}
+
+.node{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:5px;
+  cursor:pointer;background:none;border:0;padding:0;}
+.node .orb{width:clamp(54px,9vw,72px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;position:relative;
+  background:radial-gradient(circle at 34% 28%, #fff9e6, var(--gold-400) 58%, var(--gold-600));
+  box-shadow:0 8px 20px -6px rgba(0,0,0,.6), inset 0 -4px 10px rgba(146,64,14,.5);
+  transition:transform var(--t-fast), box-shadow var(--t-fast);font-size:clamp(1.4rem,3.4vw,1.9rem);}
+.node:hover .orb{transform:scale(1.12) translateY(-3px);box-shadow:var(--glow-gold);}
+.node.locked .orb{background:radial-gradient(circle at 34% 28%, #9bb3aa, #4b6a5f 60%, #35514a);filter:saturate(.35);cursor:not-allowed;}
+.node.locked{cursor:not-allowed;}
+.node.current .orb::after{content:"";position:absolute;inset:-9px;border-radius:50%;border:3px solid var(--gold-200);
+  animation:ping 1.7s cubic-bezier(0,0,.2,1) infinite;}
+@keyframes ping{0%{transform:scale(.9);opacity:.9;}70%{transform:scale(1.45);opacity:0;}100%{opacity:0;}}
+.node .label{font-family:var(--font-display);font-weight:700;font-size:.76rem;color:var(--cream);
+  background:rgba(3,32,23,.72);padding:3px 9px;border-radius:999px;white-space:nowrap;box-shadow:var(--shadow-sm);}
+.node .stars{display:flex;gap:1px;font-size:.66rem;}
+.node.boss .orb{background:radial-gradient(circle at 34% 28%, #fecdd3, var(--rose-500) 58%, #9f1239);
+  box-shadow:0 8px 24px -6px rgba(225,29,72,.8), inset 0 -4px 10px rgba(136,19,55,.6);}
+
+.map-cloud{position:absolute;opacity:.16;animation:drift var(--d,50s) linear infinite;pointer-events:none;}
+@keyframes drift{from{transform:translateX(-20vw);}to{transform:translateX(120vw);}}
+
+/* ============================================================
+   STORY / CUTSCENE
+   ============================================================ */
+.story-stage{position:relative;flex:1;min-height:0;border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--shadow-lg);
+  display:flex;align-items:flex-end;}
+.story-art{position:absolute;inset:0;width:100%;height:100%;}
+.story-box{position:relative;width:100%;margin:12px;padding:16px 18px;border-radius:var(--r-lg);
+  background:rgba(3,32,23,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:1.5px solid rgba(253,230,138,.3);box-shadow:var(--shadow-md);}
+.story-who{display:flex;align-items:center;gap:9px;margin-bottom:7px;}
+.story-who .avatar{width:38px;height:38px;border-radius:50%;background:var(--gold-400);display:grid;place-items:center;
+  box-shadow:0 0 0 3px rgba(251,191,36,.3);overflow:hidden;flex:none;}
+.story-who b{font-family:var(--font-display);color:var(--gold-200);font-size:1.02rem;}
+.story-text{color:#f4fff9;line-height:1.62;font-size:clamp(.95rem,2.4vw,1.06rem);min-height:4.6em;}
+.caret{display:inline-block;width:9px;height:1.05em;background:var(--gold-400);vertical-align:-2px;margin-left:2px;
+  animation:blink .85s steps(2) infinite;border-radius:2px;}
+@keyframes blink{50%{opacity:0;}}
+.story-nav{display:flex;align-items:center;gap:9px;margin-top:12px;}
+.dots{display:flex;gap:5px;}
+.dots i{width:7px;height:7px;border-radius:50%;background:rgba(253,230,138,.3);transition:all var(--t-fast);}
+.dots i.on{background:var(--gold-400);width:20px;border-radius:9px;}
+
+/* ============================================================
+   QUIZ
+   ============================================================ */
+.q-card{padding:clamp(16px,3.2vw,26px);border-radius:var(--r-xl);}
+.q-meta{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+.q-text{font-family:var(--font-display);font-weight:700;font-size:clamp(1.08rem,3vw,1.42rem);line-height:1.36;color:var(--ink);}
+.q-hintbox{margin-top:10px;padding:11px 14px;border-radius:var(--r-md);background:rgba(56,189,248,.12);
+  border-left:4px solid var(--sky-400);font-size:.9rem;color:#0c4a6e;animation:fadeUp .35s both;}
+.opts{display:grid;gap:10px;margin-top:16px;}
+@media (min-width:720px){.opts.two{grid-template-columns:1fr 1fr;}}
+.opt{
+  display:flex;align-items:center;gap:12px;width:100%;text-align:left;cursor:pointer;
+  padding:13px 15px;border-radius:var(--r-md);border:2px solid var(--line);background:#fff;
+  font-weight:600;font-size:.98rem;line-height:1.4;color:var(--ink);
+  transition:transform var(--t-fast),border-color var(--t-fast),background var(--t-fast),box-shadow var(--t-fast);
+  position:relative;overflow:hidden;
+}
+.opt:hover:not(:disabled){transform:translateX(5px);border-color:var(--emerald-500);box-shadow:var(--shadow-sm);}
+.opt .key{flex:none;width:32px;height:32px;border-radius:10px;display:grid;place-items:center;font-family:var(--font-display);
+  font-weight:800;background:var(--sand);color:var(--gold-600);transition:all var(--t-fast);}
+.opt.correct{border-color:var(--emerald-500);background:linear-gradient(90deg,rgba(16,185,129,.16),rgba(16,185,129,.05));
+  animation:popIn .45s cubic-bezier(.34,1.56,.64,1);}
+.opt.correct .key{background:var(--emerald-500);color:#fff;}
+.opt.wrong{border-color:var(--rose-500);background:linear-gradient(90deg,rgba(244,63,94,.14),rgba(244,63,94,.04));
+  animation:shake .45s;}
+.opt.wrong .key{background:var(--rose-500);color:#fff;}
+.opt.dim{opacity:.42;}
+.opt:disabled{cursor:default;}
+@keyframes popIn{0%{transform:scale(.96);}55%{transform:scale(1.035);}100%{transform:scale(1);}}
+@keyframes shake{0%,100%{transform:translateX(0);}20%{transform:translateX(-9px);}40%{transform:translateX(8px);}60%{transform:translateX(-5px);}80%{transform:translateX(4px);}}
+
+.feedback{margin-top:14px;padding:14px 16px;border-radius:var(--r-md);animation:fadeUp .35s both;font-size:.94rem;line-height:1.6;}
+.feedback.good{background:rgba(16,185,129,.13);border-left:5px solid var(--emerald-500);color:#064e3b;}
+.feedback.bad{background:rgba(244,63,94,.11);border-left:5px solid var(--rose-500);color:#881337;}
+.feedback b{font-family:var(--font-display);display:block;margin-bottom:3px;font-size:1.04rem;}
+.feedback .dalil{display:block;margin-top:8px;padding-top:8px;border-top:1px dashed rgba(0,0,0,.14);font-style:italic;opacity:.85;font-size:.86rem;}
+
+.combo{position:absolute;right:18px;top:-6px;font-family:var(--font-display);font-weight:800;color:var(--gold-500);
+  font-size:1.5rem;pointer-events:none;text-shadow:0 2px 8px rgba(217,119,6,.5);}
+.floatscore{position:fixed;pointer-events:none;font-family:var(--font-display);font-weight:800;font-size:1.5rem;
+  color:var(--gold-400);text-shadow:0 3px 10px rgba(0,0,0,.5);z-index:60;animation:floatUp 1.1s cubic-bezier(.22,1,.36,1) forwards;}
+@keyframes floatUp{0%{opacity:0;transform:translateY(6px) scale(.7);}18%{opacity:1;transform:translateY(-10px) scale(1.15);}100%{opacity:0;transform:translateY(-72px) scale(1);}}
+
+/* ============================================================
+   MINI-GAMES
+   ============================================================ */
+.mg-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+.mg-title{font-family:var(--font-display);font-weight:800;font-size:clamp(1.1rem,3vw,1.4rem);color:var(--ink);}
+.mg-desc{font-size:.9rem;color:var(--ink-soft);line-height:1.55;}
+
+/* --- sorting mini-game --- */
+.tray{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;min-height:74px;padding:11px;border-radius:var(--r-md);
+  background:repeating-linear-gradient(45deg,rgba(6,78,59,.045) 0 10px,transparent 10px 20px);
+  border:2px dashed rgba(6,78,59,.2);}
+.chip{
+  display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border-radius:999px;cursor:grab;
+  background:linear-gradient(180deg,#fff,var(--sand));border:2px solid var(--gold-400);
+  font-weight:700;font-size:.88rem;color:var(--ink);box-shadow:var(--shadow-sm);
+  transition:transform var(--t-fast),box-shadow var(--t-fast),opacity var(--t-mid);user-select:none;touch-action:none;
+}
+.chip:hover{transform:translateY(-3px) rotate(-1.5deg);box-shadow:var(--shadow-md);}
+.chip.dragging{opacity:.4;cursor:grabbing;}
+.chip.selected{box-shadow:var(--glow-gold);transform:scale(1.06);}
+.chip.placed{animation:popIn .4s cubic-bezier(.34,1.56,.64,1);}
+.chip.ok{border-color:var(--emerald-500);background:linear-gradient(180deg,#fff,#d1fae5);}
+.chip.no{border-color:var(--rose-500);background:linear-gradient(180deg,#fff,#ffe4e6);animation:shake .4s;}
+
+.bins{display:grid;gap:11px;margin-top:13px;}
+@media (min-width:640px){.bins.c2{grid-template-columns:1fr 1fr;} .bins.c4{grid-template-columns:repeat(4,1fr);}}
+.bin{border-radius:var(--r-md);padding:11px;background:#fff;border:2.5px solid var(--line);min-height:96px;
+  transition:border-color var(--t-fast),background var(--t-fast),transform var(--t-fast);}
+.bin.over{border-color:var(--emerald-500);background:rgba(16,185,129,.09);transform:scale(1.02);}
+.bin h4{font-size:.9rem;display:flex;align-items:center;gap:6px;margin-bottom:7px;color:var(--emerald-800);}
+.bin .slot{display:flex;flex-wrap:wrap;gap:6px;}
+
+/* --- scale (timbangan nisab) mini-game --- */
+.scale-wrap{display:grid;gap:14px;align-items:center;}
+@media (min-width:760px){.scale-wrap{grid-template-columns:1fr 280px;}}
+.scale-svg{width:100%;max-width:330px;margin:0 auto;display:block;}
+.beam{transform-origin:150px 62px;transition:transform .7s cubic-bezier(.34,1.3,.5,1);}
+.pan-l,.pan-r{transition:transform .7s cubic-bezier(.34,1.3,.5,1);}
+.case-card{border-radius:var(--r-md);padding:14px 16px;background:#fff;border:2px solid var(--line);box-shadow:var(--shadow-sm);}
+.case-card .amount{font-family:var(--font-display);font-weight:800;font-size:1.5rem;color:var(--emerald-700);}
+.judge{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+
+/* --- numeric challenge --- */
+.numpad{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;max-width:250px;margin:12px auto 0;}
+.numpad button{padding:14px 0;border-radius:var(--r-md);border:2px solid var(--line);background:#fff;font-family:var(--font-display);
+  font-weight:800;font-size:1.12rem;cursor:pointer;transition:transform var(--t-fast),background var(--t-fast);}
+.numpad button:hover{background:var(--sand);transform:translateY(-2px);}
+.numpad button:active{transform:scale(.93);}
+.numdisplay{font-family:var(--font-display);font-weight:800;font-size:clamp(1.5rem,5vw,2.1rem);text-align:center;
+  padding:12px;border-radius:var(--r-md);background:var(--emerald-900);color:var(--gold-200);letter-spacing:.02em;
+  box-shadow:inset 0 3px 10px rgba(0,0,0,.45);min-height:62px;display:flex;align-items:center;justify-content:center;gap:4px;}
+
+/* ============================================================
+   RESULT SCREEN
+   ============================================================ */
+#screen-result{justify-content:center;align-items:center;overflow-y:auto;padding-top:24px;padding-bottom:24px;}
+.result-card{max-width:520px;width:100%;padding:clamp(20px,4vw,34px);text-align:center;}
+.stars-row{display:flex;justify-content:center;gap:10px;margin:14px 0 6px;}
+.star-big{width:clamp(48px,11vw,68px);opacity:.22;filter:grayscale(1);transform:scale(.6) rotate(-25deg);}
+.star-big.on{animation:starPop .65s cubic-bezier(.34,1.56,.64,1) forwards;}
+@keyframes starPop{0%{opacity:0;transform:scale(.3) rotate(-40deg);}60%{opacity:1;transform:scale(1.28) rotate(9deg);filter:grayscale(0);}100%{opacity:1;transform:scale(1) rotate(0);filter:grayscale(0);}}
+.score-big{font-family:var(--font-display);font-weight:800;font-size:clamp(2.6rem,10vw,3.8rem);
+  background:linear-gradient(180deg,var(--gold-400),var(--gold-600));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:16px 0;}
+.stat-grid div{background:var(--paper-2);border-radius:var(--r-md);padding:10px 6px;border:1px solid var(--line);}
+.stat-grid b{display:block;font-family:var(--font-display);font-size:1.2rem;color:var(--emerald-700);}
+.stat-grid span{font-size:.72rem;color:var(--ink-soft);font-weight:600;text-transform:uppercase;letter-spacing:.06em;}
+
+/* ============================================================
+   CALCULATOR
+   ============================================================ */
+.calc-tabs{display:flex;gap:7px;overflow-x:auto;padding-bottom:6px;margin-bottom:12px;scrollbar-width:none;}
+.calc-tabs::-webkit-scrollbar{display:none;}
+.tab{flex:none;padding:9px 16px;border-radius:999px;border:2px solid rgba(253,230,138,.28);cursor:pointer;
+  background:rgba(255,255,255,.07);color:var(--cream);font-weight:700;font-size:.86rem;white-space:nowrap;
+  transition:all var(--t-fast);font-family:var(--font-display);}
+.tab:hover{background:rgba(255,255,255,.15);}
+.tab.on{background:linear-gradient(180deg,var(--gold-400),var(--gold-600));color:#3a2405;border-color:transparent;box-shadow:var(--shadow-md);}
+
+.field{margin-bottom:12px;}
+.field label{display:block;font-weight:700;font-size:.86rem;margin-bottom:5px;color:var(--ink-soft);}
+.field .hint{font-weight:500;font-size:.76rem;color:#5c7a6e;display:block;margin-top:3px;line-height:1.45;}
+.inputwrap{display:flex;align-items:stretch;border:2px solid var(--line);border-radius:var(--r-md);overflow:hidden;background:#fff;
+  transition:border-color var(--t-fast),box-shadow var(--t-fast);}
+.inputwrap:focus-within{border-color:var(--emerald-500);box-shadow:0 0 0 4px rgba(16,185,129,.15);}
+.inputwrap .pre{display:grid;place-items:center;padding:0 12px;background:var(--sand);font-weight:800;color:var(--gold-600);font-size:.86rem;}
+.inputwrap input,.inputwrap select{flex:1;border:0;padding:12px;font:inherit;font-weight:700;color:var(--ink);background:transparent;min-width:0;}
+.inputwrap input:focus,.inputwrap select:focus{outline:none;}
+.inputwrap .suf{display:grid;place-items:center;padding:0 12px;color:var(--ink-soft);font-weight:700;font-size:.84rem;}
+
+.calc-result{margin-top:14px;padding:18px;border-radius:var(--r-lg);text-align:center;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,var(--emerald-800),var(--emerald-600));color:#eafff6;box-shadow:var(--shadow-md);}
+.calc-result .amt{font-family:var(--font-display);font-weight:800;font-size:clamp(1.6rem,6vw,2.5rem);color:var(--gold-200);line-height:1.1;
+  transition:transform .3s;}
+.calc-result.bump .amt{animation:popIn .4s;}
+.calc-result .verdict{font-weight:700;font-size:.95rem;margin-top:6px;}
+.calc-result .note{font-size:.82rem;opacity:.85;margin-top:8px;line-height:1.55;}
+.breakdown{margin-top:12px;border-radius:var(--r-md);background:rgba(255,255,255,.1);padding:10px 13px;text-align:left;font-size:.84rem;}
+.breakdown div{display:flex;justify-content:space-between;gap:10px;padding:4px 0;border-bottom:1px dashed rgba(255,255,255,.16);}
+.breakdown div:last-child{border:0;font-weight:800;}
+
+/* ============================================================
+   LEADERBOARD / BADGES
+   ============================================================ */
+.lb-row{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:var(--r-md);background:#fff;
+  border:1.5px solid var(--line);margin-bottom:7px;transition:transform var(--t-fast);animation:fadeUp .4s both;}
+.lb-row:hover{transform:translateX(5px);}
+.lb-row .rank{width:34px;height:34px;flex:none;border-radius:50%;display:grid;place-items:center;font-family:var(--font-display);
+  font-weight:800;background:var(--sand);color:var(--gold-600);}
+.lb-row.gold .rank{background:linear-gradient(180deg,var(--gold-400),var(--gold-600));color:#fff;}
+.lb-row.silver .rank{background:linear-gradient(180deg,#e2e8f0,#94a3b8);color:#fff;}
+.lb-row.bronze .rank{background:linear-gradient(180deg,#fdba74,#c2410c);color:#fff;}
+.lb-row .who{flex:1;min-width:0;}
+.lb-row .who b{display:block;font-family:var(--font-display);font-size:1rem;}
+.lb-row .who span{font-size:.75rem;color:var(--ink-soft);}
+.lb-row .pts{font-family:var(--font-display);font-weight:800;color:var(--emerald-700);font-size:1.1rem;}
+
+.badges{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px;}
+.badge{text-align:center;padding:13px 8px;border-radius:var(--r-md);background:#fff;border:1.5px solid var(--line);
+  transition:transform var(--t-fast),box-shadow var(--t-fast);}
+.badge:hover{transform:translateY(-4px) rotate(-1.5deg);box-shadow:var(--shadow-md);}
+.badge .em{font-size:1.9rem;display:block;filter:grayscale(1);opacity:.3;transition:all var(--t-mid);}
+.badge.got .em{filter:none;opacity:1;animation:badgePop .6s cubic-bezier(.34,1.56,.64,1);}
+@keyframes badgePop{0%{transform:scale(.4) rotate(-30deg);}60%{transform:scale(1.25) rotate(10deg);}100%{transform:scale(1);}}
+.badge b{display:block;font-family:var(--font-display);font-size:.8rem;margin-top:5px;}
+.badge span{font-size:.68rem;color:var(--ink-soft);line-height:1.35;display:block;margin-top:2px;}
+.badge.got{border-color:var(--gold-400);background:linear-gradient(180deg,#fff,var(--cream));}
+
+/* ============================================================
+   MODAL / TOAST / FX
+   ============================================================ */
+#modal{position:fixed;inset:0;z-index:70;display:none;place-items:center;padding:18px;
+  background:rgba(2,18,13,.72);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);}
+#modal.on{display:grid;animation:fadeUp .25s;}
+.modal-card{max-width:520px;width:100%;max-height:86vh;overflow-y:auto;padding:clamp(18px,4vw,28px);
+  animation:modalIn .45s cubic-bezier(.34,1.4,.5,1);}
+@keyframes modalIn{from{opacity:0;transform:translateY(26px) scale(.94);}to{opacity:1;transform:none;}}
+
+#toasts{position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:80;display:flex;flex-direction:column;gap:8px;
+  align-items:center;pointer-events:none;width:min(92vw,420px);}
+.toast{padding:11px 18px;border-radius:999px;font-weight:700;font-size:.9rem;box-shadow:var(--shadow-lg);
+  background:linear-gradient(180deg,var(--emerald-600),var(--emerald-800));color:#eafff6;
+  display:flex;align-items:center;gap:9px;animation:toastIn .4s cubic-bezier(.34,1.56,.64,1), toastOut .4s 2.6s forwards;}
+.toast.gold{background:linear-gradient(180deg,var(--gold-400),var(--gold-600));color:#3a2405;}
+.toast.bad{background:linear-gradient(180deg,#fb7185,var(--rose-600));color:#fff;}
+@keyframes toastIn{from{opacity:0;transform:translateY(-22px) scale(.9);}to{opacity:1;transform:none;}}
+@keyframes toastOut{to{opacity:0;transform:translateY(-16px) scale(.95);}}
+
+#fx{position:fixed;inset:0;z-index:65;pointer-events:none;}
+#flash{position:fixed;inset:0;z-index:64;pointer-events:none;opacity:0;background:#fff;transition:opacity .28s;}
+#flash.bad{background:var(--rose-500);}
+#flash.on{opacity:.3;}
+.shakeit{animation:bigshake .42s;}
+@keyframes bigshake{0%,100%{transform:translate(0,0);}15%{transform:translate(-9px,4px);}30%{transform:translate(8px,-4px);}
+  50%{transform:translate(-6px,-3px);}70%{transform:translate(5px,3px);}85%{transform:translate(-3px,1px);}}
+
+/* transition curtain */
+#curtain{position:fixed;inset:0;z-index:90;pointer-events:none;display:grid;place-items:center;opacity:0;visibility:hidden;
+  background:radial-gradient(circle at 50% 50%, var(--emerald-700), var(--emerald-900));
+  transition:opacity .34s ease, visibility .34s;}
+#curtain.on{opacity:1;visibility:visible;}
+#curtain .spinner{width:64px;height:64px;animation:spin 1.3s linear infinite;}
+
+/* ============================================================
+   Mascot
+   ============================================================ */
+.mascot{filter:drop-shadow(0 12px 22px rgba(0,0,0,.4));}
+.mascot .m-body{animation:bob 3.2s ease-in-out infinite;transform-origin:center bottom;}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(0);}50%{transform:translateY(-8px) rotate(1.2deg);}}
+.mascot .m-eye{animation:blinkEye 5s infinite;transform-origin:center;}
+@keyframes blinkEye{0%,94%,100%{transform:scaleY(1);}96%{transform:scaleY(.08);}}
+.mascot .m-arm{animation:wave 2.6s ease-in-out infinite;transform-origin:22px 6px;}
+@keyframes wave{0%,100%{transform:rotate(0);}25%{transform:rotate(-20deg);}60%{transform:rotate(9deg);}}
+
+/* ============================================================
+   Responsive + a11y
+   ============================================================ */
+@media (max-width:640px){
+  .screen{padding:10px 12px 14px;}
+  .hud{padding:7px 9px;gap:7px;}
+  .hud-stat{font-size:.85rem;}
+  .btn{padding:12px 18px;font-size:.95rem;}
+  .stat-grid{grid-template-columns:repeat(3,1fr);}
+}
+@media (max-height:560px){
+  .title-tag{display:none;}
+  .logo-badge{width:96px;}
+}
+body.reduce-motion *,body.reduce-motion *::before,body.reduce-motion *::after{
+  animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;
+}
+body.reduce-motion .caret{animation:none !important;}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
+}
+body.big-text{font-size:1.1rem;}
+body.high-contrast .panel{background:#fff;}
+body.high-contrast .opt{border-width:3px;}
+body.high-contrast .story-box{background:rgba(0,0,0,.9);}
+</style>
+</head>
+<body>
+
+<!-- ===================== SKY BACKDROP ===================== -->
+<div id="sky" aria-hidden="true">
+  <div class="glowdisc"></div>
+  <div id="stars"></div>
+  <div class="shooting" style="left:-10%;top:12%"></div>
+  <div class="shooting" style="left:30%;top:4%;animation-delay:5s"></div>
+
+  <svg class="skyline back layer-par" data-depth="6" viewBox="0 0 1440 240" preserveAspectRatio="xMidYMax slice" height="240">
+    <g fill="#03251b">
+      <rect x="0" y="150" width="1440" height="90"/>
+      <path d="M120 150v-52a34 34 0 0 1 68 0v52z"/>
+      <circle cx="154" cy="86" r="26"/>
+      <rect x="150" y="34" width="8" height="26" rx="4"/>
+      <path d="M470 150V92a52 52 0 0 1 104 0v58z"/>
+      <circle cx="522" cy="80" r="38"/>
+      <rect x="518" y="18" width="8" height="30" rx="4"/>
+      <rect x="392" y="74" width="15" height="76" rx="7"/><circle cx="399.5" cy="70" r="11"/>
+      <rect x="636" y="74" width="15" height="76" rx="7"/><circle cx="643.5" cy="70" r="11"/>
+      <path d="M980 150v-46a30 30 0 0 1 60 0v46z"/><circle cx="1010" cy="94" r="23"/>
+      <rect x="1240" y="104" width="120" height="46" rx="8"/>
+      <path d="M1300 104l-36-28 36-28 36 28z" opacity=".7"/>
+    </g>
+  </svg>
+
+  <svg class="skyline mid layer-par" data-depth="13" viewBox="0 0 1440 190" preserveAspectRatio="xMidYMax slice" height="190">
+    <g fill="#021a13">
+      <rect x="0" y="118" width="1440" height="72"/>
+      <path d="M300 118V70a46 46 0 0 1 92 0v48z"/><circle cx="346" cy="58" r="33"/>
+      <rect x="342" y="6" width="7" height="26" rx="3.5"/>
+      <rect x="238" y="54" width="13" height="64" rx="6"/><circle cx="244.5" cy="50" r="9.5"/>
+      <rect x="440" y="54" width="13" height="64" rx="6"/><circle cx="446.5" cy="50" r="9.5"/>
+      <rect x="760" y="82" width="96" height="36" rx="6"/>
+      <path d="M808 82l-28-22 28-22 28 22z" opacity=".65"/>
+      <path d="M1080 118V84a26 26 0 0 1 52 0v34z"/><circle cx="1106" cy="76" r="20"/>
+      <g opacity=".55"><rect x="60" y="92" width="52" height="26" rx="4"/><rect x="1330" y="88" width="64" height="30" rx="4"/></g>
+    </g>
+  </svg>
+
+  <div id="lanterns"></div>
+  <div id="pattern"></div>
+</div>
+
+<!-- ===================== APP ===================== -->
+<div id="app">
+<div class="stage">
+
+  <!-- ---------- TITLE ---------- -->
+  <section class="screen" id="screen-title" aria-label="Layar judul">
+    <div class="title-wrap">
+      <div class="logo-badge">
+        <svg class="ring" viewBox="0 0 200 200" aria-hidden="true">
+          <g fill="none" stroke="rgba(253,230,138,.55)" stroke-width="2">
+            <circle cx="100" cy="100" r="94" stroke-dasharray="6 12"/>
+            <path d="M100 14l60 86-60 86-60-86z"/>
+          </g>
+        </svg>
+        <svg class="ring rev" viewBox="0 0 200 200" aria-hidden="true">
+          <g fill="none" stroke="rgba(251,191,36,.75)" stroke-width="2.4">
+            <path d="M100 22l55 78-55 78-55-78z"/>
+            <circle cx="100" cy="100" r="74" stroke-dasharray="3 14"/>
+          </g>
+        </svg>
+        <div class="core">
+          <svg viewBox="0 0 100 100" aria-hidden="true" style="width:100%">
+            <defs>
+              <radialGradient id="gMoon" cx="35%" cy="30%">
+                <stop offset="0" stop-color="#fffbeb"/><stop offset="1" stop-color="#f59e0b"/>
+              </radialGradient>
+            </defs>
+            <path d="M64 12a38 38 0 1 0 22 69A44 44 0 0 1 64 12z" fill="url(#gMoon)"/>
+            <path d="M74 20l4.6 9.6 10.4 1.6-7.6 7.2 1.8 10.4L74 43.9l-9.2 4.9 1.8-10.4-7.6-7.2 10.4-1.6z" fill="#fde68a"/>
+          </svg>
+        </div>
+      </div>
+
+      <h1 class="game-title">ZAKAT<br>QUEST</h1>
+      <div class="game-sub">Petualangan Cahaya Berbagi</div>
+      <p class="title-tag">Jelajahi 7 babak perjalanan: pelajari nisab, haul, 8 asnaf, dan hitung zakatmu sendiri dengan kalkulator yang benar-benar bisa dipakai.</p>
+
+      <div class="title-actions">
+        <button class="btn" id="btn-play"><span class="ico">▶</span><span id="play-label">Mulai Petualangan</span><span class="shine"></span></button>
+        <button class="btn emerald" id="btn-calc"><span class="ico">🧮</span>Kalkulator Zakat<span class="shine"></span></button>
+      </div>
+      <div class="title-foot">
+        <button class="btn ghost sm" id="btn-progress"><span class="ico">🏆</span>Progres &amp; Papan Skor</button>
+        <button class="btn ghost sm" id="btn-howto"><span class="ico">❓</span>Cara Main</button>
+        <button class="btn ghost sm" id="btn-settings"><span class="ico">⚙️</span>Pengaturan</button>
+      </div>
+      <p class="saved-note" id="saved-note" hidden></p>
+    </div>
+  </section>
+
+  <!-- ---------- WORLD MAP ---------- -->
+  <section class="screen" id="screen-map" aria-label="Peta perjalanan">
+    <div class="hud glass map-head">
+      <button class="iconbtn" data-nav="title" aria-label="Kembali ke menu utama">←</button>
+      <div class="hud-stat"><span class="ico">⭐</span><span id="map-stars">0</span><span style="opacity:.55;font-weight:600">/21</span></div>
+      <div class="hud-stat"><span class="ico">💎</span><span id="map-score">0</span></div>
+      <div class="grow"></div>
+      <div class="pill gold" id="map-rank">Pemula</div>
+      <button class="iconbtn" id="btn-map-calc" aria-label="Buka kalkulator zakat">🧮</button>
+      <button class="iconbtn" id="btn-map-progress" aria-label="Lihat progres">🏆</button>
+    </div>
+    <div class="map-canvas" id="map-canvas">
+      <svg class="mapsvg" id="map-bg" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
+      <div id="map-nodes"></div>
+    </div>
+    <p style="color:rgba(255,251,235,.62);font-size:.8rem;text-align:center;margin-top:8px" id="map-tip">
+      Pilih bab untuk memulai. Selesaikan bab untuk membuka jalur berikutnya.
+    </p>
+  </section>
+
+  <!-- ---------- STORY ---------- -->
+  <section class="screen" id="screen-story" aria-label="Cerita">
+    <div class="hud glass" style="margin-bottom:10px">
+      <button class="iconbtn" data-nav="map" aria-label="Kembali ke peta">←</button>
+      <div class="hud-stat"><span id="story-chapter">Bab 1</span></div>
+      <div class="grow"></div>
+      <button class="btn ghost sm" id="btn-skip-story">Lewati ⏭</button>
+    </div>
+    <div class="story-stage">
+      <div class="story-art" id="story-art"></div>
+      <div class="story-box">
+        <div class="story-who">
+          <div class="avatar" id="story-avatar"></div>
+          <b id="story-name">Zaki</b>
+        </div>
+        <p class="story-text" id="story-text" aria-live="polite"></p>
+        <div class="story-nav">
+          <div class="dots" id="story-dots"></div>
+          <div class="grow" style="flex:1"></div>
+          <button class="btn sm" id="btn-story-next">Lanjut <span class="ico">›</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- QUIZ ---------- -->
+  <section class="screen" id="screen-quiz" aria-label="Kuis">
+    <div class="hud glass" style="margin-bottom:10px">
+      <button class="iconbtn" id="btn-quiz-quit" aria-label="Keluar dari kuis">✕</button>
+      <div class="hearts" id="hearts" aria-label="Nyawa tersisa"></div>
+      <div class="hud-stat"><span class="ico">💎</span><span id="quiz-score">0</span></div>
+      <div class="grow"></div>
+      <div class="hud-stat" id="quiz-streak-wrap" hidden><span class="ico">🔥</span><span id="quiz-streak">0</span></div>
+      <div class="hud-stat"><span class="ico">⏱</span><span id="quiz-time">20</span></div>
+    </div>
+    <div class="timerbar" id="timerbar" style="margin-bottom:12px"><i style="width:100%"></i></div>
+    <div class="scroller">
+      <div class="panel q-card" id="q-card" style="position:relative">
+        <div class="combo" id="combo" hidden></div>
+        <div class="q-meta">
+          <span class="pill emerald" id="q-counter">Soal 1 / 5</span>
+          <span class="pill gold" id="q-topic">Dasar Zakat</span>
+        </div>
+        <h2 class="q-text" id="q-text">—</h2>
+        <div id="q-visual"></div>
+        <div class="opts" id="q-opts"></div>
+        <div id="q-feedback"></div>
+        <div style="display:flex;gap:9px;margin-top:14px;flex-wrap:wrap">
+          <button class="btn ghost sm" id="btn-hint"><span class="ico">💡</span>Petunjuk (−30)</button>
+          <div class="grow" style="flex:1"></div>
+          <button class="btn sm" id="btn-next-q" hidden>Lanjut <span class="ico">›</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- MINI GAME ---------- -->
+  <section class="screen" id="screen-mini" aria-label="Mini game">
+    <div class="hud glass" style="margin-bottom:10px">
+      <button class="iconbtn" id="btn-mini-quit" aria-label="Keluar dari mini game">✕</button>
+      <div class="hud-stat"><span class="ico">🎮</span><span id="mini-name">Mini Game</span></div>
+      <div class="grow"></div>
+      <div class="hud-stat"><span class="ico">💎</span><span id="mini-score">0</span></div>
+    </div>
+    <div class="scroller">
+      <div class="panel q-card" id="mini-card"></div>
+    </div>
+  </section>
+
+  <!-- ---------- RESULT ---------- -->
+  <section class="screen" id="screen-result" aria-label="Hasil">
+    <div class="panel result-card" id="result-card"></div>
+  </section>
+
+  <!-- ---------- CALCULATOR ---------- -->
+  <section class="screen" id="screen-calc" aria-label="Kalkulator zakat">
+    <div class="hud glass" style="margin-bottom:10px">
+      <button class="iconbtn" data-nav="back" aria-label="Kembali">←</button>
+      <div class="hud-stat"><span class="ico">🧮</span>Kalkulator Zakat</div>
+      <div class="grow"></div>
+      <button class="iconbtn" id="btn-calc-help" aria-label="Bantuan kalkulator">❓</button>
+    </div>
+    <div class="calc-tabs" id="calc-tabs" role="tablist"></div>
+    <div class="scroller">
+      <div class="panel" style="padding:clamp(16px,3.4vw,24px)" id="calc-body"></div>
+      <div style="height:16px"></div>
+    </div>
+  </section>
+
+  <!-- ---------- PROGRESS ---------- -->
+  <section class="screen" id="screen-progress" aria-label="Progres dan papan skor">
+    <div class="hud glass" style="margin-bottom:10px">
+      <button class="iconbtn" data-nav="back" aria-label="Kembali">←</button>
+      <div class="hud-stat"><span class="ico">🏆</span>Progres &amp; Papan Skor</div>
+      <div class="grow"></div>
+      <button class="btn ghost sm" id="btn-reset"><span class="ico">🗑</span>Reset</button>
+    </div>
+    <div class="scroller" id="progress-body"></div>
+  </section>
+
+</div>
+</div>
+
+<!-- ===================== OVERLAYS ===================== -->
+<div id="flash" aria-hidden="true"></div>
+<canvas id="fx" aria-hidden="true"></canvas>
+<div id="toasts" role="status" aria-live="polite"></div>
+
+<div id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="panel modal-card" id="modal-card"></div>
+</div>
+
+<div id="curtain" aria-hidden="true">
+  <svg class="spinner" viewBox="0 0 50 50"><circle cx="25" cy="25" r="20" fill="none" stroke="rgba(253,230,138,.25)" stroke-width="5"/>
+  <circle cx="25" cy="25" r="20" fill="none" stroke="#fbbf24" stroke-width="5" stroke-linecap="round" stroke-dasharray="90 126"/></svg>
+</div>
+
+<script>
+/* ================================================================
+   ZAKAT QUEST  —  game edukasi zakat (single file, tanpa build)
+   Struktur: Util → Storage → Audio → FX → UI helpers → Router
+             → Content → Map → Story → Quiz → MiniGames
+             → Result → Calculator → Progress → Boot
+   ================================================================ */
+'use strict';
+
+/* ---------------------------------------------------------------
+   1. UTIL
+   --------------------------------------------------------------- */
+const $  = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
+const rand  = (a, b) => a + Math.random() * (b - a);
+const randInt = (a, b) => Math.floor(rand(a, b + 1));
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = randInt(0, i);
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+const rupiah = n => {
+  if (!isFinite(n)) return 'Rp 0';
+  return 'Rp ' + Math.round(n).toLocaleString('id-ID');
+};
+const numberID = n => (Math.round(n * 100) / 100).toLocaleString('id-ID');
+/** Membaca angka bergaya Indonesia: titik = pemisah ribuan, koma = desimal.
+ *  "1.500.000" → 1500000 · "1500000" → 1500000 · "2,5" → 2.5
+ *  Aturan tetap (tidak menebak-nebak) supaya pemformatan ulang saat mengetik
+ *  selalu bisa dibaca balik dengan hasil yang sama. */
+function splitID(str) {
+  const clean = String(str).replace(/[^\d,]/g, '');   // titik ribuan ikut dibuang
+  const [intPart, ...rest] = clean.split(',');
+  return {
+    int: intPart || '',
+    dec: rest.length ? rest.join('').slice(0, 2) : null
+  };
+}
+function parseNum(str) {
+  if (typeof str === 'number') return isFinite(str) ? str : 0;
+  if (!str) return 0;
+  const { int, dec } = splitID(str);
+  const n = parseFloat((int || '0') + (dec !== null ? '.' + dec : ''));
+  return isFinite(n) ? n : 0;
+}
+function escapeHTML(s) {
+  return String(s).replace(/[&<>"']/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+/* ---------------------------------------------------------------
+   2. STORAGE — progres, skor, pengaturan (localStorage, aman gagal)
+   --------------------------------------------------------------- */
+const SAVE_KEY = 'zakatQuest.v1';
+const defaultSave = () => ({
+  player: '',
+  levels: {},            // { [id]: {stars, best, done, bestTime} }
+  badges: [],
+  totalScore: 0,
+  scores: [],            // papan skor lokal
+  calcPrefs: { gold: 1950000, silver: 21000, rice: 14000 },
+  settings: { sound: true, music: false, motion: true, bigText: false, contrast: false },
+  stats: { correct: 0, wrong: 0, played: 0, perfect: 0 },
+  createdAt: Date.now()
+});
+
+let SAVE = defaultSave();
+
+function loadSave() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) return defaultSave();
+    const parsed = JSON.parse(raw);
+    const base = defaultSave();
+    return {
+      ...base, ...parsed,
+      levels:    { ...base.levels,    ...(parsed.levels    || {}) },
+      calcPrefs: { ...base.calcPrefs, ...(parsed.calcPrefs || {}) },
+      settings:  { ...base.settings,  ...(parsed.settings  || {}) },
+      stats:     { ...base.stats,     ...(parsed.stats     || {}) },
+      badges:    Array.isArray(parsed.badges) ? parsed.badges : [],
+      scores:    Array.isArray(parsed.scores) ? parsed.scores : []
+    };
+  } catch (e) {
+    console.warn('Gagal memuat progres:', e);
+    return defaultSave();
+  }
+}
+let saveTimer = null;
+function persist(immediate) {
+  const write = () => {
+    try { localStorage.setItem(SAVE_KEY, JSON.stringify(SAVE)); }
+    catch (e) { console.warn('Gagal menyimpan progres:', e); }
+  };
+  if (immediate) { clearTimeout(saveTimer); write(); return; }
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(write, 220);
+}
+
+/* ---------------------------------------------------------------
+   3. AUDIO — sintesis WebAudio, tidak butuh file aset
+   --------------------------------------------------------------- */
+const Audio2 = (() => {
+  let ctx = null, master = null, unlocked = false;
+  function ensure() {
+    if (ctx) return ctx;
+    const AC = window.AudioContext || window.webkitAudioContext;
+    if (!AC) return null;
+    ctx = new AC();
+    master = ctx.createGain();
+    master.gain.value = 0.16;
+    master.connect(ctx.destination);
+    return ctx;
+  }
+  function unlock() {
+    if (unlocked) return;
+    const c = ensure();
+    if (c && c.state === 'suspended') c.resume();
+    unlocked = true;
+  }
+  function tone(freq, dur = 0.14, type = 'sine', when = 0, vol = 1) {
+    if (!SAVE.settings.sound) return;
+    const c = ensure(); if (!c) return;
+    const t = c.currentTime + when;
+    const o = c.createOscillator(), g = c.createGain();
+    o.type = type; o.frequency.setValueAtTime(freq, t);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(0.9 * vol, t + 0.012);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(master);
+    o.start(t); o.stop(t + dur + 0.02);
+  }
+  const seq = (notes, type = 'triangle') =>
+    notes.forEach(([f, w, d]) => tone(f, d || 0.13, type, w));
+  return {
+    unlock,
+    click:   () => tone(620, 0.06, 'square', 0, 0.5),
+    hover:   () => tone(880, 0.03, 'sine', 0, 0.22),
+    correct: () => seq([[659, 0], [784, 0.08], [1047, 0.16, 0.24]]),
+    wrong:   () => seq([[240, 0], [180, 0.1, 0.26]], 'sawtooth'),
+    coin:    () => seq([[988, 0], [1319, 0.06, 0.18]], 'square'),
+    star:    () => seq([[784, 0], [988, 0.09], [1175, 0.18], [1568, 0.27, 0.38]]),
+    win:     () => seq([[523, 0], [659, 0.11], [784, 0.22], [1047, 0.33], [1319, 0.44, 0.5]]),
+    lose:    () => seq([[392, 0], [330, 0.14], [262, 0.28, 0.5]], 'sawtooth'),
+    whoosh:  () => tone(320, 0.2, 'sine', 0, 0.35),
+    badge:   () => seq([[1047, 0], [1319, 0.07], [1568, 0.14], [2093, 0.22, 0.3]])
+  };
+})();
+
+/* ---------------------------------------------------------------
+   4. FX — partikel canvas (koin, konfeti, kilau) + efek layar
+   --------------------------------------------------------------- */
+const FX = (() => {
+  const cv = $('#fx'), ctx = cv.getContext('2d');
+  let parts = [], raf = null, dpr = 1;
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = innerWidth * dpr; cv.height = innerHeight * dpr;
+    cv.style.width = innerWidth + 'px'; cv.style.height = innerHeight + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  addEventListener('resize', resize);
+
+  function loop() {
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    for (let i = parts.length - 1; i >= 0; i--) {
+      const p = parts[i];
+      p.vy += p.g; p.vx *= 0.995;
+      p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.life--;
+      if (p.life <= 0 || p.y > innerHeight + 60) { parts.splice(i, 1); continue; }
+      const a = Math.min(1, p.life / 28);
+      ctx.save();
+      ctx.globalAlpha = a;
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      if (p.kind === 'coin') {
+        const w = p.size * Math.abs(Math.cos(p.rot * 1.6));
+        ctx.fillStyle = '#fbbf24';
+        ctx.beginPath(); ctx.ellipse(0, 0, Math.max(1.5, w), p.size, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#d97706';
+        ctx.beginPath(); ctx.ellipse(0, 0, Math.max(.6, w * .5), p.size * .5, 0, 0, Math.PI * 2); ctx.fill();
+      } else if (p.kind === 'star') {
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        for (let k = 0; k < 5; k++) {
+          const o = (k * 4 * Math.PI) / 5 - Math.PI / 2;
+          k === 0 ? ctx.moveTo(Math.cos(o) * p.size, Math.sin(o) * p.size)
+                  : ctx.lineTo(Math.cos(o) * p.size, Math.sin(o) * p.size);
+        }
+        ctx.closePath(); ctx.fill();
+      } else {
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 1.7);
+      }
+      ctx.restore();
+    }
+    if (parts.length) raf = requestAnimationFrame(loop);
+    else { raf = null; ctx.clearRect(0, 0, innerWidth, innerHeight); }
+  }
+  function start() { if (!raf) raf = requestAnimationFrame(loop); }
+  const PALETTE = ['#fbbf24', '#10b981', '#38bdf8', '#f43f5e', '#a78bfa', '#fde68a'];
+
+  function burst(x, y, n = 26, kind = 'confetti') {
+    if (!SAVE.settings.motion) return;
+    for (let i = 0; i < n; i++) {
+      const ang = rand(0, Math.PI * 2), sp = rand(2.6, 9);
+      parts.push({
+        x, y, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp - rand(1.5, 5),
+        g: rand(0.16, 0.30), rot: rand(0, 6.3), vr: rand(-0.26, 0.26),
+        size: kind === 'coin' ? rand(6, 11) : rand(4, 9),
+        life: randInt(52, 100), kind,
+        color: PALETTE[randInt(0, PALETTE.length - 1)]
+      });
+    }
+    start();
+  }
+  function rain(n = 90) {
+    if (!SAVE.settings.motion) return;
+    for (let i = 0; i < n; i++) {
+      parts.push({
+        x: rand(0, innerWidth), y: rand(-innerHeight * 0.55, -12),
+        vx: rand(-1.4, 1.4), vy: rand(1.8, 5), g: 0.045,
+        rot: rand(0, 6.3), vr: rand(-0.16, 0.16), size: rand(5, 11),
+        life: randInt(150, 260),
+        kind: Math.random() < 0.26 ? 'star' : 'confetti',
+        color: PALETTE[randInt(0, PALETTE.length - 1)]
+      });
+    }
+    start();
+  }
+  function burstFrom(el, n, kind) {
+    if (!el) return;
+    const r = el.getBoundingClientRect();
+    burst(r.left + r.width / 2, r.top + r.height / 2, n, kind);
+  }
+  resize();
+  return { burst, burstFrom, rain };
+})();
+
+function flash(bad) {
+  const f = $('#flash');
+  f.classList.toggle('bad', !!bad);
+  f.classList.add('on');
+  setTimeout(() => f.classList.remove('on'), 170);
+}
+function shakeScreen() {
+  if (!SAVE.settings.motion) return;
+  const s = $('.stage');
+  s.classList.remove('shakeit'); void s.offsetWidth; s.classList.add('shakeit');
+  setTimeout(() => s.classList.remove('shakeit'), 460);
+}
+/** Tombol lanjut baru aktif setelah jeda singkat, supaya tombol Enter yang
+ *  dipakai untuk menjawab tidak sekaligus melompati penjelasan. */
+function armButton(btn, fn, ms = 300) {
+  btn.disabled = true;                       // terlihat belum aktif, bukan klik yang diabaikan diam-diam
+  btn.addEventListener('click', fn);
+  setTimeout(() => { btn.disabled = false; try { btn.focus(); } catch (e) {} }, ms);
+}
+
+function floatText(el, text, color) {
+  if (!el) return;
+  const r = el.getBoundingClientRect();
+  const d = document.createElement('div');
+  d.className = 'floatscore';
+  d.textContent = text;
+  if (color) d.style.color = color;
+  d.style.left = (r.left + r.width / 2 - 26) + 'px';
+  d.style.top  = (r.top - 6) + 'px';
+  document.body.appendChild(d);
+  setTimeout(() => d.remove(), 1200);
+}
+
+/* ---------------------------------------------------------------
+   5. UI HELPERS — toast, modal, ripple
+   --------------------------------------------------------------- */
+function toast(msg, kind = '') {
+  const t = document.createElement('div');
+  t.className = 'toast ' + kind;
+  t.innerHTML = msg;
+  $('#toasts').appendChild(t);
+  setTimeout(() => t.remove(), 3100);
+}
+let modalOnClose = null;
+function openModal(html, onClose) {
+  $('#modal-card').innerHTML = html;
+  $('#modal').classList.add('on');
+  modalOnClose = onClose || null;
+  const first = $('#modal-card').querySelector('button, [href], input');
+  if (first) setTimeout(() => first.focus(), 60);
+}
+function closeModal() {
+  $('#modal').classList.remove('on');
+  const cb = modalOnClose; modalOnClose = null;
+  if (cb) cb();
+}
+$('#modal').addEventListener('click', e => { if (e.target.id === 'modal') closeModal(); });
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && $('#modal').classList.contains('on')) closeModal();
+});
+
+document.addEventListener('pointerdown', e => {
+  const b = e.target.closest('.btn, .iconbtn, .opt, .tab');
+  if (!b) return;
+  Audio2.unlock();
+  if (!SAVE.settings.motion) return;
+  const r = b.getBoundingClientRect();
+  const d = document.createElement('span');
+  const size = Math.max(r.width, r.height) * 1.1;
+  d.className = 'ripple';
+  d.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - r.left - size / 2}px;top:${e.clientY - r.top - size / 2}px`;
+  if (getComputedStyle(b).position === 'static') b.style.position = 'relative';
+  b.appendChild(d);
+  setTimeout(() => d.remove(), 620);
+}, { passive: true });
+document.addEventListener('click', e => { if (e.target.closest('.btn, .iconbtn, .tab')) Audio2.click(); });
+
+/* ---------------------------------------------------------------
+   6. ROUTER — transisi antar layar
+   --------------------------------------------------------------- */
+const Router = (() => {
+  let current = 'title';
+  const history = [];
+  async function go(name, opts = {}) {
+    if (name === current && !opts.force) return;
+    const from = $('#screen-' + current), to = $('#screen-' + name);
+    if (!to) return;
+    if (!opts.replace && current !== name) history.push(current);
+    Audio2.whoosh();
+    if (opts.curtain) {
+      $('#curtain').classList.add('on');
+      await sleep(SAVE.settings.motion ? 380 : 40);
+    }
+    if (from) { from.classList.add('leaving'); from.classList.remove('active'); }
+    setTimeout(() => from && from.classList.remove('leaving'), 360);
+    to.classList.add('active');
+    to.scrollTop = 0;
+    const sc = to.querySelector('.scroller'); if (sc) sc.scrollTop = 0;
+    current = name;
+    if (opts.curtain) {
+      await sleep(SAVE.settings.motion ? 240 : 30);
+      $('#curtain').classList.remove('on');
+    }
+  }
+  function back() {
+    const prev = history.pop() || 'title';
+    go(prev, { replace: true });
+  }
+  return { go, back, get current() { return current; } };
+})();
+
+/* ---------------------------------------------------------------
+   7. SCENE ART — latar cerita bergambar (SVG inline, beranimasi)
+   --------------------------------------------------------------- */
+const SCENE_CSS = `
+<style>
+.sc{width:100%;height:100%;display:block}
+.sc-sun{animation:scRise 14s ease-in-out infinite alternate}
+@keyframes scRise{from{transform:translateY(16px)}to{transform:translateY(-14px)}}
+.sc-cloud{animation:scDrift var(--d,34s) linear infinite}
+@keyframes scDrift{from{transform:translateX(-260px)}to{transform:translateX(1120px)}}
+.sc-bird{animation:scFly 17s linear infinite}
+@keyframes scFly{from{transform:translate(-120px,26px)}to{transform:translate(1060px,-46px)}}
+.sc-wing{animation:scFlap .52s ease-in-out infinite alternate;transform-origin:center}
+@keyframes scFlap{from{transform:scaleY(1)}to{transform:scaleY(.25)}}
+.sc-sway{animation:scSway 4.4s ease-in-out infinite;transform-origin:bottom center}
+@keyframes scSway{0%,100%{transform:rotate(-2.6deg)}50%{transform:rotate(2.6deg)}}
+.sc-float{animation:scFloat 5.2s ease-in-out infinite}
+@keyframes scFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-13px)}}
+.sc-twinkle{animation:twinkle 2.8s ease-in-out infinite}
+.sc-glow{animation:scGlow 3.4s ease-in-out infinite}
+@keyframes scGlow{0%,100%{opacity:.35}50%{opacity:.85}}
+.sc-coin{animation:scCoin 3.6s ease-in-out infinite}
+@keyframes scCoin{0%,100%{transform:translateY(0) rotate(-7deg)}50%{transform:translateY(-17px) rotate(7deg)}}
+</style>`;
+
+const SKY_GRADS = {
+  dawn:  ['#fde68a', '#fb923c', '#7c3aed'],
+  day:   ['#7dd3fc', '#bae6fd', '#fef9c3'],
+  noon:  ['#38bdf8', '#a5f3fc', '#fef3c7'],
+  dusk:  ['#fb7185', '#f59e0b', '#1e293b'],
+  night: ['#1e1b4b', '#312e81', '#0f172a']
+};
+
+function sceneSVG(kind) {
+  const g = SKY_GRADS[
+    kind === 'gate' ? 'dawn' : kind === 'market' ? 'day' : kind === 'field' ? 'noon' :
+    kind === 'office' ? 'day' : kind === 'village' ? 'dusk' : kind === 'hall' ? 'dawn' : 'night'
+  ];
+  const clouds = (n, y, op) => Array.from({ length: n }, (_, i) =>
+    `<g class="sc-cloud" style="--d:${30 + i * 9}s;animation-delay:${-i * 11}s" opacity="${op}">
+       <ellipse cx="${i * 210}" cy="${y + (i % 2) * 22}" rx="58" ry="21" fill="#fff"/>
+       <ellipse cx="${i * 210 + 42}" cy="${y + 8 + (i % 2) * 22}" rx="40" ry="17" fill="#fff"/>
+       <ellipse cx="${i * 210 - 36}" cy="${y + 10 + (i % 2) * 22}" rx="34" ry="15" fill="#fff"/>
+     </g>`).join('');
+  const stars = (n) => Array.from({ length: n }, () =>
+    `<circle class="sc-twinkle" cx="${randInt(20, 980)}" cy="${randInt(14, 230)}" r="${rand(1, 2.4).toFixed(1)}"
+      fill="#fff" style="animation-delay:${rand(0, 3).toFixed(1)}s"/>`).join('');
+
+  const bodies = {
+    gate: `
+      <g class="sc-sun"><circle cx="500" cy="238" r="66" fill="#fef3c7" opacity=".95"/>
+        <circle cx="500" cy="238" r="96" fill="#fde68a" opacity=".3" class="sc-glow"/></g>
+      ${clouds(5, 96, .5)}
+      <g class="sc-bird"><g class="sc-wing"><path d="M0 0q11-13 22 0q-11-7-22 0" fill="#1f2937"/></g></g>
+      <g fill="#134e4a">
+        <rect x="0" y="380" width="1000" height="220"/>
+      </g>
+      <g fill="#0f766e">
+        <path d="M330 380V232a90 90 0 0 1 180 0v148z" opacity=".95"/>
+        <circle cx="420" cy="210" r="66"/>
+        <rect x="414" y="120" width="12" height="42" rx="6"/>
+        <path d="M420 108l6 14 14 2-10 10 3 15-13-8-13 8 3-15-10-10 14-2z" fill="#fbbf24"/>
+        <rect x="252" y="212" width="22" height="168" rx="11"/><circle cx="263" cy="204" r="16"/>
+        <rect x="566" y="212" width="22" height="168" rx="11"/><circle cx="577" cy="204" r="16"/>
+      </g>
+      <rect x="392" y="296" width="56" height="84" rx="28" fill="#fde68a" opacity=".9"/>
+      <g fill="#065f46"><rect x="640" y="300" width="230" height="80" rx="10"/>
+        <path d="M755 300l-70-44 70-44 70 44z" opacity=".8"/></g>
+      <g class="sc-sway"><path d="M120 380c0-46 8-84 8-84s10 38 10 84z" fill="#065f46"/>
+        <ellipse cx="128" cy="288" rx="44" ry="30" fill="#047857"/></g>`,
+    market: `
+      ${clouds(6, 78, .72)}
+      <g class="sc-sun"><circle cx="838" cy="120" r="50" fill="#fef9c3"/></g>
+      <rect x="0" y="392" width="1000" height="208" fill="#a16207"/>
+      <rect x="0" y="392" width="1000" height="26" fill="#ca8a04"/>
+      <g>
+        <rect x="90" y="286" width="230" height="106" rx="8" fill="#fef3c7"/>
+        <path d="M78 286h254l-22-54H100z" fill="#ef4444"/>
+        <path d="M78 286h254l-22-54H100z" fill="url(#stripe)" opacity=".5"/>
+        <rect x="120" y="318" width="52" height="40" rx="6" fill="#16a34a"/>
+        <rect x="186" y="318" width="52" height="40" rx="6" fill="#f97316"/>
+        <rect x="252" y="318" width="52" height="40" rx="6" fill="#dc2626"/>
+      </g>
+      <g>
+        <rect x="400" y="268" width="250" height="124" rx="8" fill="#fef3c7"/>
+        <path d="M388 268h274l-24-56H412z" fill="#0ea5e9"/>
+        <g class="sc-coin"><circle cx="470" cy="322" r="24" fill="#fbbf24" stroke="#d97706" stroke-width="4"/>
+          <text x="470" y="331" font-size="22" text-anchor="middle" fill="#92400e" font-weight="bold">Rp</text></g>
+        <g class="sc-coin" style="animation-delay:-1.4s"><circle cx="540" cy="330" r="20" fill="#fde68a" stroke="#d97706" stroke-width="3.6"/></g>
+        <rect x="580" y="308" width="52" height="44" rx="5" fill="#a3a3a3"/>
+      </g>
+      <g><rect x="712" y="292" width="212" height="100" rx="8" fill="#fef3c7"/>
+        <path d="M700 292h236l-20-52H720z" fill="#8b5cf6"/>
+        <ellipse cx="770" cy="338" rx="28" ry="18" fill="#fbbf24"/>
+        <ellipse cx="840" cy="338" rx="28" ry="18" fill="#e5e7eb"/></g>
+      <g fill="#78350f" opacity=".35"><rect x="0" y="470" width="1000" height="10"/></g>`,
+    field: `
+      ${clouds(5, 70, .8)}
+      <g class="sc-sun"><circle cx="150" cy="110" r="56" fill="#fef08a"/>
+        <circle cx="150" cy="110" r="82" fill="#fde047" opacity=".3" class="sc-glow"/></g>
+      <g class="sc-bird" style="animation-duration:21s"><g class="sc-wing"><path d="M0 0q12-14 24 0q-12-8-24 0" fill="#334155"/></g></g>
+      <path d="M0 330h1000v70H0z" fill="#4d7c0f"/>
+      <path d="M0 396h1000v204H0z" fill="#65a30d"/>
+      <g opacity=".45" stroke="#3f6212" stroke-width="3">
+        <path d="M0 430h1000M0 476h1000M0 528h1000M0 586h1000" fill="none"/>
+      </g>
+      ${Array.from({ length: 22 }, (_, i) => {
+        const x = 30 + i * 44, y = 424 + (i % 4) * 42;
+        return `<g class="sc-sway" style="animation-delay:${(i * .21).toFixed(2)}s">
+          <path d="M${x} ${y}q3-30 0-46" stroke="#a3e635" stroke-width="4" fill="none"/>
+          <ellipse cx="${x}" cy="${y - 50}" rx="7" ry="13" fill="#fde047"/></g>`;
+      }).join('')}
+      <g fill="#1e3a8a" opacity=".22"><path d="M0 330h1000v14H0z"/></g>
+      <g transform="translate(790,250)">
+        <rect x="0" y="40" width="130" height="80" rx="6" fill="#92400e"/>
+        <path d="M-14 40h158L65-14z" fill="#b45309"/>
+        <rect x="46" y="76" width="34" height="44" rx="4" fill="#451a03"/>
+      </g>`,
+    office: `
+      ${clouds(4, 66, .55)}
+      <rect x="0" y="0" width="1000" height="600" fill="none"/>
+      <g fill="#e0f2fe" opacity=".5"><rect x="0" y="360" width="1000" height="240"/></g>
+      <g>
+        <rect x="150" y="120" width="700" height="300" rx="16" fill="#f8fafc" stroke="#cbd5e1" stroke-width="4"/>
+        <rect x="150" y="120" width="700" height="56" rx="16" fill="#065f46"/>
+        <circle cx="184" cy="148" r="8" fill="#fbbf24"/><circle cx="210" cy="148" r="8" fill="#6ee7b7"/>
+        <text x="500" y="156" font-size="26" text-anchor="middle" fill="#fde68a" font-family="sans-serif" font-weight="bold">LEMBAGA AMIL ZAKAT</text>
+        <g class="sc-float">
+          <rect x="200" y="210" width="200" height="140" rx="10" fill="#d1fae5" stroke="#10b981" stroke-width="3"/>
+          <rect x="222" y="238" width="156" height="12" rx="6" fill="#10b981"/>
+          <rect x="222" y="264" width="112" height="12" rx="6" fill="#6ee7b7"/>
+          <rect x="222" y="290" width="138" height="12" rx="6" fill="#a7f3d0"/>
+          <circle cx="352" cy="316" r="18" fill="#fbbf24"/>
+        </g>
+        <g class="sc-float" style="animation-delay:-2.1s">
+          <rect x="440" y="196" width="160" height="164" rx="10" fill="#fef3c7" stroke="#f59e0b" stroke-width="3"/>
+          <text x="520" y="266" font-size="44" text-anchor="middle">🧮</text>
+          <rect x="462" y="296" width="116" height="12" rx="6" fill="#f59e0b"/>
+          <rect x="462" y="318" width="80" height="12" rx="6" fill="#fcd34d"/>
+        </g>
+        <g class="sc-coin">
+          <circle cx="700" cy="250" r="34" fill="#fbbf24" stroke="#d97706" stroke-width="5"/>
+          <text x="700" y="262" font-size="28" text-anchor="middle" fill="#92400e" font-weight="bold">Rp</text>
+        </g>
+        <g class="sc-coin" style="animation-delay:-1.8s">
+          <circle cx="768" cy="312" r="26" fill="#fde68a" stroke="#d97706" stroke-width="4"/>
+        </g>
+      </g>
+      <rect x="120" y="420" width="760" height="18" rx="9" fill="#94a3b8"/>`,
+    village: `
+      <g class="sc-sun"><circle cx="820" cy="230" r="60" fill="#fed7aa" opacity=".95"/>
+        <circle cx="820" cy="230" r="96" fill="#fdba74" opacity=".35" class="sc-glow"/></g>
+      ${clouds(4, 120, .4)}
+      <rect x="0" y="400" width="1000" height="200" fill="#713f12"/>
+      <rect x="0" y="400" width="1000" height="22" fill="#a16207"/>
+      ${[80, 260, 440, 620, 800].map((x, i) => `
+        <g transform="translate(${x},${260 + (i % 2) * 22})">
+          <rect x="0" y="60" width="140" height="82" rx="6" fill="${['#fbbf24', '#fca5a5', '#a7f3d0', '#bfdbfe', '#fcd34d'][i]}"/>
+          <path d="M-16 60h172L70 4z" fill="#7f1d1d"/>
+          <rect x="52" y="96" width="36" height="46" rx="4" fill="#451a03"/>
+          <rect x="14" y="80" width="26" height="26" rx="3" fill="#fef3c7" class="sc-glow" style="animation-delay:${i * .6}s"/>
+          <rect x="100" y="80" width="26" height="26" rx="3" fill="#fef3c7" class="sc-glow" style="animation-delay:${i * .9}s"/>
+        </g>`).join('')}
+      <g class="sc-float"><text x="500" y="200" font-size="60" text-anchor="middle">🤲</text></g>
+      <g opacity=".55">${Array.from({ length: 16 }, (_, i) =>
+        `<circle class="sc-twinkle" cx="${60 + i * 60}" cy="${380 - (i % 3) * 16}" r="4" fill="#fde68a"
+          style="animation-delay:${(i * .3).toFixed(1)}s"/>`).join('')}</g>`,
+    night: `
+      ${stars(46)}
+      <g class="sc-float"><path d="M690 120a66 66 0 1 0 38 120 76 76 0 0 1-38-120z" fill="#fef3c7"/>
+        <path d="M770 96l7 15 16 2-12 11 3 17-14-8-14 8 3-17-12-11 16-2z" fill="#fde68a" class="sc-twinkle"/></g>
+      <rect x="0" y="420" width="1000" height="180" fill="#052e21"/>
+      <g fill="#064e3b">
+        <path d="M360 420V260a110 110 0 0 1 220 0v160z"/>
+        <circle cx="470" cy="238" r="82"/>
+        <rect x="463" y="130" width="14" height="50" rx="7"/>
+        <path d="M470 118l7 16 17 2-12 12 3 18-15-9-15 9 3-18-12-12 17-2z" fill="#fbbf24" class="sc-twinkle"/>
+        <rect x="262" y="246" width="26" height="174" rx="13"/><circle cx="275" cy="236" r="19"/>
+        <rect x="652" y="246" width="26" height="174" rx="13"/><circle cx="665" cy="236" r="19"/>
+      </g>
+      <rect x="440" y="326" width="62" height="94" rx="31" fill="#fbbf24" opacity=".85" class="sc-glow"/>
+      ${[130, 220, 780, 880].map((x, i) => `
+        <g class="sc-float" style="animation-delay:${i * .8}s">
+          <path d="M${x} 200l16 26-16 34-16-34z" fill="#f59e0b" opacity=".9"/>
+          <circle cx="${x}" cy="${222}" r="17" fill="#fde68a" opacity=".55" class="sc-glow"/>
+          <path d="M${x} 260v22" stroke="#92400e" stroke-width="2"/>
+        </g>`).join('')}`,
+    hall: `
+      ${clouds(3, 80, .35)}
+      <g class="sc-sun"><circle cx="500" cy="150" r="74" fill="#fde68a" opacity=".85"/>
+        <circle cx="500" cy="150" r="120" fill="#fbbf24" opacity=".26" class="sc-glow"/></g>
+      <rect x="0" y="400" width="1000" height="200" fill="#1c1917"/>
+      <g fill="#292524">
+        <rect x="120" y="180" width="760" height="220" rx="10"/>
+        ${[0, 1, 2, 3, 4, 5].map(i => `<rect x="${170 + i * 120}" y="210" width="26" height="190" rx="13" fill="#44403c"/>`).join('')}
+        <path d="M100 180h800L500 84z" fill="#3f3f46"/>
+      </g>
+      <g class="sc-float"><text x="500" y="330" font-size="76" text-anchor="middle">🏅</text></g>
+      <g opacity=".7">${Array.from({ length: 14 }, (_, i) =>
+        `<circle class="sc-twinkle" cx="${60 + i * 68}" cy="${randInt(120, 330)}" r="3.4" fill="#fde68a"
+          style="animation-delay:${(i * .24).toFixed(1)}s"/>`).join('')}</g>`
+  };
+
+  return `${SCENE_CSS}<svg class="sc" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <linearGradient id="skyg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="${g[2]}"/><stop offset=".55" stop-color="${g[1]}"/><stop offset="1" stop-color="${g[0]}"/>
+      </linearGradient>
+      <pattern id="stripe" width="24" height="24" patternTransform="rotate(90)" patternUnits="userSpaceOnUse">
+        <rect width="12" height="24" fill="#fff"/>
+      </pattern>
+    </defs>
+    <rect width="1000" height="600" fill="url(#skyg)"/>
+    ${bodies[kind] || bodies.gate}
+  </svg>`;
+}
+
+/* ---------------------------------------------------------------
+   8. KONTEN — 7 bab: cerita, kuis, mini-game
+   Materi mengacu pada fikih zakat arus utama di Indonesia
+   (QS At-Taubah 60 & 103, Fatwa MUI No. 3/2003, pedoman BAZNAS).
+   --------------------------------------------------------------- */
+const CHARS = {
+  zaki:   { name: 'Zaki',            em: '🧒' },
+  ustadz: { name: 'Ustadz Hamid',    em: '👳' },
+  amil:   { name: 'Bu Aminah, Amil', em: '👩‍💼' },
+  tani:   { name: 'Pak Karim',       em: '👨‍🌾' },
+  rahma:  { name: 'Rahma',           em: '👧' },
+  nar:    { name: 'Narator',         em: '📖' }
+};
+
+const CHAPTERS = [
+  /* ============================ BAB 1 ============================ */
+  {
+    id: 1, title: 'Gerbang Ilmu', topic: 'Dasar Zakat', emoji: '🕌', scene: 'gate',
+    blurb: 'Makna zakat, dasar hukum, dan bedanya dengan infak & sedekah.',
+    story: [
+      { c: 'nar',    t: 'Fajar baru merekah di Kampung Barokah. Zaki berlari kecil menuju gerbang madrasah, membawa satu pertanyaan yang mengganjal sejak semalam.' },
+      { c: 'zaki',   t: 'Ustadz! Semalam Ayah menyebut kata "zakat" sambil menghitung tabungannya. Zakat itu sebenarnya apa, sih?' },
+      { c: 'ustadz', t: 'Pertanyaan yang bagus, Zaki. Secara bahasa, zakat berarti <b>tumbuh, suci, dan berkah</b>. Harta yang dizakati tidak berkurang — ia justru dibersihkan dan ditumbuhkan.' },
+      { c: 'ustadz', t: 'Secara istilah, zakat adalah <b>kadar harta tertentu</b> yang <b>wajib</b> dikeluarkan pada <b>waktu tertentu</b> dan diberikan kepada <b>golongan tertentu</b>. Ia rukun Islam yang ketiga.' },
+      { c: 'zaki',   t: 'Berarti beda dengan sedekah yang sering Ibu berikan ke tetangga?' },
+      { c: 'ustadz', t: 'Tepat. <b>Zakat itu wajib</b> — ada nisab, ada kadar, ada penerimanya. <b>Infak dan sedekah itu sunnah</b> — bebas jumlah, bebas waktu, bebas penerimanya. Ayo, buktikan pemahamanmu!' }
+    ],
+    questions: [
+      { q: 'Secara bahasa, kata "zakat" berarti…',
+        opts: ['Tumbuh, suci, dan berkah', 'Menahan dan menyimpan', 'Berkurang sedikit demi sedikit', 'Meminjamkan sementara'],
+        a: 0, hint: 'Lawan dari "berkurang". Ada hubungannya dengan tumbuhan yang subur.',
+        why: 'Zakat (زكاة) berakar dari kata <i>zakaa</i> yang berarti tumbuh, bertambah, suci, dan berkah. Harta yang dizakati justru dibersihkan dan ditumbuhkan.',
+        dalil: 'QS At-Taubah 103: "Ambillah zakat dari harta mereka, guna membersihkan dan menyucikan mereka."' },
+      { q: 'Zakat menempati urutan rukun Islam yang ke…',
+        opts: ['Ke-2', 'Ke-3', 'Ke-4', 'Ke-5'],
+        a: 1, hint: 'Urutannya: syahadat → shalat → ? → puasa → haji.',
+        why: 'Urutan rukun Islam: (1) syahadat, (2) shalat, (3) <b>zakat</b>, (4) puasa Ramadan, (5) haji. Zakat adalah rukun ketiga.',
+        dalil: 'HR. Bukhari & Muslim dari Ibnu Umar — hadis "Islam dibangun di atas lima perkara".' },
+      { q: 'Manakah perbedaan paling tepat antara ZAKAT dan SEDEKAH?',
+        opts: ['Zakat hanya untuk orang kaya, sedekah untuk orang miskin',
+               'Zakat wajib dengan nisab & kadar tertentu; sedekah sunnah dan bebas jumlahnya',
+               'Zakat hanya berupa uang, sedekah hanya berupa barang',
+               'Zakat dibayar setahun sekali, sedekah setiap hari'],
+        a: 1, hint: 'Kuncinya pada kata "wajib" vs "sunnah".',
+        why: 'Zakat <b>wajib</b> — terikat syarat nisab, haul, kadar, dan 8 golongan penerima. Infak/sedekah <b>sunnah</b> — bebas jumlah, waktu, dan penerimanya.' },
+      { q: 'Orang yang wajib mengeluarkan zakat disebut…',
+        opts: ['Mustahik', 'Muzakki', 'Amil', 'Gharim'],
+        a: 1, hint: 'Yang menerima disebut mustahik. Yang memberi?',
+        why: '<b>Muzakki</b> = pemberi zakat. <b>Mustahik</b> = penerima zakat. <b>Amil</b> = pengelola zakat. <b>Gharim</b> = orang yang terlilit utang.' },
+      { q: 'Apa hukum menunaikan zakat bagi muslim yang hartanya telah mencapai nisab dan haul?',
+        opts: ['Sunnah muakkad', 'Mubah', 'Wajib (fardhu ‘ain)', 'Makruh jika sedikit'],
+        a: 2, hint: 'Ia salah satu rukun Islam — tidak bisa ditawar.',
+        why: 'Zakat hukumnya <b>fardhu ‘ain</b> (wajib atas setiap individu) bila syaratnya terpenuhi. Menolaknya termasuk dosa besar.',
+        dalil: 'QS Al-Baqarah 43: "Dan dirikanlah shalat, tunaikanlah zakat…"' },
+      { q: 'Salah satu hikmah zakat bagi MUZAKKI (pemberi) adalah…',
+        opts: ['Membersihkan harta dan jiwa dari sifat kikir', 'Menambah beban pajak negara',
+               'Membuat harta cepat habis', 'Menghapus kewajiban shalat'],
+        a: 0, hint: 'Ingat arti "menyucikan" pada QS At-Taubah 103.',
+        why: 'Zakat menyucikan harta dari hak orang lain dan menyucikan jiwa pemiliknya dari kikir (<i>bakhil</i>) serta cinta dunia berlebihan.' }
+    ],
+    mini: {
+      type: 'sort', name: 'Wajib atau Sunnah?',
+      desc: 'Seret (atau ketuk) setiap kartu ke keranjang yang benar. Zakat itu <b>wajib</b>; infak, sedekah, dan wakaf hukum asalnya <b>sunnah</b>.',
+      bins: [{ id: 'w', label: 'ZAKAT — Wajib', em: '⚖️' }, { id: 's', label: 'INFAK / SEDEKAH — Sunnah', em: '🤲' }],
+      items: [
+        { t: 'Zakat fitrah akhir Ramadan', em: '🍚', bin: 'w' },
+        { t: 'Menyumbang korban banjir', em: '🌊', bin: 's' },
+        { t: 'Zakat emas 90 gram (sudah 1 tahun)', em: '🪙', bin: 'w' },
+        { t: 'Memberi makan tetangga', em: '🍱', bin: 's' },
+        { t: 'Zakat hasil panen padi', em: '🌾', bin: 'w' },
+        { t: 'Wakaf tanah untuk masjid', em: '🕌', bin: 's' },
+        { t: 'Zakat perdagangan toko', em: '🏪', bin: 'w' },
+        { t: 'Tersenyum kepada saudara', em: '😊', bin: 's' }
+      ]
+    }
+  },
+
+  /* ============================ BAB 2 ============================ */
+  {
+    id: 2, title: 'Pasar Barokah', topic: 'Zakat Mal', emoji: '🪙', scene: 'market',
+    blurb: 'Nisab, haul, dan zakat emas, perak, serta uang simpanan.',
+    story: [
+      { c: 'nar',    t: 'Pasar Barokah ramai sejak pagi. Zaki menemani Bu Aminah, seorang amil zakat, berkeliling mendata para pedagang.' },
+      { c: 'amil',   t: 'Zaki, tidak semua harta wajib dizakati. Ada dua gerbang yang harus dilewati dulu: <b>nisab</b> dan <b>haul</b>.' },
+      { c: 'zaki',   t: 'Nisab… batas minimal harta, ya, Bu?' },
+      { c: 'amil',   t: 'Benar! <b>Nisab</b> adalah batas minimal harta agar wajib zakat. Untuk emas: <b>85 gram</b>. Perak: <b>595 gram</b>. Uang dan tabungan mengikuti nilai 85 gram emas.' },
+      { c: 'amil',   t: 'Lalu <b>haul</b> — harta itu harus dimiliki penuh selama <b>satu tahun hijriah</b>. Kalau keduanya terpenuhi, kadar zakatnya <b>2,5%</b> atau 1/40 bagian.' },
+      { c: 'zaki',   t: 'Jadi kalau Ayah punya 100 gram emas selama setahun, zakatnya 2,5 gram?' },
+      { c: 'amil',   t: 'Persis! Kamu cepat menangkap. Mari kita uji di antara lapak-lapak ini.' }
+    ],
+    questions: [
+      { q: 'Berapa nisab zakat emas?',
+        opts: ['20 gram', '85 gram', '200 gram', '595 gram'],
+        a: 1, hint: 'Setara 20 dinar. Angkanya di bawah 100.',
+        why: 'Nisab emas = <b>85 gram</b> emas murni (20 dinar). Nisab perak = 595 gram (200 dirham).' },
+      { q: 'Berapa kadar (persentase) zakat mal untuk emas, perak, dan uang simpanan?',
+        opts: ['2,5%', '5%', '10%', '20%'],
+        a: 0, hint: 'Sama dengan 1/40 bagian.',
+        why: 'Kadarnya <b>2,5%</b> atau 1/40. Contoh: harta Rp 100.000.000 → zakat Rp 2.500.000.' },
+      { q: 'Apa yang dimaksud dengan HAUL dalam zakat mal?',
+        opts: ['Harta harus halal', 'Harta dimiliki penuh selama satu tahun hijriah',
+               'Harta harus berupa emas', 'Harta harus disimpan di bank'],
+        a: 1, hint: 'Berhubungan dengan waktu, bukan jenis harta.',
+        why: '<b>Haul</b> = kepemilikan harta genap <b>satu tahun hijriah</b> (±354 hari). Tidak berlaku untuk zakat pertanian dan rikaz.' },
+      { q: 'Bu Salma memiliki tabungan Rp 120.000.000 yang telah mengendap satu tahun. Jika nisab saat itu Rp 165.750.000, maka…',
+        opts: ['Wajib zakat Rp 3.000.000', 'Wajib zakat Rp 1.200.000',
+               'Belum wajib zakat karena belum mencapai nisab', 'Wajib zakat 10%'],
+        a: 2, hint: 'Bandingkan dulu hartanya dengan nisab. Mana yang lebih besar?',
+        why: 'Rp 120 juta <b>di bawah</b> nisab (Rp 165,75 juta ≈ 85 g emas). Zakat mal belum wajib, tetapi tetap dianjurkan bersedekah/infak.' },
+      { q: 'Pak Rudi menyimpan 200 gram emas selama 1 tahun penuh. Berapa gram zakatnya?',
+        opts: ['2 gram', '5 gram', '10 gram', '20 gram'],
+        a: 1, hint: '200 × 2,5% = ?',
+        why: '200 g melebihi nisab 85 g. Zakat = 200 × 2,5% = <b>5 gram</b> (atau nilai uangnya).' },
+      { q: 'Manakah yang BUKAN syarat wajib zakat mal?',
+        opts: ['Harta dimiliki secara penuh', 'Harta berpotensi berkembang',
+               'Harta disimpan dalam bentuk tunai', 'Harta melebihi kebutuhan pokok'],
+        a: 2, hint: 'Bentuk harta tidak harus tunai — emas, ternak, dan barang dagang pun kena zakat.',
+        why: 'Syarat zakat mal: milik penuh, berpotensi berkembang (<i>nama’</i>), mencapai nisab, melebihi kebutuhan pokok, bebas dari utang jatuh tempo, dan genap haul. Bentuk tunai <b>bukan</b> syarat.' }
+    ],
+    mini: {
+      type: 'scale', name: 'Timbangan Nisab',
+      desc: 'Perhatikan timbangan. Putuskan: harta ini sudah <b>wajib zakat</b> atau <b>belum</b>? Gunakan patokan nisab emas <b>85 gram</b>.',
+      cases: [
+        { who: 'Pak Anwar', em: '🪙', detail: 'Emas batangan disimpan 14 bulan', val: 96, unit: 'gram emas', nisab: 85, wajib: true,
+          why: '96 g > 85 g dan sudah lewat haul → <b>wajib</b>. Zakatnya 96 × 2,5% = 2,4 gram.' },
+        { who: 'Mbak Laras', em: '💍', detail: 'Perhiasan emas dipakai harian, 60 gram', val: 60, unit: 'gram emas', nisab: 85, wajib: false,
+          why: '60 g <b>belum</b> mencapai nisab 85 g. Selain itu mayoritas ulama memandang perhiasan yang wajar dipakai tidak wajib dizakati.' },
+        { who: 'Bu Tuti', em: '🥈', detail: 'Perak warisan 700 gram, tersimpan 2 tahun', val: 700, unit: 'gram perak', nisab: 595, wajib: true,
+          why: '700 g > nisab perak 595 g dan sudah lewat haul → <b>wajib</b>. Zakat = 700 × 2,5% = 17,5 gram.' },
+        { who: 'Pak Dimas', em: '💵', detail: 'Tabungan baru 5 bulan, senilai 120 gram emas', val: 120, unit: 'gram emas (5 bulan)', nisab: 85, wajib: false,
+          why: 'Nisab memang terlampaui, tetapi <b>haul belum genap</b> 1 tahun hijriah. Tunggu sampai haul terpenuhi.' },
+        { who: 'Bu Sari', em: '🏪', detail: 'Modal + laba dagang setara 310 gram emas, 1 tahun', val: 310, unit: 'gram emas', nisab: 85, wajib: true,
+          why: 'Harta dagang setara 310 g emas, melebihi nisab dan genap haul → <b>wajib</b> 2,5%.' }
+      ]
+    }
+  },
+
+  /* ============================ BAB 3 ============================ */
+  {
+    id: 3, title: 'Sawah Hijau', topic: 'Pertanian & Ternak', emoji: '🌾', scene: 'field',
+    blurb: 'Zakat hasil pertanian (5% & 10%) serta zakat hewan ternak.',
+    story: [
+      { c: 'nar',  t: 'Angin siang menyapu hamparan padi. Pak Karim baru saja selesai panen, wajahnya berseri.' },
+      { c: 'tani', t: 'Alhamdulillah, Zaki! Panen tahun ini melimpah. Nah, zakat pertanian itu istimewa — ia <b>tidak menunggu haul</b>.' },
+      { c: 'zaki', t: 'Lho, langsung dizakati begitu panen?' },
+      { c: 'tani', t: 'Betul. Dikeluarkan <b>setiap kali panen</b>, asalkan mencapai nisab <b>5 wasaq</b> — sekitar <b>653 kg gabah</b> atau <b>±520 kg beras</b>.' },
+      { c: 'tani', t: 'Kadarnya ada dua: <b>10%</b> bila sawah diairi hujan atau mata air tanpa biaya, dan <b>5%</b> bila diairi dengan biaya — pompa, irigasi berbayar, beli solar.' },
+      { c: 'zaki', t: 'Jadi makin besar biaya pengairan, makin kecil zakatnya. Adil, ya!' },
+      { c: 'tani', t: 'Itulah keindahan syariat. Ayo, hitung bersamaku.' }
+    ],
+    questions: [
+      { q: 'Berapa nisab zakat pertanian (biji-bijian & buah yang dapat disimpan)?',
+        opts: ['5 wasaq ≈ 653 kg gabah', '10 wasaq ≈ 1.300 kg gabah', '85 kg', '2,5 kuintal'],
+        a: 0, hint: 'Ukuran klasiknya "wasaq", bukan gram.',
+        why: 'Nisabnya <b>5 wasaq</b> = ±653 kg gabah kering atau ±520 kg beras.',
+        dalil: 'HR. Bukhari & Muslim: "Tidak ada zakat pada hasil bumi di bawah lima wasaq."' },
+      { q: 'Sawah yang diairi air hujan tanpa biaya dikenai zakat sebesar…',
+        opts: ['2,5%', '5%', '10%', '20%'],
+        a: 2, hint: 'Tanpa biaya = kadar tertinggi.',
+        why: 'Pengairan alami (hujan, mata air, sungai) tanpa biaya → <b>10%</b>. Bila memakai biaya (pompa/irigasi berbayar) → 5%.' },
+      { q: 'Kapan zakat pertanian dikeluarkan?',
+        opts: ['Setiap akhir tahun hijriah', 'Setiap kali panen', 'Setiap bulan Ramadan', 'Setiap lima tahun'],
+        a: 1, hint: 'Zakat pertanian tidak mengenal haul.',
+        why: 'Zakat pertanian dikeluarkan <b>setiap kali panen</b>, tanpa menunggu haul.',
+        dalil: 'QS Al-An‘am 141: "…dan tunaikanlah haknya di hari memetik hasilnya."' },
+      { q: 'Pak Karim panen 2.000 kg gabah dengan irigasi berbayar. Berapa zakatnya?',
+        opts: ['50 kg', '100 kg', '200 kg', '400 kg'],
+        a: 1, hint: 'Irigasi berbiaya → kadar 5%.',
+        why: '2.000 kg sudah melebihi nisab 653 kg. Irigasi berbiaya → 5%. Zakat = 2.000 × 5% = <b>100 kg</b>.' },
+      { q: 'Berapa nisab zakat kambing/domba?',
+        opts: ['5 ekor', '30 ekor', '40 ekor', '100 ekor'],
+        a: 2, hint: 'Lebih banyak dari nisab sapi (30), lebih dari unta (5).',
+        why: 'Nisab kambing = <b>40 ekor</b> → zakatnya 1 ekor kambing. Sapi: 30 ekor → 1 anak sapi (tabi‘). Unta: 5 ekor → 1 ekor kambing.' },
+      { q: 'Harta temuan atau barang tambang (rikaz) dikenai zakat sebesar…',
+        opts: ['2,5% dengan haul', '5% saat ditemukan', '10% saat ditemukan', '20% saat ditemukan, tanpa nisab & haul'],
+        a: 3, hint: 'Kadar terbesar dalam zakat — seperlima.',
+        why: '<b>Rikaz</b> (harta terpendam/tambang) dizakati <b>20% (1/5)</b> seketika saat ditemukan, tanpa syarat nisab maupun haul.',
+        dalil: 'HR. Bukhari & Muslim: "Dan pada rikaz zakatnya seperlima."' }
+    ],
+    mini: {
+      type: 'calc', name: 'Hitung Panen',
+      desc: 'Hitung zakat hasil pertanian. Ketik jawabanmu lalu tekan <b>Periksa</b>.',
+      steps: [
+        { prompt: 'Panen <b>1.200 kg</b> gabah, sawah <b>tadah hujan</b> (tanpa biaya). Berapa kg zakatnya?',
+          ans: 120, unit: 'kg', hint: 'Tanpa biaya → 10%.', why: '1.200 kg > nisab 653 kg. Tadah hujan → 10% × 1.200 = <b>120 kg</b>.' },
+        { prompt: 'Panen <b>3.000 kg</b> gabah dengan <b>pompa air berbayar</b>. Berapa kg zakatnya?',
+          ans: 150, unit: 'kg', hint: 'Ada biaya pengairan → 5%.', why: 'Irigasi berbiaya → 5% × 3.000 = <b>150 kg</b>.' },
+        { prompt: 'Panen hanya <b>500 kg</b> gabah, tadah hujan. Berapa kg zakatnya?',
+          ans: 0, unit: 'kg', hint: 'Bandingkan dulu dengan nisab 653 kg.', why: '500 kg <b>belum</b> mencapai nisab 653 kg → zakat = <b>0 kg</b>. Tetap dianjurkan bersedekah.' },
+        { prompt: 'Pak Karim menemukan guci emas kuno senilai <b>Rp 50.000.000</b>. Berapa rupiah zakat rikaznya?',
+          ans: 10000000, unit: 'Rp', hint: 'Rikaz = 20%, langsung tanpa nisab.', why: '20% × Rp 50.000.000 = <b>Rp 10.000.000</b>, dikeluarkan saat itu juga.' }
+      ]
+    }
+  },
+
+  /* ============================ BAB 4 ============================ */
+  {
+    id: 4, title: 'Kantor Amil', topic: 'Penghasilan & Dagang', emoji: '🏢', scene: 'office',
+    blurb: 'Zakat penghasilan/profesi dan zakat perdagangan.',
+    story: [
+      { c: 'nar',  t: 'Ruangan lembaga amil zakat sejuk dan rapi. Di layar komputer, angka-angka tersusun dalam tabel.' },
+      { c: 'amil', t: 'Zaki, zaman sekarang banyak orang berpenghasilan dari gaji, bukan sawah. Inilah <b>zakat penghasilan</b> atau zakat profesi.' },
+      { c: 'zaki', t: 'Apakah ada dasarnya, Bu?' },
+      { c: 'amil', t: 'Ada. <b>Fatwa MUI No. 3 Tahun 2003</b> menetapkan zakat penghasilan wajib bila mencapai nisab <b>85 gram emas per tahun</b>, dengan kadar <b>2,5%</b>. Boleh dicicil tiap bulan.' },
+      { c: 'amil', t: 'Untuk pedagang, rumusnya: <b>(modal berputar + laba + piutang lancar) − (utang jatuh tempo + kerugian)</b>, lalu dikalikan 2,5% bila mencapai nisab dan genap haul.' },
+      { c: 'zaki', t: 'Jadi stok barang di toko juga dihitung, ya?' },
+      { c: 'amil', t: 'Tepat sekali — dihitung dengan harga jual saat haul tiba. Mari berlatih.' }
+    ],
+    questions: [
+      { q: 'Zakat penghasilan (profesi) di Indonesia berlandaskan pada…',
+        opts: ['Fatwa MUI No. 3 Tahun 2003', 'UU Ketenagakerjaan', 'Ijma sahabat secara langsung', 'Qiyas terhadap zakat fitrah'],
+        a: 0, hint: 'Sebuah fatwa resmi tahun 2003.',
+        why: 'Fatwa MUI No. 3 Tahun 2003 tentang Zakat Penghasilan, diperkuat UU No. 23 Tahun 2011 tentang Pengelolaan Zakat.' },
+      { q: 'Nisab zakat penghasilan setahun setara dengan…',
+        opts: ['20 gram emas', '85 gram emas', '595 gram perak saja', '653 kg beras'],
+        a: 1, hint: 'Sama dengan nisab zakat mal.',
+        why: 'Nisabnya <b>85 gram emas per tahun</b>. Jika harga emas Rp 1.950.000/g, nisab ≈ Rp 165.750.000 per tahun (≈ Rp 13.812.500 per bulan).' },
+      { q: 'Gaji Pak Yusuf Rp 20.000.000/bulan. Dengan asumsi nisab bulanan Rp 13.812.500, berapa zakat penghasilan sebulan?',
+        opts: ['Rp 200.000', 'Rp 500.000', 'Rp 2.000.000', 'Belum wajib zakat'],
+        a: 1, hint: 'Gaji melebihi nisab → kalikan 2,5%.',
+        why: 'Rp 20.000.000 > nisab bulanan. Zakat = 2,5% × Rp 20.000.000 = <b>Rp 500.000</b> per bulan.' },
+      { q: 'Dalam zakat perdagangan, komponen manakah yang menjadi PENGURANG?',
+        opts: ['Laba bersih', 'Stok barang dagangan', 'Utang jatuh tempo', 'Piutang lancar'],
+        a: 2, hint: 'Sesuatu yang harus dibayar, bukan yang dimiliki.',
+        why: 'Rumus: (modal berputar + laba + piutang lancar) − (<b>utang jatuh tempo</b> + kerugian), lalu × 2,5%.' },
+      { q: 'Toko Bu Sari: stok Rp 80.000.000, laba Rp 25.000.000, piutang lancar Rp 10.000.000, utang jatuh tempo Rp 15.000.000. Berapa zakatnya?',
+        opts: ['Rp 2.500.000', 'Rp 2.000.000', 'Rp 3.250.000', 'Rp 1.750.000'],
+        a: 0, hint: '80 + 25 + 10 − 15 = 100 juta. Lalu 2,5%.',
+        why: 'Harta zakat = 80 + 25 + 10 − 15 = Rp 100.000.000. Zakat = 2,5% × 100 juta = <b>Rp 2.500.000</b>.' },
+      { q: 'Bolehkah zakat penghasilan dibayarkan setiap bulan?',
+        opts: ['Tidak boleh, harus setahun sekali', 'Boleh, sebagai cicilan dari zakat tahunan',
+               'Boleh, tetapi kadarnya menjadi 5%', 'Hanya boleh bila diminta atasan'],
+        a: 1, hint: 'Yang berubah hanya jadwal bayarnya, bukan kadarnya.',
+        why: 'Boleh — pembayaran bulanan dianggap <b>ta‘jil</b> (menyegerakan) dari kewajiban tahunan. Kadarnya tetap 2,5%.' }
+    ],
+    mini: {
+      type: 'calc', name: 'Meja Hitung Amil',
+      desc: 'Bantu Bu Aminah menghitung. Ketik angka saja (tanpa "Rp" atau titik), lalu tekan <b>Periksa</b>.',
+      steps: [
+        { prompt: 'Gaji <b>Rp 12.000.000</b>/bulan. Nisab bulanan <b>Rp 13.812.500</b>. Berapa rupiah zakat penghasilan bulan ini?',
+          ans: 0, unit: 'Rp', hint: 'Gaji di bawah nisab bulanan.', why: 'Rp 12.000.000 < nisab bulanan → <b>belum wajib</b>, zakat = Rp 0. (Jika dihitung tahunan dan total setahun melewati nisab, barulah wajib.)' },
+        { prompt: 'Gaji <b>Rp 18.000.000</b>/bulan, di atas nisab. Berapa rupiah zakatnya sebulan?',
+          ans: 450000, unit: 'Rp', hint: '2,5% dari 18 juta.', why: '2,5% × Rp 18.000.000 = <b>Rp 450.000</b>.' },
+        { prompt: 'Toko: stok <b>60 juta</b> + laba <b>20 juta</b> + piutang <b>5 juta</b> − utang <b>25 juta</b>. Berapa rupiah zakatnya?',
+          ans: 1500000, unit: 'Rp', hint: '60+20+5−25 = 60 juta, lalu 2,5%.', why: 'Harta zakat = Rp 60.000.000. Zakat = 2,5% × 60 juta = <b>Rp 1.500.000</b>.' },
+        { prompt: 'Tabungan <b>Rp 200.000.000</b> genap 1 haul, di atas nisab. Berapa rupiah zakat malnya?',
+          ans: 5000000, unit: 'Rp', hint: '2,5% dari 200 juta.', why: '2,5% × Rp 200.000.000 = <b>Rp 5.000.000</b>.' }
+      ]
+    }
+  },
+
+  /* ============================ BAB 5 ============================ */
+  {
+    id: 5, title: 'Kampung Asnaf', topic: '8 Golongan', emoji: '🤲', scene: 'village',
+    blurb: 'Delapan golongan penerima zakat dan siapa yang tidak berhak.',
+    story: [
+      { c: 'nar',    t: 'Senja menyapu Kampung Asnaf. Lampu-lampu rumah mulai menyala satu per satu.' },
+      { c: 'ustadz', t: 'Zaki, zakat tidak boleh diberikan kepada sembarang orang. Allah sendiri yang menetapkan penerimanya — ada <b>delapan golongan</b>.' },
+      { c: 'zaki',   t: 'Delapan? Bisa disebutkan, Ustadz?' },
+      { c: 'ustadz', t: '<b>Fakir</b> (tak punya apa-apa), <b>Miskin</b> (punya tapi tak cukup), <b>Amil</b> (pengelola zakat), <b>Mualaf</b> (baru masuk Islam / dilunakkan hatinya).' },
+      { c: 'ustadz', t: 'Lalu <b>Riqab</b> (memerdekakan perbudakan), <b>Gharim</b> (terlilit utang), <b>Fi Sabilillah</b> (di jalan Allah), dan <b>Ibnu Sabil</b> (musafir kehabisan bekal).' },
+      { c: 'zaki',   t: 'Berarti tidak boleh diberikan ke sembarang orang kaya, ya?' },
+      { c: 'ustadz', t: 'Benar. Orang kaya, orang kuat yang mampu bekerja, dan keluarga inti yang sudah jadi tanggunganmu sendiri — mereka tidak berhak menerima zakatmu.' }
+    ],
+    questions: [
+      { q: 'Delapan golongan penerima zakat ditegaskan dalam surah…',
+        opts: ['QS Al-Baqarah 183', 'QS At-Taubah 60', 'QS Al-Ma‘un 1–7', 'QS Al-Kautsar 1–3'],
+        a: 1, hint: 'Surah ke-9, ayat 60.',
+        why: 'QS At-Taubah ayat 60 merinci delapan asnaf penerima zakat.',
+        dalil: 'QS At-Taubah 60: "Sesungguhnya zakat itu hanyalah untuk orang-orang fakir, orang miskin, amil zakat…"' },
+      { q: 'Apa perbedaan FAKIR dan MISKIN?',
+        opts: ['Fakir tidak punya harta/penghasilan sama sekali; miskin punya tetapi tidak mencukupi',
+               'Fakir orang desa; miskin orang kota',
+               'Fakir tidak bekerja; miskin sudah bekerja',
+               'Tidak ada perbedaan, keduanya sama'],
+        a: 0, hint: 'Bedanya pada ada/tidaknya sumber penghasilan.',
+        why: '<b>Fakir</b>: tidak memiliki harta maupun penghasilan. <b>Miskin</b>: memiliki penghasilan tetapi tidak mencukupi kebutuhan pokok.' },
+      { q: 'Seorang musafir yang kehabisan bekal di perjalanan (bukan maksiat) termasuk golongan…',
+        opts: ['Gharim', 'Riqab', 'Ibnu Sabil', 'Mualaf'],
+        a: 2, hint: 'Secara harfiah berarti "anak jalan".',
+        why: '<b>Ibnu Sabil</b> = musafir yang kehabisan bekal dalam perjalanan yang bukan untuk maksiat.' },
+      { q: 'Orang yang terlilit utang untuk kebutuhan pokok dan tidak mampu melunasinya disebut…',
+        opts: ['Gharim', 'Amil', 'Fi Sabilillah', 'Fakir'],
+        a: 0, hint: 'Berkaitan dengan utang.',
+        why: '<b>Gharim</b> = orang yang berutang untuk kebutuhan halal/darurat dan tidak sanggup melunasi.' },
+      { q: 'Manakah yang TIDAK berhak menerima zakat?',
+        opts: ['Amil zakat yang bekerja mengelola', 'Mualaf yang baru masuk Islam',
+               'Orang kaya yang berkecukupan', 'Musafir yang kehabisan bekal'],
+        a: 2, hint: 'Cari yang justru berkewajiban membayar, bukan menerima.',
+        why: 'Orang kaya tidak berhak menerima zakat — ia justru muzakki. Juga tidak berhak: orang kuat yang mampu bekerja, serta orang tua, anak, dan istri yang menjadi tanggungan muzakki.' },
+      { q: 'Apa tugas utama AMIL zakat?',
+        opts: ['Menentukan besarnya nisab sendiri', 'Menghimpun, mengelola, dan menyalurkan zakat',
+               'Memberi pinjaman berbunga kepada mustahik', 'Menyimpan zakat selama 5 tahun'],
+        a: 1, hint: 'Pengelola, bukan pemilik.',
+        why: '<b>Amil</b> bertugas menghimpun, mencatat, mengelola, dan menyalurkan zakat kepada yang berhak. Ia mendapat bagian sebagai imbalan kerjanya.' }
+    ],
+    mini: {
+      type: 'sort', name: 'Salurkan ke Asnaf',
+      desc: 'Bu Aminah punya amplop zakat. Tempatkan setiap warga pada golongan (<b>asnaf</b>) yang tepat.',
+      bins: [
+        { id: 'fakir', label: 'Fakir / Miskin', em: '🏚️' },
+        { id: 'gharim', label: 'Gharim', em: '📄' },
+        { id: 'ibnu', label: 'Ibnu Sabil', em: '🧳' },
+        { id: 'bukan', label: 'Tidak Berhak', em: '🚫' }
+      ],
+      items: [
+        { t: 'Nenek Ijah, tak punya penghasilan', em: '👵', bin: 'fakir' },
+        { t: 'Pak Toha, utang biaya operasi', em: '🏥', bin: 'gharim' },
+        { t: 'Pelajar kehabisan ongkos pulang', em: '🚌', bin: 'ibnu' },
+        { t: 'Juragan Amir, pemilik 3 toko', em: '💼', bin: 'bukan' },
+        { t: 'Buruh harian, upah tak cukup', em: '🧹', bin: 'fakir' },
+        { t: 'Pedagang bangkrut, utang menumpuk', em: '📉', bin: 'gharim' },
+        { t: 'Musafir terlantar di terminal', em: '🚏', bin: 'ibnu' },
+        { t: 'Anak kandung muzakki sendiri', em: '👦', bin: 'bukan' }
+      ]
+    }
+  },
+
+  /* ============================ BAB 6 ============================ */
+  {
+    id: 6, title: 'Malam Takbir', topic: 'Zakat Fitrah', emoji: '🌙', scene: 'night',
+    blurb: 'Besaran, waktu, dan ketentuan zakat fitrah.',
+    story: [
+      { c: 'nar',    t: 'Takbir bersahut-sahutan. Malam terakhir Ramadan, langit penuh bintang, dan Rahma menarik lengan kakaknya.' },
+      { c: 'rahma',  t: 'Kak Zaki! Ibu menyuruh mengantar beras ke masjid. Katanya untuk zakat fitrah. Kenapa harus beras?' },
+      { c: 'zaki',   t: 'Karena zakat fitrah dibayar dengan <b>makanan pokok</b> daerah setempat, Rahma. Di sini berarti beras.' },
+      { c: 'ustadz', t: 'Tepat. Ukurannya <b>1 sha‘</b> — setara <b>2,5 kg</b> atau <b>3,5 liter</b> per jiwa. Wajib bagi setiap muslim, besar maupun kecil, laki-laki maupun perempuan.' },
+      { c: 'ustadz', t: 'Waktunya: boleh sejak awal Ramadan, <b>wajib</b> saat matahari terbenam di akhir Ramadan, dan <b>paling utama</b> sebelum shalat Idulfitri.' },
+      { c: 'rahma',  t: 'Kalau telat, bagaimana?' },
+      { c: 'ustadz', t: 'Jika dibayar <b>setelah</b> shalat Id, ia dinilai sebagai sedekah biasa — kewajiban fitrahnya dianggap tidak tertunaikan pada waktunya. Jangan sampai terlambat, ya.' }
+    ],
+    questions: [
+      { q: 'Berapa besaran zakat fitrah per jiwa?',
+        opts: ['1 sha‘ ≈ 2,5 kg / 3,5 liter makanan pokok', '2 kg makanan pokok', '5 kg makanan pokok', '2,5% dari penghasilan'],
+        a: 0, hint: 'Satuan klasiknya "sha‘".',
+        why: 'Zakat fitrah = <b>1 sha‘</b> ≈ 2,5 kg atau 3,5 liter makanan pokok per jiwa.' },
+      { q: 'Siapa yang wajib dikeluarkan zakat fitrahnya?',
+        opts: ['Hanya kepala keluarga', 'Hanya yang sudah balig',
+               'Setiap jiwa muslim, termasuk bayi yang lahir sebelum matahari terbenam akhir Ramadan', 'Hanya yang berpuasa penuh'],
+        a: 2, hint: 'Bahkan bayi pun dihitung.',
+        why: 'Wajib atas <b>setiap jiwa muslim</b> — tua, muda, bahkan bayi yang lahir sebelum terbenamnya matahari di akhir Ramadan. Ditanggung oleh kepala keluarga.',
+        dalil: 'HR. Bukhari & Muslim dari Ibnu Umar tentang kewajiban zakat fitrah.' },
+      { q: 'Kapan waktu PALING UTAMA (afdhal) menunaikan zakat fitrah?',
+        opts: ['Awal Ramadan', 'Sebelum shalat Idulfitri', 'Setelah shalat Idulfitri', 'Saat malam takbiran saja'],
+        a: 1, hint: 'Sebelum kaum muslimin berangkat shalat Id.',
+        why: 'Waktu afdhal adalah <b>sebelum shalat Idulfitri</b>. Boleh sejak awal Ramadan (waktu jawaz), wajib sejak terbenam matahari akhir Ramadan.' },
+      { q: 'Zakat fitrah yang dibayarkan SETELAH shalat Idulfitri hukumnya…',
+        opts: ['Tetap sah sebagai zakat fitrah', 'Dinilai sebagai sedekah biasa',
+               'Wajib diulang tahun depan dua kali', 'Batal dan berdosa besar'],
+        a: 1, hint: 'Ia tetap bernilai kebaikan, tapi bukan lagi zakat fitrah.',
+        why: 'Menurut jumhur ulama, membayar setelah shalat Id menjadikannya <b>sedekah biasa</b>, bukan zakat fitrah. Karena itu jangan ditunda.' },
+      { q: 'Keluarga Pak Hasan terdiri atas 5 jiwa. Berapa kg beras zakat fitrah keluarganya?',
+        opts: ['10 kg', '12,5 kg', '15 kg', '17,5 kg'],
+        a: 1, hint: '5 × 2,5 kg.',
+        why: '5 jiwa × 2,5 kg = <b>12,5 kg</b> beras.' },
+      { q: 'Apa fungsi utama zakat fitrah bagi orang yang berpuasa?',
+        opts: ['Mengganti puasa yang batal', 'Menyucikan puasa dari perbuatan sia-sia dan memberi makan orang miskin',
+               'Menambah pahala haji', 'Menghapus utang piutang'],
+        a: 1, hint: 'Ada dua fungsi: menyucikan dan memberi makan.',
+        why: 'Zakat fitrah menyucikan orang yang berpuasa dari perbuatan sia-sia (<i>lagw</i>) dan ucapan kotor (<i>rafats</i>), sekaligus memberi makan orang miskin di hari raya.',
+        dalil: 'HR. Abu Dawud & Ibnu Majah dari Ibnu Abbas.' }
+    ],
+    mini: {
+      type: 'sort', name: 'Waktu Zakat Fitrah',
+      desc: 'Kelompokkan waktu pembayaran zakat fitrah berikut ini dengan tepat.',
+      bins: [
+        { id: 'afdhal', label: 'Paling Utama (Afdhal)', em: '⭐' },
+        { id: 'boleh', label: 'Boleh (Jawaz)', em: '✅' },
+        { id: 'telat', label: 'Terlambat → Sedekah Biasa', em: '⏰' }
+      ],
+      items: [
+        { t: 'Subuh hari raya, sebelum shalat Id', em: '🌅', bin: 'afdhal' },
+        { t: 'Malam takbiran', em: '🌙', bin: 'afdhal' },
+        { t: 'Hari ke-10 Ramadan', em: '📅', bin: 'boleh' },
+        { t: 'Awal Ramadan', em: '🗓️', bin: 'boleh' },
+        { t: 'Siang hari raya, seusai shalat Id', em: '🕛', bin: 'telat' },
+        { t: 'Hari kedua Syawal', em: '📆', bin: 'telat' }
+      ]
+    }
+  },
+
+  /* ============================ BAB 7 — BOSS ============================ */
+  {
+    id: 7, title: 'Ujian Akbar', topic: 'Ujian Campuran', emoji: '🏅', scene: 'hall', boss: true,
+    blurb: 'Ujian penutup: semua materi, waktu lebih ketat, tanpa petunjuk.',
+    story: [
+      { c: 'nar',    t: 'Aula madrasah dipenuhi peserta. Papan bertuliskan "UJIAN AKBAR ZAKAT" berdiri megah di depan.' },
+      { c: 'ustadz', t: 'Zaki, inilah ujian terakhirmu. Semua materi akan diuji — dari makna zakat sampai perhitungan.' },
+      { c: 'ustadz', t: 'Peringatan: waktumu lebih singkat, dan <b>tidak ada petunjuk</b>. Tapi aku yakin kamu siap.' },
+      { c: 'zaki',   t: 'Bismillah. Aku sudah belajar dari pasar, sawah, kantor amil, sampai kampung asnaf. Ayo mulai!' }
+    ],
+    questions: [
+      { q: 'Harta senilai Rp 300.000.000 genap satu haul dan melebihi nisab. Berapa zakat malnya?',
+        opts: ['Rp 3.000.000', 'Rp 7.500.000', 'Rp 15.000.000', 'Rp 30.000.000'],
+        a: 1, hint: '', why: '2,5% × Rp 300.000.000 = <b>Rp 7.500.000</b>.' },
+      { q: 'Manakah jenis zakat yang TIDAK mensyaratkan haul?',
+        opts: ['Zakat emas', 'Zakat perdagangan', 'Zakat pertanian', 'Zakat tabungan'],
+        a: 2, hint: '', why: 'Zakat pertanian dikeluarkan <b>setiap panen</b> tanpa menunggu haul. Begitu pula rikaz, yang langsung 20% saat ditemukan.' },
+      { q: 'Panen 4.000 kg gabah dengan irigasi berbayar. Zakatnya…',
+        opts: ['100 kg', '200 kg', '400 kg', '800 kg'],
+        a: 1, hint: '', why: 'Irigasi berbiaya → 5%. 5% × 4.000 = <b>200 kg</b>.' },
+      { q: 'Golongan yang hatinya baru dilunakkan / baru memeluk Islam disebut…',
+        opts: ['Riqab', 'Mualaf', 'Gharim', 'Ibnu Sabil'],
+        a: 1, hint: '', why: '<b>Mualaf</b> — orang yang baru masuk Islam atau yang hatinya dilunakkan agar mantap dalam Islam.' },
+      { q: 'Keluarga 7 jiwa membayar zakat fitrah berupa beras. Totalnya…',
+        opts: ['14 kg', '15,5 kg', '17,5 kg', '21 kg'],
+        a: 2, hint: '', why: '7 × 2,5 kg = <b>17,5 kg</b>.' },
+      { q: 'Toko: modal Rp 150 juta, laba Rp 40 juta, piutang Rp 20 juta, utang jatuh tempo Rp 10 juta. Zakatnya…',
+        opts: ['Rp 4.000.000', 'Rp 5.000.000', 'Rp 5.500.000', 'Rp 6.000.000'],
+        a: 1, hint: '', why: '150 + 40 + 20 − 10 = Rp 200.000.000. Zakat = 2,5% × 200 juta = <b>Rp 5.000.000</b>.' },
+      { q: 'Kadar zakat rikaz (harta temuan) adalah…',
+        opts: ['2,5%', '5%', '10%', '20%'],
+        a: 3, hint: '', why: 'Rikaz dizakati <b>20%</b> seketika, tanpa nisab dan tanpa haul.' },
+      { q: 'Pernyataan yang BENAR tentang zakat fitrah adalah…',
+        opts: ['Hanya wajib bagi orang dewasa yang berpuasa penuh',
+               'Wajib atas setiap jiwa muslim dan paling utama ditunaikan sebelum shalat Id',
+               'Boleh dibayar kapan saja sepanjang tahun',
+               'Besarnya 2,5% dari penghasilan bulanan'],
+        a: 1, hint: '', why: 'Zakat fitrah wajib atas <b>setiap jiwa muslim</b> (termasuk bayi), sebesar 1 sha‘ ≈ 2,5 kg, paling utama sebelum shalat Idulfitri.' }
+    ],
+    mini: {
+      type: 'calc', name: 'Ujian Hitung Akhir',
+      desc: 'Empat soal penutup. Jawab dengan angka saja.',
+      steps: [
+        { prompt: 'Emas <b>140 gram</b> tersimpan 1 haul. Berapa <b>gram</b> zakatnya?',
+          ans: 3.5, unit: 'gram', hint: '', why: '140 × 2,5% = <b>3,5 gram</b>.' },
+        { prompt: 'Gaji <b>Rp 25.000.000</b>/bulan di atas nisab. Berapa <b>rupiah</b> zakat sebulan?',
+          ans: 625000, unit: 'Rp', hint: '', why: '2,5% × Rp 25.000.000 = <b>Rp 625.000</b>.' },
+        { prompt: 'Panen <b>6.000 kg</b> gabah, sawah <b>tadah hujan</b>. Berapa <b>kg</b> zakatnya?',
+          ans: 600, unit: 'kg', hint: '', why: 'Tadah hujan → 10% × 6.000 = <b>600 kg</b>.' },
+        { prompt: 'Keluarga <b>9 jiwa</b> membayar zakat fitrah beras. Berapa <b>kg</b> totalnya?',
+          ans: 22.5, unit: 'kg', hint: '', why: '9 × 2,5 kg = <b>22,5 kg</b>.' }
+      ]
+    }
+  }
+];
+
+/* Lencana / achievement */
+const BADGES = [
+  { id: 'first',    em: '🌱', name: 'Langkah Pertama', desc: 'Selesaikan Bab 1' },
+  { id: 'perfect',  em: '💯', name: 'Tanpa Cela',      desc: 'Selesaikan satu bab tanpa salah' },
+  { id: 'streak5',  em: '🔥', name: 'Lima Beruntun',   desc: 'Jawab 5 soal benar berturut-turut' },
+  { id: 'calc',     em: '🧮', name: 'Ahli Hitung',     desc: 'Gunakan kalkulator zakat' },
+  { id: 'half',     em: '🧭', name: 'Separuh Jalan',   desc: 'Tuntaskan 4 bab' },
+  { id: 'allstars', em: '⭐', name: 'Bintang Penuh',   desc: 'Raih 21 bintang' },
+  { id: 'boss',     em: '🏅', name: 'Juara Zakat',     desc: 'Taklukkan Ujian Akbar' },
+  { id: 'nohint',   em: '🦉', name: 'Mandiri',         desc: 'Tuntaskan bab tanpa petunjuk' }
+];
+
+const RANKS = [
+  { min: 0,     name: 'Pemula' },
+  { min: 1500,  name: 'Santri' },
+  { min: 3500,  name: 'Pelajar Zakat' },
+  { min: 6000,  name: 'Calon Amil' },
+  { min: 9000,  name: 'Amil Muda' },
+  { min: 13000, name: 'Ahli Zakat' }
+];
+const rankOf = s => RANKS.reduce((acc, r) => (s >= r.min ? r.name : acc), RANKS[0].name);
+
+/* ---------------------------------------------------------------
+   9. PROGRES — helper
+   --------------------------------------------------------------- */
+const lv = id => SAVE.levels[id] || { stars: 0, best: 0, done: false, bestTime: 0 };
+const totalStars = () => CHAPTERS.reduce((s, c) => s + lv(c.id).stars, 0);
+const doneCount  = () => CHAPTERS.filter(c => lv(c.id).done).length;
+const isUnlocked = id => id === 1 || lv(id - 1).done;
+
+function grantBadge(id) {
+  if (SAVE.badges.includes(id)) return;
+  const b = BADGES.find(x => x.id === id);
+  if (!b) return;
+  SAVE.badges.push(id);
+  persist();
+  Audio2.badge();
+  toast(`${b.em} Lencana baru: <b>${escapeHTML(b.name)}</b>`, 'gold');
+  FX.burst(innerWidth / 2, 90, 30, 'star');
+}
+function addScore(n) {
+  SAVE.totalScore = Math.max(0, SAVE.totalScore + n);
+  persist();
+}
+function refreshHUD() {
+  const s = totalStars();
+  $('#map-stars').textContent = s;
+  $('#map-score').textContent = SAVE.totalScore.toLocaleString('id-ID');
+  $('#map-rank').textContent = rankOf(SAVE.totalScore);
+}
+
+/* ---------------------------------------------------------------
+   10. PETA PERJALANAN
+   --------------------------------------------------------------- */
+const NODE_POS = [
+  { x: 11, y: 76 }, { x: 25, y: 46 }, { x: 39, y: 74 }, { x: 53, y: 40 },
+  { x: 67, y: 70 }, { x: 80, y: 36 }, { x: 91, y: 70 }
+];
+
+function renderMapBackground() {
+  const hills = `
+    <defs>
+      <linearGradient id="mg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#0d7a5b"/><stop offset="1" stop-color="#04352a"/>
+      </linearGradient>
+      <radialGradient id="mglow" cx="50%" cy="20%">
+        <stop offset="0" stop-color="#fde68a" stop-opacity=".30"/><stop offset="1" stop-color="#fde68a" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <rect width="1000" height="600" fill="url(#mg)"/>
+    <rect width="1000" height="600" fill="url(#mglow)"/>
+    <g fill="#0a6349" opacity=".65">
+      <path d="M0 470q120-95 250-38t250-20 250 44 250-30v174H0z"/>
+    </g>
+    <g fill="#075440" opacity=".8">
+      <path d="M0 528q150-60 260-14t260-8 220 30 260-22v86H0z"/>
+    </g>
+    <g fill="#0b6d52" opacity=".5">
+      <path d="M90 470l70-120 70 120z"/><path d="M700 456l86-140 86 140z"/>
+    </g>
+    <g opacity=".42" fill="#053b2d">
+      <path d="M430 470V352a56 56 0 0 1 112 0v118z"/><circle cx="486" cy="338" r="42"/>
+      <rect x="481" y="278" width="9" height="32" rx="4"/>
+    </g>
+    ${Array.from({ length: 30 }, () =>
+      `<circle class="sc-twinkle" cx="${randInt(10, 990)}" cy="${randInt(10, 300)}" r="${rand(1, 2.6).toFixed(1)}"
+        fill="#fde68a" style="animation-delay:${rand(0, 3).toFixed(1)}s"/>`).join('')}
+    <g class="sc-float" opacity=".85"><path d="M880 96a44 44 0 1 0 26 80 50 50 0 0 1-26-80z" fill="#fde68a"/></g>
+  `;
+  $('#map-bg').innerHTML = SCENE_CSS + hills;
+}
+
+function renderMap() {
+  renderMapBackground();
+  refreshHUD();
+  const host = $('#map-nodes');
+  const pts = NODE_POS.map(p => `${p.x * 10},${p.y * 6}`).join(' ');
+  const done = doneCount();
+  const frac = CHAPTERS.length > 1 ? clamp(done / (CHAPTERS.length - 1), 0, 1) : 0;
+
+  host.innerHTML = `
+    <svg style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none"
+         viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true">
+      <polyline class="map-path" points="${pts}"/>
+      <polyline class="map-path-done" id="path-done" points="${pts}"/>
+    </svg>
+    ${Array.from({ length: 4 }, (_, i) => `
+      <svg class="map-cloud" style="--d:${44 + i * 15}s;animation-delay:${-i * 14}s;top:${8 + i * 9}%;width:${110 + i * 26}px"
+           viewBox="0 0 160 60" aria-hidden="true">
+        <ellipse cx="60" cy="36" rx="46" ry="19" fill="#fff"/><ellipse cx="104" cy="32" rx="34" ry="16" fill="#fff"/>
+        <ellipse cx="34" cy="40" rx="28" ry="14" fill="#fff"/>
+      </svg>`).join('')}
+  `;
+
+  CHAPTERS.forEach((ch, i) => {
+    const st = lv(ch.id), open = isUnlocked(ch.id);
+    const isCurrent = open && !st.done;
+    const b = document.createElement('button');
+    b.className = 'node' + (open ? '' : ' locked') + (isCurrent ? ' current' : '') + (ch.boss ? ' boss' : '');
+    b.style.left = NODE_POS[i].x + '%';
+    b.style.top  = NODE_POS[i].y + '%';
+    b.setAttribute('aria-label',
+      `Bab ${ch.id}: ${ch.title}. ${open ? (st.done ? st.stars + ' dari 3 bintang' : 'terbuka') : 'terkunci'}`);
+    b.innerHTML = `
+      <span class="orb">${open ? ch.emoji : '🔒'}</span>
+      <span class="label">${escapeHTML(ch.id + '. ' + ch.title)}</span>
+      <span class="stars">${open && st.done ? '⭐'.repeat(st.stars) + '☆'.repeat(3 - st.stars) : ''}</span>`;
+    b.addEventListener('click', () => {
+      if (!open) {
+        toast('🔒 Selesaikan bab sebelumnya dulu', 'bad');
+        shakeScreen();
+        return;
+      }
+      openChapterCard(ch);
+    });
+    host.appendChild(b);
+  });
+
+  // animasi jalur yang sudah ditempuh
+  const p = $('#path-done');
+  if (p) {
+    const len = p.getTotalLength();
+    p.style.strokeDasharray = len;
+    p.style.strokeDashoffset = len;
+    requestAnimationFrame(() => { p.style.strokeDashoffset = len * (1 - frac); });
+  }
+}
+
+function openChapterCard(ch) {
+  const st = lv(ch.id);
+  openModal(`
+    <div style="text-align:center">
+      <div style="font-size:3.2rem;line-height:1">${ch.emoji}</div>
+      <span class="pill ${ch.boss ? 'gold' : 'emerald'}" style="margin:8px 0">${ch.boss ? 'UJIAN AKHIR' : 'BAB ' + ch.id}</span>
+      <h2 id="modal-title" style="font-size:1.7rem;margin:6px 0">${escapeHTML(ch.title)}</h2>
+      <p style="color:var(--ink-soft);font-size:.94rem;line-height:1.6">${ch.blurb}</p>
+      <div class="stat-grid" style="margin:16px 0">
+        <div><b>${ch.questions.length}</b><span>Soal</span></div>
+        <div><b>${st.stars}/3</b><span>Bintang</span></div>
+        <div><b>${st.best.toLocaleString('id-ID')}</b><span>Skor Terbaik</span></div>
+      </div>
+      <div style="display:flex;gap:9px;flex-wrap:wrap;justify-content:center">
+        <button class="btn" id="m-start">${st.done ? '🔁 Ulangi Bab' : '▶ Mulai Bab'}<span class="shine"></span></button>
+        <button class="btn ghost sm" id="m-close" style="color:var(--ink);box-shadow:inset 0 0 0 1.6px var(--line)">Nanti</button>
+      </div>
+    </div>`);
+  $('#m-start').onclick = () => { closeModal(); startChapter(ch.id); };
+  $('#m-close').onclick = closeModal;
+}
+
+/* ---------------------------------------------------------------
+   11. STATE PERMAINAN
+   --------------------------------------------------------------- */
+let GAME = null;
+
+function startChapter(id) {
+  const ch = CHAPTERS.find(c => c.id === id);
+  if (!ch) return;
+  GAME = {
+    ch,
+    qs: ch.questions.map(q => {
+      const order = shuffle(q.opts.map((t, i) => ({ t, i })));
+      return { ...q, order, answer: order.findIndex(o => o.i === q.a) };
+    }),
+    qi: 0, score: 0, lives: 3, streak: 0, bestStreak: 0,
+    correct: 0, wrong: 0, hints: 0, miniScore: 0,
+    perQ: ch.boss ? 14 : 20,
+    t0: Date.now(), answered: false
+  };
+  SAVE.stats.played++; persist();
+  runStory();
+}
+
+/* ---------------------------------------------------------------
+   12. CERITA (typewriter)
+   --------------------------------------------------------------- */
+const Story = (() => {
+  let idx = 0, typing = false, timer = null, full = '';
+
+  function paint() {
+    const lines = GAME.ch.story, line = lines[idx], who = CHARS[line.c];
+    $('#story-name').textContent = who.name;
+    $('#story-avatar').textContent = who.em;
+    $('#story-avatar').style.fontSize = '1.3rem';
+    $('#story-dots').innerHTML = lines.map((_, i) => `<i class="${i <= idx ? 'on' : ''}"></i>`).join('');
+    full = line.t;
+    const el = $('#story-text');
+    el.innerHTML = '';
+    if (!SAVE.settings.motion) { el.innerHTML = full; typing = false; return; }
+    typing = true;
+    let i = 0;
+    clearInterval(timer);
+    timer = setInterval(() => {
+      i += 2;
+      // hindari memotong tag HTML di tengah
+      let s = full.slice(0, i);
+      const lastOpen = s.lastIndexOf('<'), lastClose = s.lastIndexOf('>');
+      if (lastOpen > lastClose) s = s.slice(0, lastOpen);
+      el.innerHTML = s + '<span class="caret"></span>';
+      if (i % 6 === 0) Audio2.hover();
+      if (i >= full.length) {
+        clearInterval(timer); typing = false; el.innerHTML = full;
+      }
+    }, 18);
+  }
+  function next() {
+    if (typing) { clearInterval(timer); typing = false; $('#story-text').innerHTML = full; return; }
+    if (idx < GAME.ch.story.length - 1) { idx++; paint(); }
+    else finish();
+  }
+  function finish() { clearInterval(timer); typing = false; Quiz.start(); }
+  function start() {
+    idx = 0;
+    $('#story-chapter').textContent = (GAME.ch.boss ? 'Ujian Akbar' : 'Bab ' + GAME.ch.id + ' — ' + GAME.ch.title);
+    $('#story-art').innerHTML = sceneSVG(GAME.ch.scene);
+    Router.go('story', { curtain: true });
+    paint();
+  }
+  return { start, next, finish };
+})();
+function runStory() { Story.start(); }
+
+$('#btn-story-next').addEventListener('click', () => Story.next());
+$('#btn-skip-story').addEventListener('click', () => Story.finish());
+$('#screen-story').addEventListener('click', e => {
+  if (e.target.closest('button')) return;
+  Story.next();
+});
+
+/* ---------------------------------------------------------------
+   13. KUIS
+   --------------------------------------------------------------- */
+const Quiz = (() => {
+  let tick = null, left = 0, hintShown = false, nextArmed = false;
+
+  function drawHearts() {
+    $('#hearts').innerHTML = [0, 1, 2].map(i => `
+      <svg class="heart ${i < GAME.lives ? '' : 'lost'}" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 21s-7.5-4.7-9.6-9A5.4 5.4 0 0 1 12 6.6 5.4 5.4 0 0 1 21.6 12c-2.1 4.3-9.6 9-9.6 9z"
+              fill="#f43f5e" stroke="#9f1239" stroke-width="1.2"/>
+      </svg>`).join('');
+  }
+  function stopTimer() { clearInterval(tick); tick = null; }
+  function startTimer() {
+    stopTimer();
+    left = GAME.perQ;
+    paintTimer();
+    tick = setInterval(() => {
+      left -= 0.1;
+      if (left <= 0) { left = 0; paintTimer(); stopTimer(); answer(-1); return; }
+      paintTimer();
+    }, 100);
+  }
+  function paintTimer() {
+    const pct = (left / GAME.perQ) * 100;
+    $('#quiz-time').textContent = Math.ceil(left);
+    const bar = $('#timerbar');
+    bar.querySelector('i').style.width = pct + '%';
+    bar.classList.toggle('warn', pct < 30);
+  }
+
+  function paint() {
+    const q = GAME.qs[GAME.qi];
+    GAME.answered = false; hintShown = false; nextArmed = false;
+    drawHearts();
+    $('#quiz-score').textContent = GAME.score.toLocaleString('id-ID');
+    $('#q-counter').textContent = `Soal ${GAME.qi + 1} / ${GAME.qs.length}`;
+    $('#q-topic').textContent = GAME.ch.topic;
+    $('#q-text').innerHTML = q.q;
+    $('#q-feedback').innerHTML = '';
+    $('#q-visual').innerHTML = '';
+    $('#btn-next-q').hidden = true;
+    $('#btn-hint').hidden = !!GAME.ch.boss;
+    $('#btn-hint').disabled = false;
+    $('#combo').hidden = true;
+
+    const opts = $('#q-opts');
+    opts.className = 'opts' + (q.order.every(o => o.t.length < 26) ? ' two' : '');
+    opts.innerHTML = q.order.map((o, i) => `
+      <button class="opt" data-i="${i}">
+        <span class="key">${'ABCD'[i]}</span>
+        <span>${o.t}</span>
+      </button>`).join('');
+    $$('.opt', opts).forEach(b => b.addEventListener('click', () => answer(+b.dataset.i)));
+    startTimer();
+  }
+
+  function answer(pick) {
+    if (GAME.answered) return;
+    GAME.answered = true;
+    stopTimer();
+    const q = GAME.qs[GAME.qi];
+    const ok = pick === q.answer;
+    const btns = $$('.opt');
+    btns.forEach((b, i) => {
+      b.disabled = true;
+      if (i === q.answer) b.classList.add('correct');
+      else if (i === pick) b.classList.add('wrong');
+      else b.classList.add('dim');
+    });
+
+    let gained = 0;
+    if (ok) {
+      GAME.correct++; GAME.streak++;
+      GAME.bestStreak = Math.max(GAME.bestStreak, GAME.streak);
+      SAVE.stats.correct++;
+      const timeBonus = Math.round((left / GAME.perQ) * 60);
+      const streakBonus = Math.min(75, (GAME.streak - 1) * 15);
+      gained = 100 + timeBonus + streakBonus;
+      GAME.score += gained;
+      Audio2.correct(); flash(false);
+      FX.burstFrom(btns[pick], 22, 'coin');
+      floatText(btns[pick], '+' + gained);
+      if (GAME.streak >= 2) {
+        const c = $('#combo');
+        c.hidden = false;
+        c.textContent = `×${GAME.streak} 🔥`;
+        c.style.animation = 'none'; void c.offsetWidth; c.style.animation = 'popIn .5s';
+      }
+      if (GAME.streak >= 5) grantBadge('streak5');
+    } else {
+      GAME.wrong++; GAME.streak = 0; GAME.lives--;
+      SAVE.stats.wrong++;
+      Audio2.wrong(); flash(true); shakeScreen();
+      drawHearts();
+      const h = $$('.heart')[GAME.lives];   // hati pertama yang baru hilang
+      if (h) h.classList.add('hit');
+    }
+    persist();
+    $('#quiz-score').textContent = GAME.score.toLocaleString('id-ID');
+    $('#quiz-streak-wrap').hidden = GAME.streak < 2;
+    $('#quiz-streak').textContent = GAME.streak;
+
+    const correctText = q.order[q.answer].t;
+    $('#q-feedback').innerHTML = `
+      <div class="feedback ${ok ? 'good' : 'bad'}">
+        <b>${ok ? '✅ Benar! +' + gained + ' poin' : (pick === -1 ? '⏰ Waktu habis!' : '❌ Kurang tepat')}</b>
+        ${ok ? '' : `Jawaban benar: <b>${escapeHTML(correctText)}</b><br>`}
+        ${q.why}
+        ${q.dalil ? `<span class="dalil">📖 ${q.dalil}</span>` : ''}
+      </div>`;
+    $('#btn-hint').disabled = true;
+    $('#btn-next-q').hidden = false;
+    nextArmed = false;
+    $('#btn-next-q').disabled = true;
+    setTimeout(() => {
+      nextArmed = true;
+      $('#btn-next-q').disabled = false;
+      $('#btn-next-q').focus();
+    }, 300);
+
+    if (GAME.lives <= 0) {
+      setTimeout(() => { $('#btn-next-q').textContent = 'Lihat Hasil'; }, 30);
+    }
+  }
+
+  function next() {
+    if (!nextArmed) return;
+    nextArmed = false;
+    if (GAME.lives <= 0) { Result.show(false); return; }
+    if (GAME.qi < GAME.qs.length - 1) { GAME.qi++; paint(); }
+    else MiniGame.start();
+  }
+
+  function hint() {
+    if (GAME.answered || hintShown) return;
+    const q = GAME.qs[GAME.qi];
+    hintShown = true; GAME.hints++;
+    GAME.score = Math.max(0, GAME.score - 30);
+    $('#quiz-score').textContent = GAME.score.toLocaleString('id-ID');
+    // buang satu opsi salah + tampilkan petunjuk
+    const wrongIdx = q.order.map((_, i) => i).filter(i => i !== q.answer);
+    const kill = wrongIdx[randInt(0, wrongIdx.length - 1)];
+    const b = $$('.opt')[kill];
+    if (b) { b.classList.add('dim'); b.disabled = true; }
+    $('#q-feedback').innerHTML = `<div class="q-hintbox">💡 ${q.hint || 'Baca ulang soal dengan tenang — kata kuncinya ada di sana.'}</div>`;
+    $('#btn-hint').disabled = true;
+    Audio2.coin();
+  }
+
+  function start() {
+    GAME.qi = 0;
+    Router.go('quiz', { curtain: true });
+    setTimeout(paint, 120);
+  }
+  function quit() {
+    stopTimer();
+    openModal(`
+      <h2 id="modal-title" style="font-size:1.35rem">Keluar dari bab ini?</h2>
+      <p style="color:var(--ink-soft);margin-top:8px;line-height:1.6">Progres bab yang sedang berjalan tidak akan disimpan.</p>
+      <div style="display:flex;gap:9px;margin-top:18px">
+        <button class="btn danger sm" id="q-yes">Ya, keluar</button>
+        <button class="btn emerald sm" id="q-no">Lanjut main</button>
+      </div>`, () => { if (Router.current === 'quiz' && !GAME.answered) startTimer(); });
+    $('#q-yes').onclick = () => {
+      modalOnClose = null;          // jangan hidupkan ulang timer
+      closeModal();
+      Router.go('map', { curtain: true });
+      renderMap();
+    };
+    $('#q-no').onclick  = closeModal;
+  }
+  return { start, next, hint, quit, stopTimer };
+})();
+
+$('#btn-next-q').addEventListener('click', () => Quiz.next());
+$('#btn-hint').addEventListener('click', () => Quiz.hint());
+$('#btn-quiz-quit').addEventListener('click', () => Quiz.quit());
+
+/* pintasan papan ketik untuk kuis */
+document.addEventListener('keydown', e => {
+  if (Router.current !== 'quiz' || $('#modal').classList.contains('on')) return;
+  const k = e.key.toLowerCase();
+  if ('abcd'.includes(k) || '1234'.includes(k)) {
+    const i = 'abcd'.includes(k) ? 'abcd'.indexOf(k) : +k - 1;
+    const b = $$('.opt')[i];
+    if (b && !b.disabled) { e.preventDefault(); b.click(); }
+  } else if (e.key === 'Enter' && !$('#btn-next-q').hidden) {
+    e.preventDefault(); Quiz.next();
+  } else if (k === 'h') {
+    e.preventDefault(); Quiz.hint();
+  }
+});
+
+/* ---------------------------------------------------------------
+   14. MINI GAME — sort / scale / calc
+   --------------------------------------------------------------- */
+const MiniGame = (() => {
+  const card = () => $('#mini-card');
+  let state = null;
+  let activeKeyHandler = null;   // diisi oleh mini game "hitung cepat"
+
+  document.addEventListener('keydown', e => {
+    if (Router.current !== 'mini' || !activeKeyHandler) return;
+    if ($('#modal').classList.contains('on')) return;
+    if (/^[0-9]$/.test(e.key)) activeKeyHandler(e.key);
+    else if (e.key === 'Backspace') { e.preventDefault(); activeKeyHandler('del'); }
+    else if (e.key === ',' || e.key === '.') activeKeyHandler('.');
+    else if (e.key === 'Enter') { const c = $('#mg-check'); if (c && !c.disabled) c.click(); }
+  });
+
+  function header(cfg, extra = '') {
+    return `<div class="mg-head">
+        <span class="pill emerald">Mini Game</span>
+        <span class="mg-title">${escapeHTML(cfg.name)}</span>
+        ${extra}
+      </div>
+      <p class="mg-desc">${cfg.desc}</p>`;
+  }
+  function bump(n) {
+    GAME.miniScore += n;
+    $('#mini-score').textContent = (GAME.score + GAME.miniScore).toLocaleString('id-ID');
+  }
+  function finish() {
+    GAME.score += GAME.miniScore;
+    Result.show(true);
+  }
+
+  /* ---------- A. SORTIR (drag & drop + ketuk) ---------- */
+  function sort(cfg) {
+    const items = shuffle(cfg.items).map((it, i) => ({ ...it, uid: 'it' + i, at: null }));
+    state = { cfg, items, checked: false };
+    const cols = cfg.bins.length >= 4 ? 'c4' : 'c2';
+
+    card().innerHTML = header(cfg) + `
+      <div class="divider"></div>
+      <div class="tray" id="tray" aria-label="Kartu yang belum ditempatkan"></div>
+      <div class="bins ${cols}" id="bins"></div>
+      <div style="display:flex;gap:9px;margin-top:16px;flex-wrap:wrap;align-items:center">
+        <button class="btn emerald" id="mg-check" disabled>Periksa Jawaban<span class="shine"></span></button>
+        <button class="btn ghost sm" id="mg-reset" style="color:var(--ink);box-shadow:inset 0 0 0 1.6px var(--line)">↺ Ulangi</button>
+        <div style="flex:1"></div>
+        <span style="font-size:.82rem;color:var(--ink-soft)" id="mg-left"></span>
+      </div>
+      <div id="mg-fb"></div>`;
+
+    $('#bins').innerHTML = cfg.bins.map(b => `
+      <div class="bin" data-bin="${b.id}">
+        <h4>${b.em} ${escapeHTML(b.label)}</h4>
+        <div class="slot" data-slot="${b.id}"></div>
+      </div>`).join('');
+
+    let selected = null;
+
+    function chipHTML(it) {
+      return `<button class="chip" draggable="true" data-uid="${it.uid}">
+                <span>${it.em}</span><span>${escapeHTML(it.t)}</span>
+              </button>`;
+    }
+    function render() {
+      $('#tray').innerHTML = items.filter(i => !i.at).map(chipHTML).join('') ||
+        '<span style="color:var(--ink-soft);font-size:.86rem;align-self:center">Semua kartu sudah ditempatkan 👍</span>';
+      cfg.bins.forEach(b => {
+        $(`[data-slot="${b.id}"]`).innerHTML = items.filter(i => i.at === b.id).map(chipHTML).join('');
+      });
+      const left = items.filter(i => !i.at).length;
+      const sel = selected && items.find(i => i.uid === selected);
+      $('#mg-left').innerHTML = sel
+        ? `👉 Pilih keranjang untuk <b>${escapeHTML(sel.t)}</b>`
+        : (left ? `${left} kartu tersisa` : 'Siap diperiksa!');
+      $('#mg-check').disabled = left > 0 || state.checked;
+      wireChips();
+    }
+    function place(uid, bin) {
+      const it = items.find(i => i.uid === uid);
+      if (!it || state.checked) return;
+      it.at = bin;
+      selected = null;
+      Audio2.coin();
+      render();
+      const el = $(`[data-uid="${uid}"]`);
+      if (el) el.classList.add('placed');
+    }
+    function wireChips() {
+      $$('.chip', card()).forEach(ch => {
+        ch.classList.toggle('selected', selected === ch.dataset.uid);
+        ch.addEventListener('click', () => {
+          if (state.checked) return;
+          const it = items.find(i => i.uid === ch.dataset.uid);
+          if (it.at) { it.at = null; selected = null; Audio2.click(); render(); return; }
+          selected = selected === ch.dataset.uid ? null : ch.dataset.uid;
+          Audio2.hover();
+          render();
+          // di layar sempit keranjang bisa berada jauh di bawah kartu
+          if (selected && innerWidth < 640) {
+            $('#bins').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }
+        });
+        ch.addEventListener('dragstart', e => {
+          if (state.checked) return e.preventDefault();
+          e.dataTransfer.setData('text/plain', ch.dataset.uid);
+          e.dataTransfer.effectAllowed = 'move';
+          ch.classList.add('dragging');
+        });
+        ch.addEventListener('dragend', () => ch.classList.remove('dragging'));
+      });
+    }
+    // Keranjang & nampan tidak dibuat ulang tiap render, jadi cukup dipasang sekali.
+    function wireTargetsOnce() {
+      $$('.bin', card()).forEach(bin => {
+        bin.addEventListener('dragover', e => { e.preventDefault(); bin.classList.add('over'); });
+        bin.addEventListener('dragleave', () => bin.classList.remove('over'));
+        bin.addEventListener('drop', e => {
+          e.preventDefault(); bin.classList.remove('over');
+          place(e.dataTransfer.getData('text/plain'), bin.dataset.bin);
+        });
+        bin.addEventListener('click', () => { if (selected) place(selected, bin.dataset.bin); });
+      });
+      $('#tray').addEventListener('dragover', e => e.preventDefault());
+      $('#tray').addEventListener('drop', e => {
+        e.preventDefault();
+        const it = items.find(i => i.uid === e.dataTransfer.getData('text/plain'));
+        if (it && !state.checked) { it.at = null; render(); }
+      });
+    }
+    function check() {
+      state.checked = true;
+      let right = 0;
+      items.forEach(it => {
+        const el = $(`[data-uid="${it.uid}"]`);
+        const ok = it.at === it.bin;
+        if (ok) right++;
+        if (el) el.classList.add(ok ? 'ok' : 'no');
+      });
+      const pts = right * 60;
+      bump(pts);
+      const all = right === items.length;
+      Audio2[all ? 'win' : right > items.length / 2 ? 'correct' : 'wrong']();
+      if (all) FX.rain(70);
+      $('#mg-fb').innerHTML = `
+        <div class="feedback ${all ? 'good' : 'bad'}" style="margin-top:14px">
+          <b>${all ? '🎉 Sempurna!' : '📘 Hasil: ' + right + ' dari ' + items.length + ' tepat'}</b>
+          ${all ? 'Semua kartu berada di tempat yang benar. ' : 'Kartu bertanda merah salah tempat. '}
+          Kamu memperoleh <b>+${pts}</b> poin.
+          <span class="dalil">${items.filter(i => i.at !== i.bin).slice(0, 3)
+            .map(i => `• <b>${escapeHTML(i.t)}</b> seharusnya di “${escapeHTML(cfg.bins.find(b => b.id === i.bin).label)}”`).join('<br>') || 'Kerja bagus, pertahankan!'}</span>
+        </div>`;
+      $('#mg-check').disabled = true;
+      $('#mg-reset').hidden = true;
+      const go = document.createElement('button');
+      go.className = 'btn';
+      go.style.marginTop = '12px';
+      go.innerHTML = 'Lanjut ke Hasil <span class="ico">›</span>';
+      armButton(go, finish);
+      $('#mg-fb').appendChild(go);
+    }
+    render();
+    wireTargetsOnce();
+    $('#mg-check').addEventListener('click', check);
+    $('#mg-reset').addEventListener('click', () => { if (!state.checked) { items.forEach(i => i.at = null); selected = null; render(); } });
+  }
+
+  /* ---------- B. TIMBANGAN NISAB ---------- */
+  function scale(cfg) {
+    let i = 0, right = 0;
+    function paint() {
+      const c = cfg.cases[i];
+      const ratio = clamp(c.val / c.nisab, 0, 2.4);
+      // rotasi negatif = sisi kiri (HARTA) turun, jadi harta yang lebih berat menukik
+      const tilt = -clamp((ratio - 1) * 20, -17, 17);
+      card().innerHTML = header(cfg, `<span class="pill gold">Kasus ${i + 1}/${cfg.cases.length}</span>`) + `
+        <div class="divider"></div>
+        <div class="scale-wrap">
+          <svg class="scale-svg" viewBox="0 0 300 220" aria-hidden="true">
+            <rect x="120" y="150" width="60" height="14" rx="7" fill="#78350f"/>
+            <rect x="144" y="70" width="12" height="86" rx="6" fill="#92400e"/>
+            <circle cx="150" cy="66" r="9" fill="#fbbf24"/>
+            <g class="beam" id="beam" style="transform:rotate(${tilt}deg)">
+              <rect x="40" y="58" width="220" height="10" rx="5" fill="#b45309"/>
+              <g class="pan-l"><path d="M60 68v26" stroke="#92400e" stroke-width="3"/>
+                <path d="M26 94h68l-12 28H38z" fill="#fcd34d" stroke="#d97706" stroke-width="3"/>
+                <text x="60" y="116" font-size="19" text-anchor="middle">${c.em}</text></g>
+              <g class="pan-r"><path d="M240 68v26" stroke="#92400e" stroke-width="3"/>
+                <path d="M206 94h68l-12 28h-44z" fill="#a7f3d0" stroke="#059669" stroke-width="3"/>
+                <text x="240" y="116" font-size="17" text-anchor="middle">⚖️</text></g>
+            </g>
+            <text x="60" y="152" font-size="11" text-anchor="middle" fill="#78350f" font-weight="bold">HARTA</text>
+            <text x="240" y="152" font-size="11" text-anchor="middle" fill="#065f46" font-weight="bold">NISAB</text>
+          </svg>
+          <div>
+            <div class="case-card">
+              <div style="font-size:.78rem;font-weight:800;letter-spacing:.1em;color:var(--gold-600);text-transform:uppercase">${escapeHTML(c.who)}</div>
+              <div class="amount">${numberID(c.val)} <span style="font-size:.9rem;font-weight:600">${escapeHTML(c.unit)}</span></div>
+              <p style="font-size:.86rem;color:var(--ink-soft);margin-top:5px;line-height:1.5">${escapeHTML(c.detail)}</p>
+              <p style="font-size:.8rem;color:#5c7a6e;margin-top:7px">Nisab: <b>${numberID(c.nisab)}</b></p>
+            </div>
+            <div class="judge">
+              <button class="btn emerald sm" data-w="1">✅ Wajib Zakat</button>
+              <button class="btn ghost sm" data-w="0" style="color:var(--ink);box-shadow:inset 0 0 0 1.8px var(--line)">⏳ Belum Wajib</button>
+            </div>
+          </div>
+        </div>
+        <div id="mg-fb"></div>`;
+      $$('[data-w]', card()).forEach(b => b.addEventListener('click', () => judge(b.dataset.w === '1')));
+    }
+    function judge(pick) {
+      const c = cfg.cases[i];
+      const ok = pick === c.wajib;
+      if (ok) { right++; bump(80); Audio2.correct(); FX.burstFrom($('.scale-svg'), 18, 'coin'); }
+      else { Audio2.wrong(); shakeScreen(); }
+      $$('[data-w]', card()).forEach(b => b.disabled = true);
+      $('#mg-fb').innerHTML = `
+        <div class="feedback ${ok ? 'good' : 'bad'}" style="margin-top:14px">
+          <b>${ok ? '✅ Tepat! +80 poin' : '❌ Kurang tepat'}</b>${c.why}
+        </div>`;
+      const go = document.createElement('button');
+      go.className = 'btn'; go.style.marginTop = '12px';
+      go.innerHTML = (i < cfg.cases.length - 1 ? 'Kasus berikutnya' : 'Lanjut ke Hasil') + ' <span class="ico">›</span>';
+      armButton(go, () => { if (i < cfg.cases.length - 1) { i++; paint(); } else { summary(right, cfg.cases.length); } });
+      $('#mg-fb').appendChild(go);
+    }
+    paint();
+  }
+
+  /* ---------- C. HITUNG CEPAT ---------- */
+  function calcGame(cfg) {
+    let i = 0, right = 0, buf = '';
+    function paint() {
+      const s = cfg.steps[i];
+      card().innerHTML = header(cfg, `<span class="pill gold">Soal ${i + 1}/${cfg.steps.length}</span>`) + `
+        <div class="divider"></div>
+        <p style="font-size:1.05rem;line-height:1.6;font-weight:600">${s.prompt}</p>
+        <div class="numdisplay" id="numdisp" aria-live="polite">
+          <span style="font-size:.6em;opacity:.7">${s.unit === 'Rp' ? 'Rp' : ''}</span>
+          <span id="numval">0</span>
+          <span style="font-size:.6em;opacity:.7">${s.unit !== 'Rp' ? escapeHTML(s.unit) : ''}</span>
+        </div>
+        <div class="numpad">
+          ${[1,2,3,4,5,6,7,8,9].map(n => `<button data-k="${n}">${n}</button>`).join('')}
+          <button data-k=".">,</button><button data-k="0">0</button><button data-k="del">⌫</button>
+        </div>
+        <div style="display:flex;gap:9px;margin-top:14px;flex-wrap:wrap;justify-content:center">
+          <button class="btn emerald" id="mg-check">Periksa<span class="shine"></span></button>
+          ${s.hint ? '<button class="btn ghost sm" id="mg-hint" style="color:var(--ink);box-shadow:inset 0 0 0 1.6px var(--line)">💡 Petunjuk</button>' : ''}
+        </div>
+        <div id="mg-fb"></div>`;
+      buf = '';
+      $$('.numpad button', card()).forEach(b => b.addEventListener('click', () => key(b.dataset.k)));
+      $('#mg-check').addEventListener('click', submit);
+      const hb = $('#mg-hint');
+      if (hb) hb.addEventListener('click', () => {
+        $('#mg-fb').innerHTML = `<div class="q-hintbox" style="margin-top:12px">💡 ${s.hint}</div>`;
+      });
+    }
+    function key(k) {
+      if (k === 'del') buf = buf.slice(0, -1);
+      else if (k === '.') { if (!buf.includes('.')) buf = (buf || '0') + '.'; }
+      else if (buf.replace('.', '').length < 12) buf += k;
+      Audio2.hover();
+      const [a, b] = (buf || '0').split('.');
+      $('#numval').textContent = Number(a || 0).toLocaleString('id-ID') + (b !== undefined ? ',' + b : '');
+    }
+    function submit() {
+      const s = cfg.steps[i];
+      const val = parseFloat(buf || '0');
+      const ok = Math.abs(val - s.ans) < 0.011;
+      if (ok) { right++; bump(90); Audio2.correct(); FX.burstFrom($('#numdisp'), 22, 'coin'); }
+      else { Audio2.wrong(); shakeScreen(); }
+      $('#mg-check').disabled = true;
+      $$('.numpad button', card()).forEach(b => b.disabled = true);
+      $('#mg-fb').innerHTML = `
+        <div class="feedback ${ok ? 'good' : 'bad'}" style="margin-top:14px">
+          <b>${ok ? '✅ Tepat! +90 poin' : '❌ Belum tepat — jawabanmu ' + (s.unit === 'Rp' ? rupiah(val) : numberID(val) + ' ' + s.unit)}</b>
+          ${s.why}
+        </div>`;
+      const go = document.createElement('button');
+      go.className = 'btn'; go.style.marginTop = '12px';
+      go.innerHTML = (i < cfg.steps.length - 1 ? 'Soal berikutnya' : 'Lanjut ke Hasil') + ' <span class="ico">›</span>';
+      armButton(go, () => { if (i < cfg.steps.length - 1) { i++; paint(); } else { summary(right, cfg.steps.length); } });
+      $('#mg-fb').appendChild(go);
+    }
+    activeKeyHandler = key;   // dipakai handler global di bawah
+    paint();
+  }
+
+  function summary(right, total) {
+    const all = right === total;
+    if (all) { FX.rain(80); Audio2.win(); }
+    card().innerHTML = `
+      <div style="text-align:center;padding:10px 0">
+        <div style="font-size:3rem">${all ? '🎉' : right > total / 2 ? '👏' : '📘'}</div>
+        <h3 style="font-size:1.4rem;margin:8px 0">${all ? 'Mini game sempurna!' : 'Mini game selesai'}</h3>
+        <p style="color:var(--ink-soft)">Benar <b>${right}</b> dari <b>${total}</b> · Bonus <b>+${GAME.miniScore}</b> poin</p>
+        <button class="btn" id="mg-done" style="margin-top:16px">Lihat Hasil Bab <span class="ico">›</span><span class="shine"></span></button>
+      </div>`;
+    armButton($('#mg-done'), finish);
+  }
+
+  function start() {
+    const cfg = GAME.ch.mini;
+    GAME.miniScore = 0;
+    activeKeyHandler = null;
+    $('#mini-name').textContent = cfg.name;
+    $('#mini-score').textContent = GAME.score.toLocaleString('id-ID');
+    Router.go('mini', { curtain: true });
+    setTimeout(() => {
+      if (cfg.type === 'sort') sort(cfg);
+      else if (cfg.type === 'scale') scale(cfg);
+      else calcGame(cfg);
+    }, 140);
+  }
+  return { start };
+})();
+
+$('#btn-mini-quit').addEventListener('click', () => {
+  if (confirm('Keluar dari mini game? Skor bab ini tidak akan disimpan.')) {
+    Router.go('map', { curtain: true }); renderMap();
+  }
+});
+
+/* ---------------------------------------------------------------
+   15. HASIL BAB
+   --------------------------------------------------------------- */
+const Result = (() => {
+  function starSVG(on, i) {
+    return `<svg class="star-big ${on ? 'on' : ''}" viewBox="0 0 24 24" style="animation-delay:${i * .22}s" aria-hidden="true">
+      <path d="M12 2l3 6.6 7.2 1-5.2 5 1.3 7.2L12 18.4 5.7 21.8 7 14.6 1.8 9.6 9 8.6z"
+        fill="${on ? '#fbbf24' : '#94a3b8'}" stroke="#b45309" stroke-width=".8"/></svg>`;
+  }
+
+  function show(completed) {
+    Quiz.stopTimer();
+    const ch = GAME.ch;
+    const dur = Math.round((Date.now() - GAME.t0) / 1000);
+    const acc = GAME.correct + GAME.wrong ? Math.round((GAME.correct / (GAME.correct + GAME.wrong)) * 100) : 0;
+    let stars = 0;
+    if (completed) stars = GAME.wrong === 0 ? 3 : GAME.wrong <= 1 ? 2 : 1;
+
+    const prev = lv(ch.id);
+    const isBest = GAME.score > prev.best;
+    if (completed) {
+      SAVE.levels[ch.id] = {
+        stars: Math.max(prev.stars, stars),
+        best: Math.max(prev.best, GAME.score),
+        done: true,
+        bestTime: prev.bestTime && prev.bestTime < dur ? prev.bestTime : dur
+      };
+      addScore(GAME.score);
+      recordScore(GAME.score);
+      // lencana
+      if (ch.id === 1) grantBadge('first');
+      if (GAME.wrong === 0) { grantBadge('perfect'); SAVE.stats.perfect++; }
+      if (GAME.hints === 0 && !ch.boss) grantBadge('nohint');
+      if (doneCount() >= 4) grantBadge('half');
+      if (totalStars() >= 21) grantBadge('allstars');
+      if (ch.boss) grantBadge('boss');
+      persist(true);
+    }
+
+    Router.go('result', { curtain: true });
+    const nextCh = CHAPTERS.find(c => c.id === ch.id + 1);
+
+    $('#result-card').innerHTML = `
+      <div style="font-size:3.4rem;line-height:1">${completed ? (stars === 3 ? '🏆' : '🎊') : '💔'}</div>
+      <span class="pill ${completed ? 'emerald' : 'gold'}" style="margin-top:8px">
+        ${completed ? (ch.boss ? 'UJIAN AKBAR TUNTAS' : 'BAB ' + ch.id + ' SELESAI') : 'NYAWA HABIS'}</span>
+      <h2 style="font-size:1.75rem;margin:10px 0 2px">${escapeHTML(ch.title)}</h2>
+      <p style="color:var(--ink-soft);font-size:.92rem">
+        ${completed
+          ? (stars === 3 ? 'Sempurna! Tidak satu pun jawabanmu meleset.'
+            : stars === 2 ? 'Bagus sekali — tinggal sedikit lagi menuju sempurna.'
+            : 'Selesai! Ulangi untuk mengejar tiga bintang.')
+          : 'Jangan menyerah. Baca ulang materinya, lalu coba lagi.'}</p>
+
+      <div class="stars-row">${[0, 1, 2].map(i => starSVG(i < stars, i)).join('')}</div>
+      <div class="score-big">${GAME.score.toLocaleString('id-ID')}</div>
+      <div style="font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);font-weight:700">Poin diperoleh</div>
+      ${isBest && completed ? '<div class="pill gold" style="margin-top:10px">✨ Rekor baru!</div>' : ''}
+
+      <div class="stat-grid">
+        <div><b>${GAME.correct}</b><span>Benar</span></div>
+        <div><b>${GAME.wrong}</b><span>Salah</span></div>
+        <div><b>${acc}%</b><span>Akurasi</span></div>
+        <div><b>${GAME.bestStreak}</b><span>Beruntun</span></div>
+        <div><b>${dur}s</b><span>Waktu</span></div>
+        <div><b>+${GAME.miniScore}</b><span>Mini Game</span></div>
+      </div>
+
+      <div style="display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-top:6px">
+        ${completed && nextCh ? `<button class="btn" id="r-next">Bab ${nextCh.id}: ${escapeHTML(nextCh.title)} <span class="ico">›</span><span class="shine"></span></button>` : ''}
+        ${completed && !nextCh ? `<button class="btn" id="r-cert">🎓 Lihat Rangkuman<span class="shine"></span></button>` : ''}
+        <button class="btn emerald sm" id="r-retry">↻ Ulangi</button>
+        <button class="btn ghost sm" id="r-map" style="color:var(--ink);box-shadow:inset 0 0 0 1.6px var(--line)">🗺 Peta</button>
+      </div>`;
+
+    if (completed) {
+      Audio2[stars === 3 ? 'win' : 'star']();
+      FX.rain(stars === 3 ? 130 : 70);
+      setTimeout(() => Audio2.star(), 320);
+    } else Audio2.lose();
+
+    const nx = $('#r-next'); if (nx) nx.onclick = () => startChapter(nextCh.id);
+    const ce = $('#r-cert'); if (ce) ce.onclick = showSummary;
+    $('#r-retry').onclick = () => startChapter(ch.id);
+    $('#r-map').onclick = () => { Router.go('map', { curtain: true }); renderMap(); };
+    refreshHUD();
+  }
+  return { show };
+})();
+
+function recordScore(score) {
+  const name = SAVE.player || 'Pemain';
+  SAVE.scores.push({ name, score, date: Date.now(), ch: GAME ? GAME.ch.id : 0 });
+  SAVE.scores.sort((a, b) => b.score - a.score);
+  SAVE.scores = SAVE.scores.slice(0, 12);
+  persist();
+}
+
+function showSummary() {
+  openModal(`
+    <div style="text-align:center">
+      <div style="font-size:3rem">🎓</div>
+      <h2 id="modal-title" style="font-size:1.5rem;margin:6px 0">Rangkuman Zakat</h2>
+      <p style="color:var(--ink-soft);font-size:.9rem">Bekal yang sudah kamu kuasai</p>
+    </div>
+    <div class="divider"></div>
+    <div style="font-size:.9rem;line-height:1.7">
+      <p><b>⚖️ Nisab &amp; kadar</b><br>Emas 85 g · Perak 595 g · Uang/dagang mengikuti 85 g emas → <b>2,5%</b>, haul 1 tahun.</p>
+      <p style="margin-top:10px"><b>🌾 Pertanian</b><br>Nisab 5 wasaq ≈ 653 kg gabah. Tadah hujan <b>10%</b>, irigasi berbiaya <b>5%</b>, tiap panen tanpa haul.</p>
+      <p style="margin-top:10px"><b>🐐 Ternak</b><br>Unta 5 ekor · Sapi 30 ekor · Kambing 40 ekor.</p>
+      <p style="margin-top:10px"><b>💎 Rikaz</b><br>Harta temuan/tambang <b>20%</b>, tanpa nisab &amp; haul.</p>
+      <p style="margin-top:10px"><b>🍚 Fitrah</b><br>1 sha‘ ≈ <b>2,5 kg</b> makanan pokok per jiwa, paling utama sebelum shalat Id.</p>
+      <p style="margin-top:10px"><b>🤲 8 Asnaf</b><br>Fakir · Miskin · Amil · Mualaf · Riqab · Gharim · Fi Sabilillah · Ibnu Sabil (QS At-Taubah 60).</p>
+    </div>
+    <div style="display:flex;gap:9px;margin-top:18px;justify-content:center;flex-wrap:wrap">
+      <button class="btn sm" id="s-calc">🧮 Coba Kalkulator</button>
+      <button class="btn ghost sm" id="s-close" style="color:var(--ink);box-shadow:inset 0 0 0 1.6px var(--line)">Tutup</button>
+    </div>`);
+  $('#s-calc').onclick = () => { closeModal(); Calc.open(); };
+  $('#s-close').onclick = closeModal;
+}
+
+/* ---------------------------------------------------------------
+   16. KALKULATOR ZAKAT
+   Semua harga acuan bisa diubah pengguna dan tersimpan otomatis.
+   --------------------------------------------------------------- */
+const Calc = (() => {
+  const NISAB_GOLD_G   = 85;    // gram emas
+  const NISAB_SILVER_G = 595;   // gram perak
+  const NISAB_FARM_KG  = 653;   // kg gabah kering (5 wasaq)
+  const FITRAH_KG      = 2.5;   // 1 sha' per jiwa
+  const RATE           = 0.025; // 2,5%
+
+  let active = 'penghasilan';
+  const vals = {};
+
+  const money = (id, label, hint, def = '') =>
+    ({ id, label, hint, kind: 'money', def });
+  const num = (id, label, hint, suf, def = '') =>
+    ({ id, label, hint, kind: 'num', suf, def });
+  const pick = (id, label, hint, options, def) =>
+    ({ id, label, hint, kind: 'select', options, def });
+
+  const TABS = {
+    penghasilan: {
+      icon: '💼', name: 'Penghasilan',
+      intro: 'Zakat profesi — Fatwa MUI No. 3 Tahun 2003. Nisab setara 85 gram emas per tahun, kadar 2,5%. Boleh ditunaikan bulanan.',
+      fields: [
+        money('gaji', 'Penghasilan pokok per bulan', 'Gaji, honor, atau upah rutin.'),
+        money('lain', 'Penghasilan lain per bulan', 'Bonus, tunjangan, usaha sampingan. Kosongkan jika tidak ada.'),
+        pick('metode', 'Metode perhitungan', 'Bruto mengikuti pedoman BAZNAS. Netto dipakai sebagian ulama dengan mengurangi kebutuhan pokok.',
+          [['bruto', 'Bruto — seluruh penghasilan'], ['netto', 'Netto — dikurangi kebutuhan pokok']], 'bruto'),
+        money('pokok', 'Kebutuhan pokok per bulan', 'Hanya dipakai bila metode Netto dipilih.')
+      ],
+      compute(v, p) {
+        const bruto = v.gaji + v.lain;
+        const dasar = v.metode === 'netto' ? Math.max(0, bruto - v.pokok) : bruto;
+        const nisabTahun = NISAB_GOLD_G * p.gold;
+        const nisabBulan = nisabTahun / 12;
+        const wajib = dasar >= nisabBulan;
+        const zakat = wajib ? dasar * RATE : 0;
+        return {
+          amount: zakat, isMoney: true, wajib,
+          rows: [
+            ['Penghasilan bruto/bulan', rupiah(bruto)],
+            v.metode === 'netto' ? ['Kebutuhan pokok', '− ' + rupiah(v.pokok)] : null,
+            ['Dasar perhitungan', rupiah(dasar)],
+            ['Nisab per bulan (85 g emas ÷ 12)', rupiah(nisabBulan)],
+            ['Zakat 2,5%', rupiah(zakat)]
+          ].filter(Boolean),
+          note: wajib
+            ? `Penghasilanmu melampaui nisab bulanan. Setahun berarti sekitar <b>${rupiah(zakat * 12)}</b>.`
+            : `Belum mencapai nisab bulanan (${rupiah(nisabBulan)}). Bila total setahun melampaui ${rupiah(nisabTahun)}, zakat tetap wajib ditunaikan di akhir haul. Sementara itu, infak &amp; sedekah tetap dianjurkan.`
+        };
+      }
+    },
+
+    emas: {
+      icon: '🪙', name: 'Emas & Perak',
+      intro: 'Nisab emas 85 gram, perak 595 gram, kadar 2,5% setelah dimiliki satu haul (1 tahun hijriah).',
+      fields: [
+        num('gram', 'Emas yang dimiliki', 'Emas batangan/simpanan yang telah dimiliki 1 tahun.', 'gram'),
+        num('perak', 'Perak yang dimiliki', 'Kosongkan bila tidak memiliki perak.', 'gram')
+      ],
+      compute(v, p) {
+        const nisabE = NISAB_GOLD_G, nisabP = NISAB_SILVER_G;
+        const zE = v.gram >= nisabE ? v.gram * RATE : 0;
+        const zP = v.perak >= nisabP ? v.perak * RATE : 0;
+        const rp = zE * p.gold + zP * p.silver;
+        const wajib = zE > 0 || zP > 0;
+        return {
+          amount: rp, isMoney: true, wajib,
+          headline: (zE + zP) > 0 ? `${numberID(zE)} g emas${zP ? ' + ' + numberID(zP) + ' g perak' : ''}` : null,
+          rows: [
+            ['Emas dimiliki', numberID(v.gram) + ' g'],
+            ['Nisab emas', nisabE + ' g'],
+            v.perak ? ['Perak dimiliki', numberID(v.perak) + ' g'] : null,
+            v.perak ? ['Nisab perak', nisabP + ' g'] : null,
+            ['Zakat emas 2,5%', numberID(zE) + ' g'],
+            v.perak ? ['Zakat perak 2,5%', numberID(zP) + ' g'] : null,
+            ['Nilai rupiah', rupiah(rp)]
+          ].filter(Boolean),
+          note: wajib
+            ? 'Zakat boleh ditunaikan berupa emas/perak itu sendiri atau nilai uangnya.'
+            : `Belum mencapai nisab (emas ${nisabE} g / perak ${nisabP} g). Perhiasan yang dipakai sewajarnya menurut mayoritas ulama tidak wajib dizakati.`
+        };
+      }
+    },
+
+    mal: {
+      icon: '🏦', name: 'Tabungan & Uang',
+      intro: 'Zakat mal atas uang, tabungan, deposito, dan investasi. Nisab setara 85 gram emas, kadar 2,5%, haul 1 tahun.',
+      fields: [
+        money('tabungan', 'Tabungan & deposito', 'Saldo terendah selama setahun lebih aman dipakai.'),
+        money('tunai', 'Uang tunai & e-wallet', ''),
+        money('investasi', 'Investasi & surat berharga', 'Saham, reksa dana, obligasi — nilai saat haul.'),
+        money('piutang', 'Piutang yang diharapkan kembali', 'Uang yang dipinjamkan dan hampir pasti tertagih.'),
+        money('utang', 'Utang jatuh tempo', 'Utang yang harus dibayar dalam waktu dekat — menjadi pengurang.')
+      ],
+      compute(v, p) {
+        const kotor = v.tabungan + v.tunai + v.investasi + v.piutang;
+        const bersih = Math.max(0, kotor - v.utang);
+        const nisab = NISAB_GOLD_G * p.gold;
+        const wajib = bersih >= nisab;
+        return {
+          amount: wajib ? bersih * RATE : 0, isMoney: true, wajib,
+          rows: [
+            ['Total harta', rupiah(kotor)],
+            ['Utang jatuh tempo', '− ' + rupiah(v.utang)],
+            ['Harta bersih', rupiah(bersih)],
+            ['Nisab (85 g emas)', rupiah(nisab)],
+            ['Zakat 2,5%', rupiah(wajib ? bersih * RATE : 0)]
+          ],
+          note: wajib
+            ? 'Pastikan harta ini sudah dimiliki genap satu tahun hijriah (haul).'
+            : `Harta bersihmu belum mencapai nisab ${rupiah(nisab)}.`
+        };
+      }
+    },
+
+    dagang: {
+      icon: '🏪', name: 'Perdagangan',
+      intro: 'Rumus: (modal berputar + laba + piutang lancar) − (utang jatuh tempo + kerugian) × 2,5%.',
+      fields: [
+        money('stok', 'Nilai stok barang dagangan', 'Dihitung dengan harga jual saat haul tiba.'),
+        money('laba', 'Laba usaha selama setahun', ''),
+        money('piutang2', 'Piutang lancar', 'Tagihan yang diperkirakan tertagih.'),
+        money('utang2', 'Utang jatuh tempo', ''),
+        money('rugi', 'Kerugian usaha', 'Kosongkan bila tidak ada.')
+      ],
+      compute(v, p) {
+        const bersih = Math.max(0, v.stok + v.laba + v.piutang2 - v.utang2 - v.rugi);
+        const nisab = NISAB_GOLD_G * p.gold;
+        const wajib = bersih >= nisab;
+        return {
+          amount: wajib ? bersih * RATE : 0, isMoney: true, wajib,
+          rows: [
+            ['Stok + laba + piutang', rupiah(v.stok + v.laba + v.piutang2)],
+            ['Utang + kerugian', '− ' + rupiah(v.utang2 + v.rugi)],
+            ['Harta dagang bersih', rupiah(bersih)],
+            ['Nisab (85 g emas)', rupiah(nisab)],
+            ['Zakat 2,5%', rupiah(wajib ? bersih * RATE : 0)]
+          ],
+          note: wajib ? 'Zakat perdagangan ditunaikan setahun sekali saat haul terpenuhi.'
+                      : `Belum mencapai nisab ${rupiah(nisab)}.`
+        };
+      }
+    },
+
+    tani: {
+      icon: '🌾', name: 'Pertanian',
+      intro: 'Nisab 5 wasaq ≈ 653 kg gabah kering. Tadah hujan 10%, pengairan berbiaya 5%. Ditunaikan setiap panen.',
+      fields: [
+        num('panen', 'Hasil panen', 'Berat gabah/biji kering setelah panen.', 'kg'),
+        pick('air', 'Cara pengairan', 'Menentukan kadar 10% atau 5%.',
+          [['hujan', 'Tadah hujan / mata air — tanpa biaya (10%)'], ['biaya', 'Irigasi / pompa berbiaya (5%)']], 'hujan'),
+        money('hargakg', 'Harga per kg (opsional)', 'Untuk mengetahui nilai rupiahnya.')
+      ],
+      compute(v) {
+        const kadar = v.air === 'biaya' ? 0.05 : 0.10;
+        const wajib = v.panen >= NISAB_FARM_KG;
+        const kg = wajib ? v.panen * kadar : 0;
+        return {
+          amount: kg, isMoney: false, unit: 'kg', wajib,
+          rows: [
+            ['Hasil panen', numberID(v.panen) + ' kg'],
+            ['Nisab', NISAB_FARM_KG + ' kg'],
+            ['Kadar zakat', (kadar * 100) + '%'],
+            ['Zakat', numberID(kg) + ' kg'],
+            v.hargakg ? ['Setara rupiah', rupiah(kg * v.hargakg)] : null
+          ].filter(Boolean),
+          note: wajib ? 'Zakat pertanian tidak menunggu haul — tunaikan saat panen.'
+                      : `Panen belum mencapai nisab ${NISAB_FARM_KG} kg gabah.`
+        };
+      }
+    },
+
+    fitrah: {
+      icon: '🍚', name: 'Fitrah',
+      intro: '1 sha‘ ≈ 2,5 kg makanan pokok per jiwa. Wajib atas setiap jiwa muslim, paling utama sebelum shalat Idulfitri.',
+      fields: [
+        num('jiwa', 'Jumlah jiwa dalam tanggungan', 'Termasuk bayi yang lahir sebelum maghrib akhir Ramadan.', 'orang', '1'),
+        pick('bentuk', 'Dibayarkan dalam bentuk', 'Membayar dengan uang senilai makanan pokok diperbolehkan menurut mazhab Hanafi dan pedoman BAZNAS.',
+          [['beras', 'Beras / makanan pokok'], ['uang', 'Uang senilai beras']], 'beras')
+      ],
+      compute(v, p) {
+        const jiwa = Math.max(0, Math.round(v.jiwa));
+        const kg = jiwa * FITRAH_KG;
+        const rp = kg * p.rice;
+        const uang = v.bentuk === 'uang';
+        return {
+          amount: uang ? rp : kg, isMoney: uang, unit: 'kg', wajib: jiwa > 0,
+          rows: [
+            ['Jumlah jiwa', jiwa + ' orang'],
+            ['Takaran per jiwa', FITRAH_KG + ' kg (1 sha‘)'],
+            ['Total beras', numberID(kg) + ' kg'],
+            ['Harga beras/kg', rupiah(p.rice)],
+            ['Setara uang', rupiah(rp)]
+          ],
+          note: jiwa > 0
+            ? 'Tunaikan sebelum shalat Idulfitri. Bila dibayar setelahnya, ia dinilai sedekah biasa.'
+            : 'Isi jumlah jiwa terlebih dahulu.'
+        };
+      }
+    },
+
+    rikaz: {
+      icon: '💎', name: 'Rikaz',
+      intro: 'Harta temuan atau barang tambang dizakati 20% seketika — tanpa syarat nisab maupun haul.',
+      fields: [ money('nilai', 'Nilai harta temuan / tambang', 'Taksiran nilai pasar saat ditemukan.') ],
+      compute(v) {
+        return {
+          amount: v.nilai * 0.2, isMoney: true, wajib: v.nilai > 0,
+          rows: [['Nilai temuan', rupiah(v.nilai)], ['Kadar zakat', '20%'], ['Zakat', rupiah(v.nilai * 0.2)]],
+          note: v.nilai > 0 ? 'Ditunaikan langsung saat ditemukan, tanpa menunggu haul.' : 'Masukkan nilai temuan.'
+        };
+      }
+    }
+  };
+
+  function fieldHTML(f) {
+    const v = vals[f.id] !== undefined ? vals[f.id] : f.def;
+    if (f.kind === 'select') {
+      return `<div class="field"><label for="c-${f.id}">${escapeHTML(f.label)}</label>
+        <div class="inputwrap"><select id="c-${f.id}" data-f="${f.id}">
+          ${f.options.map(([val, txt]) => `<option value="${val}" ${v === val ? 'selected' : ''}>${escapeHTML(txt)}</option>`).join('')}
+        </select></div>${f.hint ? `<span class="hint">${f.hint}</span>` : ''}</div>`;
+    }
+    return `<div class="field"><label for="c-${f.id}">${escapeHTML(f.label)}</label>
+      <div class="inputwrap" data-wrap="${f.id}">
+        ${f.kind === 'money' ? '<span class="pre">Rp</span>' : ''}
+        <input id="c-${f.id}" data-f="${f.id}" inputmode="decimal" autocomplete="off"
+               placeholder="0" value="${v !== undefined && v !== '' ? escapeHTML(String(v)) : ''}">
+        ${f.suf ? `<span class="suf">${escapeHTML(f.suf)}</span>` : ''}
+      </div>${f.hint ? `<span class="hint">${f.hint}</span>` : ''}</div>`;
+  }
+
+  /** Menambahkan pemisah ribuan sambil mengetik, tanpa memindahkan kursor
+   *  bila pengguna sedang menyunting di tengah teks. */
+  function attachThousandFormat(el) {
+    const reformat = () => {
+      const raw = el.value;
+      if (!raw.trim()) return;
+      if (el.selectionStart !== raw.length) return;   // jangan ganggu penyuntingan di tengah
+      const { int, dec } = splitID(raw);
+      if (!int && dec === null) { el.value = ''; return; }
+      let out = Number(int || 0).toLocaleString('id-ID');
+      if (dec !== null) out += ',' + dec;             // termasuk koma yang baru diketik
+      if (out !== raw) {
+        el.value = out;
+        el.setSelectionRange(out.length, out.length);
+      }
+    };
+    el.addEventListener('input', reformat);
+    el.addEventListener('blur', reformat);
+  }
+
+  function readValues(tab) {
+    const v = {};
+    tab.fields.forEach(f => {
+      const el = $('#c-' + f.id);
+      if (!el) { v[f.id] = f.kind === 'select' ? f.def : 0; return; }
+      v[f.id] = f.kind === 'select' ? el.value : parseNum(el.value);
+      vals[f.id] = el.value;
+    });
+    return v;
+  }
+
+  function compute() {
+    const tab = TABS[active];
+    const res = tab.compute(readValues(tab), SAVE.calcPrefs);
+    const box = $('#calc-out');
+    if (!box) return;
+    const head = res.headline
+      ? res.headline
+      : (res.isMoney ? rupiah(res.amount) : numberID(res.amount) + ' ' + (res.unit || ''));
+    box.innerHTML = `
+      <div class="amt">${head}</div>
+      ${res.headline ? `<div style="font-size:.95rem;opacity:.9;margin-top:4px">≈ ${rupiah(res.amount)}</div>` : ''}
+      <div class="verdict">${res.wajib ? '✅ Zakat wajib ditunaikan' : 'ℹ️ Belum wajib zakat'}</div>
+      <div class="breakdown">${res.rows.map(r => `<div><span>${r[0]}</span><b>${r[1]}</b></div>`).join('')}</div>
+      <div class="note">${res.note}</div>`;
+    box.classList.remove('bump'); void box.offsetWidth; box.classList.add('bump');
+    grantBadge('calc');
+  }
+
+  function renderTabs() {
+    $('#calc-tabs').innerHTML = Object.entries(TABS).map(([k, t]) =>
+      `<button class="tab ${k === active ? 'on' : ''}" data-t="${k}" role="tab"
+        aria-selected="${k === active}">${t.icon} ${escapeHTML(t.name)}</button>`).join('');
+    $$('#calc-tabs .tab').forEach(b => b.addEventListener('click', () => { active = b.dataset.t; render(); }));
+  }
+
+  function render() {
+    renderTabs();
+    const tab = TABS[active];
+    const p = SAVE.calcPrefs;
+    $('#calc-body').innerHTML = `
+      <div class="kicker">${tab.icon} Zakat ${escapeHTML(tab.name)}</div>
+      <p style="font-size:.9rem;color:var(--ink-soft);line-height:1.6;margin:8px 0 4px">${tab.intro}</p>
+      <div class="divider"></div>
+      <div id="calc-fields">${tab.fields.map(fieldHTML).join('')}</div>
+      <div class="calc-result" id="calc-out"></div>
+      <div class="divider"></div>
+      <details id="calc-prefs">
+        <summary style="cursor:pointer;font-weight:700;font-size:.9rem;color:var(--emerald-700)">⚙️ Harga acuan (ubah sesuai harga hari ini)</summary>
+        <div style="margin-top:12px">
+          <div class="field"><label for="p-gold">Harga emas per gram</label>
+            <div class="inputwrap"><span class="pre">Rp</span><input id="p-gold" inputmode="decimal" value="${p.gold}"><span class="suf">/gram</span></div>
+            <span class="hint">Nisab 85 gram saat ini = <b id="nisab-now">${rupiah(85 * p.gold)}</b></span></div>
+          <div class="field"><label for="p-silver">Harga perak per gram</label>
+            <div class="inputwrap"><span class="pre">Rp</span><input id="p-silver" inputmode="decimal" value="${p.silver}"><span class="suf">/gram</span></div></div>
+          <div class="field"><label for="p-rice">Harga beras per kg</label>
+            <div class="inputwrap"><span class="pre">Rp</span><input id="p-rice" inputmode="decimal" value="${p.rice}"><span class="suf">/kg</span></div>
+            <span class="hint">Dipakai untuk menghitung zakat fitrah berupa uang.</span></div>
+          <p style="font-size:.78rem;color:#5c7a6e;line-height:1.55">
+            Angka bawaan hanyalah contoh. Perbarui dengan harga emas &amp; beras terbaru di daerahmu agar hasilnya akurat,
+            lalu pastikan penyalurannya melalui amil/lembaga zakat resmi.</p>
+        </div>
+      </details>
+      <div style="display:flex;gap:9px;margin-top:14px;flex-wrap:wrap">
+        <button class="btn emerald sm" id="calc-reset">↺ Kosongkan</button>
+        <button class="btn ghost sm" id="calc-copy" style="color:var(--ink);box-shadow:inset 0 0 0 1.6px var(--line)">📋 Salin hasil</button>
+      </div>`;
+
+    $$('#calc-fields input, #calc-fields select').forEach(el => {
+      if (el.tagName === 'INPUT') attachThousandFormat(el);
+      el.addEventListener('input', compute);
+      el.addEventListener('change', compute);
+    });
+    // "Kebutuhan pokok" hanya relevan pada metode netto
+    const metode = $('#c-metode');
+    if (metode) {
+      const sync = () => {
+        const off = metode.value !== 'netto';
+        const inp = $('#c-pokok'), wrap = $('[data-wrap="pokok"]');
+        if (inp) inp.disabled = off;
+        if (wrap) wrap.classList.toggle('off', off);
+      };
+      metode.addEventListener('change', sync);
+      sync();
+    }
+    [['p-gold', 'gold'], ['p-silver', 'silver'], ['p-rice', 'rice']].forEach(([id, key]) => {
+      const el = $('#' + id);
+      el.value = parseNum(el.value).toLocaleString('id-ID');
+      attachThousandFormat(el);
+      el.addEventListener('input', () => {
+        SAVE.calcPrefs[key] = parseNum(el.value) || 0;
+        persist();
+        const n = $('#nisab-now'); if (n) n.textContent = rupiah(85 * SAVE.calcPrefs.gold);
+        compute();
+      });
+    });
+    $('#calc-reset').addEventListener('click', () => {
+      tab.fields.forEach(f => { delete vals[f.id]; const el = $('#c-' + f.id); if (el && f.kind !== 'select') el.value = ''; });
+      compute(); toast('Formulir dikosongkan');
+    });
+    $('#calc-copy').addEventListener('click', () => {
+      const txt = `Zakat ${tab.name}\n` + $$('#calc-out .breakdown div').map(d => d.textContent.replace(/\s+/g, ' ')).join('\n');
+      if (navigator.clipboard) navigator.clipboard.writeText(txt).then(
+        () => toast('✅ Hasil disalin', 'gold'), () => toast('Gagal menyalin', 'bad'));
+      else toast('Peramban tidak mendukung salin otomatis', 'bad');
+    });
+    compute();
+  }
+
+  function open() { Router.go('calc', { curtain: true }); setTimeout(render, 120); }
+  return { open, render };
+})();
+
+/* ---------------------------------------------------------------
+   17. PROGRES, PAPAN SKOR & LENCANA
+   --------------------------------------------------------------- */
+function renderProgress() {
+  const stars = totalStars(), done = doneCount();
+  const pct = Math.round((stars / (CHAPTERS.length * 3)) * 100);
+  const s = SAVE.stats;
+  const acc = s.correct + s.wrong ? Math.round((s.correct / (s.correct + s.wrong)) * 100) : 0;
+
+  $('#progress-body').innerHTML = `
+    <div class="panel" style="padding:18px;margin-bottom:12px">
+      <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap">
+        <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--gold-400),var(--gold-600));
+             display:grid;place-items:center;font-size:2rem;box-shadow:var(--shadow-md)">🧒</div>
+        <div style="flex:1;min-width:150px">
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+            <h3 style="font-size:1.3rem">${escapeHTML(SAVE.player || 'Pemain')}</h3>
+            <button class="btn ghost sm" id="p-name" style="color:var(--ink);box-shadow:inset 0 0 0 1.4px var(--line);padding:4px 10px">✏️ Ubah</button>
+          </div>
+          <span class="pill emerald" style="margin-top:6px">${rankOf(SAVE.totalScore)}</span>
+        </div>
+        <div style="text-align:right">
+          <div style="font-family:var(--font-display);font-weight:800;font-size:1.8rem;color:var(--emerald-700)">
+            ${SAVE.totalScore.toLocaleString('id-ID')}</div>
+          <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft);font-weight:700">Total Poin</div>
+        </div>
+      </div>
+      <div class="timerbar" style="margin-top:14px;height:12px;background:rgba(6,78,59,.12)">
+        <i style="width:${pct}%"></i></div>
+      <p style="font-size:.84rem;color:var(--ink-soft);margin-top:7px">
+        ⭐ ${stars} dari ${CHAPTERS.length * 3} bintang · ${done} dari ${CHAPTERS.length} bab tuntas (${pct}%)</p>
+      <div class="stat-grid" style="margin-bottom:0">
+        <div><b>${s.correct}</b><span>Benar</span></div>
+        <div><b>${acc}%</b><span>Akurasi</span></div>
+        <div><b>${s.perfect}</b><span>Bab Sempurna</span></div>
+      </div>
+    </div>
+
+    <div class="panel" style="padding:18px;margin-bottom:12px">
+      <div class="kicker">🗺 Perjalanan Bab</div>
+      <div style="margin-top:12px">
+        ${CHAPTERS.map(c => {
+          const st = lv(c.id), open = isUnlocked(c.id);
+          return `<div class="lb-row">
+            <div class="rank" style="background:${open ? 'var(--sand)' : '#e2e8f0'}">${open ? c.emoji : '🔒'}</div>
+            <div class="who"><b>${c.id}. ${escapeHTML(c.title)}</b><span>${escapeHTML(c.topic)}</span></div>
+            <div style="text-align:right">
+              <div style="font-size:.9rem">${st.done ? '⭐'.repeat(st.stars) + '<span style="opacity:.3">' + '⭐'.repeat(3 - st.stars) + '</span>' : (open ? '<span style="font-size:.76rem;color:var(--emerald-600);font-weight:700">Terbuka</span>' : '<span style="font-size:.76rem;color:#94a3b8">Terkunci</span>')}</div>
+              ${st.best ? `<div class="pts" style="font-size:.9rem">${st.best.toLocaleString('id-ID')}</div>` : ''}
+            </div></div>`;
+        }).join('')}
+      </div>
+    </div>
+
+    <div class="panel" style="padding:18px;margin-bottom:12px">
+      <div class="kicker">🏆 Papan Skor Lokal</div>
+      <p style="font-size:.8rem;color:var(--ink-soft);margin:6px 0 12px">Sepuluh perolehan terbaik dari perangkat ini.</p>
+      ${SAVE.scores.length ? SAVE.scores.slice(0, 10).map((r, i) => `
+        <div class="lb-row ${i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : ''}" style="animation-delay:${i * .05}s">
+          <div class="rank">${i + 1}</div>
+          <div class="who"><b>${escapeHTML(r.name)}</b>
+            <span>Bab ${r.ch || '-'} · ${new Date(r.date).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })}</span></div>
+          <div class="pts">${r.score.toLocaleString('id-ID')}</div>
+        </div>`).join('')
+        : '<p style="color:var(--ink-soft);font-size:.9rem">Belum ada skor. Selesaikan satu bab untuk mengisi papan ini.</p>'}
+    </div>
+
+    <div class="panel" style="padding:18px;margin-bottom:20px">
+      <div class="kicker">🎖 Lencana (${SAVE.badges.length}/${BADGES.length})</div>
+      <div class="badges" style="margin-top:12px">
+        ${BADGES.map(b => `
+          <div class="badge ${SAVE.badges.includes(b.id) ? 'got' : ''}" title="${escapeHTML(b.desc)}">
+            <span class="em">${b.em}</span><b>${escapeHTML(b.name)}</b><span>${escapeHTML(b.desc)}</span>
+          </div>`).join('')}
+      </div>
+    </div>`;
+
+  $('#p-name').addEventListener('click', askName);
+}
+
+function askName(onDone) {
+  openModal(`
+    <h2 id="modal-title" style="font-size:1.3rem">Siapa namamu?</h2>
+    <p style="color:var(--ink-soft);font-size:.88rem;margin-top:6px">Nama ini dipakai pada papan skor di perangkat ini.</p>
+    <div class="field" style="margin-top:14px">
+      <div class="inputwrap"><input id="nm" maxlength="20" placeholder="Nama panggilan" value="${escapeHTML(SAVE.player)}"></div>
+    </div>
+    <div style="display:flex;gap:9px;justify-content:flex-end">
+      <button class="btn ghost sm" id="nm-x" style="color:var(--ink);box-shadow:inset 0 0 0 1.6px var(--line)">Batal</button>
+      <button class="btn sm" id="nm-ok">Simpan</button>
+    </div>`);
+  $('#nm').focus();
+  const save = () => {
+    SAVE.player = $('#nm').value.trim().slice(0, 20) || 'Pemain';
+    persist(true); closeModal();
+    if (Router.current === 'progress') renderProgress();
+    toast('✅ Nama tersimpan');
+    if (onDone) onDone();
+  };
+  $('#nm-ok').onclick = save;
+  $('#nm-x').onclick = () => { closeModal(); if (onDone) onDone(); };
+  $('#nm').addEventListener('keydown', e => { if (e.key === 'Enter') save(); });
+}
+
+/* ---------------------------------------------------------------
+   18. PENGATURAN & BANTUAN
+   --------------------------------------------------------------- */
+function applySettings() {
+  document.body.classList.toggle('reduce-motion', !SAVE.settings.motion);
+  document.body.classList.toggle('big-text', !!SAVE.settings.bigText);
+  document.body.classList.toggle('high-contrast', !!SAVE.settings.contrast);
+}
+function openSettings() {
+  const row = (key, em, label, desc) => `
+    <label style="display:flex;align-items:center;gap:12px;padding:11px;border-radius:var(--r-md);
+           background:var(--paper-2);border:1px solid var(--line);margin-bottom:8px;cursor:pointer">
+      <span style="font-size:1.4rem">${em}</span>
+      <span style="flex:1"><b style="font-family:var(--font-display);font-size:.98rem">${label}</b>
+        <span style="display:block;font-size:.76rem;color:var(--ink-soft);line-height:1.4">${desc}</span></span>
+      <input type="checkbox" data-s="${key}" ${SAVE.settings[key] ? 'checked' : ''}
+             style="width:22px;height:22px;accent-color:var(--emerald-600)">
+    </label>`;
+  openModal(`
+    <h2 id="modal-title" style="font-size:1.4rem">⚙️ Pengaturan</h2>
+    <div class="divider"></div>
+    ${row('sound', '🔊', 'Efek suara', 'Nada untuk jawaban benar, salah, dan koin.')}
+    ${row('motion', '✨', 'Animasi penuh', 'Matikan bila perangkat terasa berat atau kamu sensitif terhadap gerakan.')}
+    ${row('bigText', '🔠', 'Teks lebih besar', 'Memperbesar seluruh teks permainan.')}
+    ${row('contrast', '🌓', 'Kontras tinggi', 'Mempertegas garis dan latar untuk keterbacaan.')}
+    <div class="divider"></div>
+    <button class="btn ghost sm block" id="set-name" style="color:var(--ink);box-shadow:inset 0 0 0 1.6px var(--line)">✏️ Ubah nama pemain</button>
+    <button class="btn sm block" id="set-close" style="margin-top:10px">Selesai</button>`);
+  $$('#modal-card [data-s]').forEach(c => c.addEventListener('change', () => {
+    SAVE.settings[c.dataset.s] = c.checked;
+    persist(true); applySettings();
+    if (c.dataset.s === 'sound' && c.checked) Audio2.coin();
+  }));
+  $('#set-name').onclick = askName;
+  $('#set-close').onclick = closeModal;
+}
+
+function openHowTo() {
+  openModal(`
+    <h2 id="modal-title" style="font-size:1.4rem">❓ Cara Bermain</h2>
+    <div class="divider"></div>
+    <div style="font-size:.92rem;line-height:1.75">
+      <p><b>1. Ikuti peta.</b> Tujuh bab terhubung dalam satu jalur. Selesaikan sebuah bab untuk membuka bab berikutnya.</p>
+      <p style="margin-top:9px"><b>2. Simak cerita.</b> Setiap bab dibuka dengan dialog bergambar. Ketuk layar untuk mempercepat teks.</p>
+      <p style="margin-top:9px"><b>3. Jawab kuis.</b> Kamu punya <b>3 nyawa</b> dan waktu terbatas tiap soal.
+         Makin cepat menjawab benar dan makin panjang rentetan benarmu, makin besar poinnya.</p>
+      <p style="margin-top:9px"><b>4. Taklukkan mini game.</b> Ada tiga jenis: menyortir kartu, menimbang nisab, dan menghitung cepat.</p>
+      <p style="margin-top:9px"><b>5. Kumpulkan bintang.</b> 3 bintang bila tanpa salah, 2 bintang bila salah satu kali.</p>
+      <div class="divider"></div>
+      <p><b>⌨️ Pintasan papan ketik</b><br>
+        <b>A–D</b> atau <b>1–4</b> memilih jawaban · <b>H</b> petunjuk · <b>Enter</b> lanjut · <b>Esc</b> menutup jendela.</p>
+      <div class="divider"></div>
+      <p style="font-size:.84rem;color:var(--ink-soft)">Progres tersimpan otomatis di peramban perangkat ini.
+         Menghapus data situs akan menghapus progres.</p>
+    </div>
+    <button class="btn sm block" id="ht-x" style="margin-top:16px">Mengerti</button>`);
+  $('#ht-x').onclick = closeModal;
+}
+
+/* ---------------------------------------------------------------
+   19. LANGIT & PARALAKS
+   --------------------------------------------------------------- */
+function buildSky() {
+  const st = $('#stars');
+  st.innerHTML = Array.from({ length: 80 }, () => {
+    const s = rand(1, 3).toFixed(1);
+    return `<i class="star" style="left:${rand(0, 100).toFixed(2)}%;top:${rand(0, 72).toFixed(2)}%;
+      width:${s}px;height:${s}px;--dur:${rand(2.4, 6).toFixed(1)}s;--dly:${rand(0, 5).toFixed(1)}s"></i>`;
+  }).join('');
+
+  $('#lanterns').innerHTML = Array.from({ length: 7 }, (_, i) => `
+    <svg class="lantern" style="left:${rand(4, 94).toFixed(1)}%;--rise:${rand(19, 34).toFixed(0)}s;
+         animation-delay:${(-i * 4.2).toFixed(1)}s" viewBox="0 0 40 64" aria-hidden="true">
+      <path d="M20 2v6" stroke="#b45309" stroke-width="2"/>
+      <path d="M8 16h24l-4 34H12z" fill="#f59e0b" opacity=".92"/>
+      <path d="M8 16h24l-4 34H12z" fill="url(#lg)" opacity=".4"/>
+      <ellipse cx="20" cy="34" rx="9" ry="13" fill="#fde68a" opacity=".85"/>
+      <path d="M12 50h16v5H12z" fill="#b45309"/>
+      <path d="M16 55v7M24 55v7" stroke="#fbbf24" stroke-width="1.4" opacity=".7"/>
+    </svg>`).join('');
+}
+
+let parX = 0, parY = 0;
+function parallax(x, y) {
+  parX = (x / innerWidth - 0.5) * 2;
+  parY = (y / innerHeight - 0.5) * 2;
+  if (!SAVE.settings.motion) return;
+  $$('.layer-par').forEach(el => {
+    const d = +el.dataset.depth || 6;
+    el.style.transform = `translate3d(${(-parX * d).toFixed(1)}px, ${(-parY * d * .4).toFixed(1)}px, 0)`;
+  });
+  $('#pattern').style.transform = `translate3d(${(-parX * 3).toFixed(1)}px, ${(-parY * 3).toFixed(1)}px, 0)`;
+}
+addEventListener('pointermove', e => parallax(e.clientX, e.clientY), { passive: true });
+
+/* ---------------------------------------------------------------
+   20. NAVIGASI & BOOT
+   --------------------------------------------------------------- */
+$$('[data-nav]').forEach(b => b.addEventListener('click', () => {
+  const t = b.dataset.nav;
+  if (t === 'back') Router.back();
+  else { Router.go(t, { curtain: true }); if (t === 'map') renderMap(); }
+}));
+
+$('#btn-play').addEventListener('click', () => {
+  const toMap = () => { Router.go('map', { curtain: true }); renderMap(); };
+  if (!SAVE.player) askName(toMap); else toMap();
+});
+$('#btn-calc').addEventListener('click', () => Calc.open());
+$('#btn-map-calc').addEventListener('click', () => Calc.open());
+$('#btn-progress').addEventListener('click', () => { Router.go('progress', { curtain: true }); renderProgress(); });
+$('#btn-map-progress').addEventListener('click', () => { Router.go('progress', { curtain: true }); renderProgress(); });
+$('#btn-settings').addEventListener('click', openSettings);
+$('#btn-howto').addEventListener('click', openHowTo);
+$('#btn-calc-help').addEventListener('click', () => openModal(`
+  <h2 id="modal-title" style="font-size:1.3rem">🧮 Tentang Kalkulator</h2>
+  <div class="divider"></div>
+  <div style="font-size:.9rem;line-height:1.7">
+    <p>Kalkulator ini memakai ketentuan fikih zakat yang lazim dipakai di Indonesia:</p>
+    <ul style="margin:10px 0 0 18px;padding:0">
+      <li>Nisab emas <b>85 gram</b>, perak <b>595 gram</b>, kadar <b>2,5%</b>.</li>
+      <li>Zakat penghasilan mengikuti <b>Fatwa MUI No. 3 Tahun 2003</b>.</li>
+      <li>Pertanian: nisab <b>653 kg</b> gabah, kadar <b>10%</b> (tanpa biaya) atau <b>5%</b> (berbiaya).</li>
+      <li>Fitrah <b>2,5 kg</b> makanan pokok per jiwa (1 sha‘).</li>
+      <li>Rikaz <b>20%</b> tanpa nisab dan haul.</li>
+    </ul>
+    <p style="margin-top:12px"><b>Penting:</b> harga emas, perak, dan beras berubah setiap hari. Perbarui angka acuan
+       pada bagian <i>Harga acuan</i> agar hasilnya sesuai. Untuk kasus yang rumit, tetap rujuk amil atau ustaz setempat.</p>
+  </div>
+  <button class="btn sm block" id="ch-x" style="margin-top:16px">Mengerti</button>`)
+  , null);
+document.addEventListener('click', e => { if (e.target && e.target.id === 'ch-x') closeModal(); });
+
+$('#btn-reset').addEventListener('click', () => {
+  openModal(`
+    <h2 id="modal-title" style="font-size:1.3rem">🗑 Hapus seluruh progres?</h2>
+    <p style="color:var(--ink-soft);margin-top:8px;line-height:1.6;font-size:.92rem">
+      Bintang, poin, lencana, dan papan skor di perangkat ini akan hilang permanen. Tindakan ini tidak dapat dibatalkan.</p>
+    <div style="display:flex;gap:9px;margin-top:18px;justify-content:flex-end">
+      <button class="btn ghost sm" id="rs-x" style="color:var(--ink);box-shadow:inset 0 0 0 1.6px var(--line)">Batal</button>
+      <button class="btn danger sm" id="rs-ok">Ya, hapus</button>
+    </div>`);
+  $('#rs-x').onclick = closeModal;
+  $('#rs-ok').onclick = () => {
+    const prefs = SAVE.calcPrefs, settings = SAVE.settings;
+    SAVE = defaultSave();
+    SAVE.calcPrefs = prefs; SAVE.settings = settings;
+    persist(true); closeModal(); renderProgress(); refreshHUD();
+    toast('Progres dihapus', 'bad');
+  };
+});
+
+let booted = false;
+function boot() {
+  if (booted) return;
+  booted = true;
+  SAVE = loadSave();
+  applySettings();
+  buildSky();
+  refreshHUD();
+
+  const done = doneCount();
+  if (done > 0 || SAVE.totalScore > 0) {
+    $('#play-label').textContent = done >= CHAPTERS.length ? 'Main Lagi' : 'Lanjutkan Petualangan';
+    const note = $('#saved-note');
+    note.hidden = false;
+    note.innerHTML = `💾 Progres tersimpan · ${done}/${CHAPTERS.length} bab · ⭐ ${totalStars()} · ${SAVE.totalScore.toLocaleString('id-ID')} poin`;
+  }
+  Router.go('title', { replace: true, force: true });
+}
+document.addEventListener('DOMContentLoaded', boot);
+if (document.readyState !== 'loading') boot();
+</script>
+</body>
+</html>
