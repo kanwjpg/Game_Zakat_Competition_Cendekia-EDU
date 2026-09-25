@@ -41,15 +41,33 @@ Bintang per bab (maksimal 21), poin, tingkatan (Pemula → Ahli Zakat), **8 lenc
 papan skor lokal, dan statistik akurasi. Semua tersimpan di `localStorage`.
 
 ### Gaya visual
-Desain **datar (flat)**: warna blok, sudut membulat, tanpa gradien, tanpa bayangan tebal,
-tanpa partikel atau paralaks. Palet dikunci pada tiga warna — teal, pasir, dan krem —
-dengan merah hanya untuk keadaan salah. Gerak dibatasi pada hal yang membantu membaca
-keadaan: bilah waktu, pergantian layar, dan perubahan warna pada pilihan jawaban.
+Desain **datar (flat) bernuansa Islami**: warna blok, sudut membulat, tanpa gradien
+maupun bayangan tebal. Palet dikunci pada tiga warna — teal, pasir, dan krem — dengan
+merah hanya untuk keadaan salah.
+
+Unsur Islaminya dibangun dari motif, bukan tempelan:
+- **Anyaman bintang delapan (girih)** pada latar, bergeser sangat lambat dan mulus.
+- **Bulan sabit & bintang** di sudut langit, serta **lentera (fanoos)** yang naik perlahan.
+- **Ornamen arabesque** sebagai pemisah pada layar judul, kartu hasil, dan rangkuman.
+- **Motif bintang delapan** samar di sudut setiap panel.
+- **Transisi antar layar berbentuk irisan bintang delapan.**
+- Nada efek suara memakai tangga nada **maqam Hijaz** agar terdengar bernuansa Timur Tengah.
+
+### Tingkat animasi
+Animasi bisa diatur pemain lewat **Pengaturan → Animasi**:
+
+| Tingkat | Isi |
+|---------|-----|
+| **Penuh** (bawaan) | Latar bergerak, transisi bintang, mesin ketik cerita, bintang penghargaan, ilustrasi beranimasi |
+| **Ringan** | Hanya gerak yang membantu membaca keadaan: unsur muncul bergiliran, penekanan jawaban, bilah waktu |
+| **Mati** | Diam sepenuhnya |
+
+Pilihan tersimpan otomatis, dan `prefers-reduced-motion` pada sistem tetap dihormati.
 
 ### Aksesibilitas
 - Pintasan papan ketik: `A–D` / `1–4` memilih jawaban, `H` petunjuk, `Enter` lanjut, `Esc` tutup.
-- Sakelar **efek suara**, **animasi**, **teks besar**, dan **kontras tinggi**.
-- Menghormati `prefers-reduced-motion`.
+- Sakelar **efek suara**, **teks besar**, **kontras tinggi**, dan tiga tingkat **animasi**.
+- Menghormati `prefers-reduced-motion` bawaan sistem.
 - Efek suara disintesis lewat Web Audio API — tidak ada berkas audio yang perlu diunduh.
 
 ---
@@ -86,8 +104,8 @@ Seluruh permainan berada di `index.html`, disusun berurutan agar mudah ditelusur
 | Bagian | Isi |
 |--------|-----|
 | `<style>` | Token desain datar, komponen, tata letak responsif |
-| 1–6 | Util, penyimpanan, audio, pembantu UI, *router* layar |
-| 7 | `sceneSVG()` — latar cerita SVG datar yang digambar lewat kode |
+| 1–6 | Util, penyimpanan, audio (maqam Hijaz), sistem gerak, pembantu UI, *router* layar |
+| 7 | `sceneSVG()` — tujuh latar cerita SVG datar beranimasi, digambar lewat kode |
 | 8 | **`CHAPTERS`** — seluruh materi: cerita, soal, mini-game |
 | 9–13 | Progres, peta, keadaan permainan, mesin cerita, mesin kuis |
 | 14 | Mesin mini-game (`sort`, `scale`, `calc`) |

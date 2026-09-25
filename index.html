@@ -70,7 +70,11 @@ p{margin:0;}
 
 /* ---------- Latar: warna solid + bercak putih diam ---------- */
 #sky{position:fixed;inset:0;z-index:0;background:var(--teal);overflow:hidden;}
-#sky svg{position:absolute;inset:0;width:100%;height:100%;}
+#sky-pattern{position:absolute;inset:0;width:100%;height:100%;}
+#sky-moon{position:absolute;inset:auto;right:3%;top:2%;
+  width:min(20vw,168px);height:auto;}
+#skystars,#lanterns{position:absolute;inset:0;}
+.skystar{position:absolute;background:#fff;border-radius:50%;opacity:.5;}
 
 /* ---------- Panggung & layar ---------- */
 #app{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;align-items:center;}
@@ -121,6 +125,12 @@ p{margin:0;}
 
 /* ---------- Panel & potongan bersama ---------- */
 .panel{background:var(--white);border-radius:var(--r-lg);position:relative;overflow:hidden;}
+/* motif bintang delapan samar di sudut kanan atas setiap panel */
+.panel::after{
+  content:"";position:absolute;right:-26px;top:-26px;width:130px;height:130px;pointer-events:none;opacity:.06;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%2313675e' stroke-width='4'%3E%3Cpath d='M60 6 76 32 106 24 98 54 118 60 98 66 106 96 76 88 60 114 44 88 14 96 22 66 2 60 22 54 14 24 44 32Z'/%3E%3Ccircle cx='60' cy='60' r='18'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;
+}
+.panel.no-motif::after{display:none;}
 .glass{background:var(--white);border-radius:var(--r-lg);color:var(--ink);}
 .pill{display:inline-flex;align-items:center;gap:6px;padding:5px 14px;border-radius:var(--r-pill);
   font-size:.74rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;}
@@ -133,10 +143,9 @@ p{margin:0;}
 /* ---------- Layar judul ---------- */
 #screen-title{justify-content:center;align-items:center;text-align:center;overflow-y:auto;}
 .title-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;max-width:600px;width:100%;}
-.logo-badge{width:clamp(96px,18vw,132px);aspect-ratio:1;background:var(--white);border-radius:50%;
-  display:grid;place-items:center;margin-bottom:14px;}
-.logo-badge .ring{display:none;}
-.logo-badge .core{width:62%;}
+.logo-badge{width:clamp(118px,21vw,158px);aspect-ratio:1;display:grid;place-items:center;margin-bottom:14px;}
+.logo-badge .core{width:56%;aspect-ratio:1;background:var(--white);border-radius:50%;
+  display:grid;place-items:center;padding:12%;}
 .game-title{font-size:clamp(2.4rem,8vw,4rem);font-weight:800;line-height:1;color:var(--white);}
 .game-sub{color:var(--sand-pale);font-weight:700;letter-spacing:.2em;text-transform:uppercase;
   font-size:clamp(.62rem,2vw,.78rem);margin-top:6px;}
@@ -353,6 +362,142 @@ p{margin:0;}
 /* ---------- Maskot ---------- */
 .mascot{display:block;}
 
+/* ============================================================
+   GERAK — bertema Islami, tiga tingkat
+   .anim-full  gerak penuh (bawaan)
+   .anim-lite  hanya gerak yang membantu membaca keadaan
+   .anim-off   diam sepenuhnya
+   ============================================================ */
+
+/* ---------- Keyframe dasar ---------- */
+@keyframes fadeUp   {from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+@keyframes fadeIn   {from{opacity:0;}to{opacity:1;}}
+@keyframes slideIn  {from{opacity:0;transform:translateX(-18px);}to{opacity:1;transform:none;}}
+@keyframes popIn    {0%{opacity:0;transform:scale(.82);}60%{opacity:1;transform:scale(1.04);}100%{transform:scale(1);}}
+@keyframes starPop  {0%{opacity:0;transform:scale(.2) rotate(-90deg);}
+                     60%{opacity:1;transform:scale(1.18) rotate(12deg);}100%{opacity:1;transform:scale(1) rotate(0);}}
+@keyframes spinSlow {to{transform:rotate(360deg);}}
+@keyframes spinRev  {to{transform:rotate(-360deg);}}
+@keyframes ambFloat {0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+@keyframes ambSway  {0%,100%{transform:rotate(-2.5deg);}50%{transform:rotate(2.5deg);}}
+@keyframes ambGlow  {0%,100%{opacity:.5;transform:scale(1);}50%{opacity:.95;transform:scale(1.07);}}
+@keyframes twinkle  {0%,100%{opacity:.25;}50%{opacity:1;}}
+@keyframes drift    {to{transform:translate(120px,120px);}}
+@keyframes riseUp   {0%{transform:translateY(0) rotate(-3deg);opacity:0;}
+                     10%{opacity:.85;}90%{opacity:.5;}
+                     100%{transform:translateY(-118vh) rotate(3deg);opacity:0;}}
+@keyframes nudge    {0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}
+                     50%{transform:translateX(5px);}75%{transform:translateX(-3px);}}
+@keyframes pulseRing{0%{transform:scale(.92);opacity:.85;}70%{transform:scale(1.32);opacity:0;}100%{opacity:0;}}
+@keyframes beat     {0%,100%{transform:scale(1);}35%{transform:scale(1.22);}}
+@keyframes flyOut   {0%{opacity:0;transform:translate(0,0) scale(.35) rotate(0);}
+                     14%{opacity:1;transform:translate(calc(var(--dx) * .18),calc(var(--dy) * .18)) scale(1.15) rotate(30deg);}
+                     72%{opacity:.95;}
+                     100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.85) rotate(170deg);}}
+@keyframes floatScore{0%{opacity:0;transform:translateY(4px) scale(.7);}
+                     16%{opacity:1;transform:translateY(-10px) scale(1.18);}
+                     70%{opacity:1;transform:translateY(-38px) scale(1);}
+                     100%{opacity:0;transform:translateY(-62px) scale(.96);}}
+@keyframes wipeIn   {from{transform:scale(0) rotate(0deg);}to{transform:scale(3.6) rotate(40deg);}}
+@keyframes wipeOut  {from{transform:scale(3.6) rotate(40deg);}to{transform:scale(0) rotate(80deg);}}
+@keyframes shimmer  {0%{background-position:-180% 0;}100%{background-position:280% 0;}}
+@keyframes typeCaret{50%{opacity:0;}}
+@keyframes birdFly  {from{transform:translate(-14%,6%);}to{transform:translate(112%,-5%);}}
+@keyframes flap     {0%,100%{transform:scaleY(1);}50%{transform:scaleY(.3);}}
+@keyframes grow     {0%,100%{transform:scaleY(1);}50%{transform:scaleY(1.06);}}
+body.anim-full .amb-bird{animation:birdFly 22s linear infinite;}
+body.anim-full .amb-flap{animation:flap .5s ease-in-out infinite;transform-origin:center;}
+body.anim-full .amb-grow{animation:grow 4s ease-in-out infinite;transform-origin:bottom center;}
+
+/* ---------- Masuknya unsur (gerak penuh & ringan) ---------- */
+body:not(.anim-off) .enter{animation:fadeUp .42s cubic-bezier(.22,1,.36,1) both;
+  animation-delay:calc(var(--i,0) * 55ms);}
+body:not(.anim-off) .enter-pop{animation:popIn .4s cubic-bezier(.22,1.3,.4,1) both;
+  animation-delay:calc(var(--i,0) * 55ms);}
+body:not(.anim-off) .enter-side{animation:slideIn .38s cubic-bezier(.22,1,.36,1) both;
+  animation-delay:calc(var(--i,0) * 50ms);}
+body.anim-off .enter,body.anim-off .enter-pop,body.anim-off .enter-side{animation:none;}
+
+/* ---------- Latar Islami yang bergerak (hanya gerak penuh) ---------- */
+#girih{animation:none;}
+body.anim-full #girih{animation:drift 26s linear infinite;}
+body.anim-full .amb-float{animation:ambFloat 6s ease-in-out infinite;}
+body.anim-full .amb-sway{animation:ambSway 5s ease-in-out infinite;transform-origin:bottom center;}
+body.anim-full .amb-glow{animation:ambGlow 4.5s ease-in-out infinite;transform-origin:center;}
+body.anim-full .amb-twinkle{animation:twinkle 3.4s ease-in-out infinite;}
+body.anim-full .amb-spin{animation:spinSlow 44s linear infinite;transform-origin:center;}
+body.anim-full .amb-spin-rev{animation:spinRev 58s linear infinite;transform-origin:center;}
+.lantern{position:absolute;bottom:-110px;width:30px;opacity:0;}
+body.anim-full .lantern{animation:riseUp var(--rise,30s) linear infinite;}
+
+/* ---------- Transisi layar: irisan bintang delapan ---------- */
+#wipe{
+  position:fixed;left:50%;top:50%;width:150vmax;height:150vmax;margin:-75vmax 0 0 -75vmax;
+  z-index:90;pointer-events:none;background:var(--teal-dark);transform:scale(0);
+  clip-path:polygon(50% 0%,61% 30%,93% 25%,74% 50%,93% 75%,61% 70%,50% 100%,
+                    39% 70%,7% 75%,26% 50%,7% 25%,39% 30%);
+}
+#wipe.in{animation:wipeIn .26s ease-in forwards;}
+#wipe.out{animation:wipeOut .3s ease-out forwards;}
+body.anim-off #wipe,body.anim-lite #wipe{display:none;}
+
+/* ---------- Bintang penghargaan yang memancar ---------- */
+.burst{position:fixed;z-index:60;pointer-events:none;font-size:1rem;line-height:1;opacity:0;
+  animation:flyOut 1s cubic-bezier(.25,.9,.4,1) forwards;}
+.floatscore{position:fixed;pointer-events:none;z-index:61;font-family:var(--font-display);
+  font-weight:800;font-size:1.5rem;color:var(--sand-dark);opacity:0;
+  text-shadow:0 0 7px rgba(255,255,255,.95), 0 2px 5px rgba(255,255,255,.9);
+  animation:floatScore 1.05s cubic-bezier(.25,.9,.4,1) forwards;}
+
+/* ---------- Penekanan pada layar ---------- */
+body:not(.anim-off) .opt.correct{animation:popIn .38s cubic-bezier(.22,1.3,.4,1);}
+body:not(.anim-off) .opt.wrong{animation:nudge .36s;}
+body:not(.anim-off) .heart.hit{animation:beat .45s;}
+body:not(.anim-off) .star-big.on{animation:starPop .5s cubic-bezier(.22,1.3,.4,1) both;
+  animation-delay:calc(var(--i,0) * 160ms);}
+body:not(.anim-off) .chip.placed{animation:popIn .32s cubic-bezier(.22,1.3,.4,1);}
+body:not(.anim-off) .toast{animation:fadeUp .3s cubic-bezier(.22,1.3,.4,1);}
+body:not(.anim-off) .modal-card{animation:popIn .34s cubic-bezier(.22,1.2,.4,1);}
+body:not(.anim-off) .feedback{animation:fadeUp .34s both;}
+body:not(.anim-off) .q-hintbox{animation:fadeUp .3s both;}
+
+/* denyut pada simpul bab yang sedang terbuka */
+.node.current .orb::after{content:"";position:absolute;inset:-7px;border-radius:50%;
+  border:3px solid var(--white);opacity:0;}
+body.anim-full .node.current .orb::after{animation:pulseRing 1.9s cubic-bezier(0,0,.2,1) infinite;}
+.node .orb{position:relative;}
+
+/* kilau pada judul */
+.game-title{
+  background:linear-gradient(100deg,var(--white) 38%,var(--sand-pale) 50%,var(--white) 62%);
+  background-size:260% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;
+}
+body.anim-full .game-title{animation:shimmer 5.5s ease-in-out infinite;}
+body:not(.anim-full) .game-title{background:none;color:var(--white);}
+
+.caret{display:inline-block;width:8px;height:1em;background:var(--sand);vertical-align:-2px;
+  margin-left:2px;border-radius:2px;}
+body.anim-full .caret{animation:typeCaret .8s steps(1) infinite;}
+body:not(.anim-full) .caret{display:none;}
+
+/* cincin girih pada lambang */
+.logo-badge{position:relative;}
+.logo-badge .ring{position:absolute;inset:0;display:block;width:100%;height:100%;}
+.logo-badge .ring.rev{inset:11px;width:auto;height:auto;}
+.logo-badge .core{position:relative;z-index:1;}
+
+/* ornamen pemisah */
+.ornament{display:block;width:100%;max-width:190px;margin:12px auto;opacity:.75;}
+
+/* hormati pengaturan sistem */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;}
+}
+body.anim-off *,body.anim-off *::before,body.anim-off *::after{
+  animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;
+}
+
 /* ---------- Responsif & aksesibilitas ---------- */
 @media (max-width:640px){
   .screen{padding:10px 12px 14px;}
@@ -364,12 +509,6 @@ p{margin:0;}
   .title-tag{display:none;}
   .logo-badge{width:84px;}
 }
-body.reduce-motion *,body.reduce-motion *::before,body.reduce-motion *::after{
-  animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;
-}
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
-}
 body.big-text{font-size:1.1rem;}
 body.high-contrast .opt{border-width:3px;}
 body.high-contrast .story-box{border:3px solid var(--teal-dark);}
@@ -380,18 +519,32 @@ body.high-contrast .panel{border:2px solid var(--teal-dark);}
 
 <!-- ===================== SKY BACKDROP ===================== -->
 <div id="sky" aria-hidden="true">
-  <svg viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
-    <g fill="#ffffff" opacity="0.07">
-      <path d="M-40 90q70-70 150-30t60 120-90 90-140-40-20-140z"/>
-      <path d="M880 40q80-30 130 40t-20 130-140 20-50-130z"/>
-      <circle cx="120" cy="420" r="46"/>
-      <circle cx="930" cy="470" r="62"/>
-      <path d="M60 880q60-80 150-40t40 140-130 60-80-90z"/>
-      <circle cx="820" cy="880" r="74"/>
-      <circle cx="500" cy="60" r="30"/>
-      <circle cx="300" cy="960" r="40"/>
+  <!-- anyaman bintang delapan (girih) yang bergeser perlahan -->
+  <svg id="sky-pattern" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <pattern id="girih-tile" width="120" height="120" patternUnits="userSpaceOnUse">
+        <g fill="none" stroke="#ffffff" stroke-width="1.5" opacity=".11">
+          <path d="M60 8 73 33 100 22 89 49 114 60 89 71 100 98 73 87 60 112 47 87 20 98 31 71 6 60 31 49 20 22 47 33Z"/>
+          <circle cx="60" cy="60" r="15"/>
+          <path d="M0 0 12 0M120 0 108 0M0 120 12 120M120 120 108 120"/>
+        </g>
+      </pattern>
+    </defs>
+    <g id="girih"><rect x="-240" y="-240" width="1480" height="1480" fill="url(#girih-tile)"/></g>
+    <g fill="#ffffff" opacity="0.06">
+      <circle cx="140" cy="180" r="120"/><circle cx="900" cy="620" r="150"/>
+      <circle cx="520" cy="960" r="110"/>
     </g>
   </svg>
+  <!-- bulan sabit & bintang -->
+  <svg id="sky-moon" viewBox="0 0 200 200" aria-hidden="true">
+    <g class="amb-float">
+      <path d="M118 34a54 54 0 1 0 32 98 62 62 0 0 1-32-98z" fill="#fbe6c8" opacity=".5"/>
+      <path d="M150 24l5 11 12 2-9 8 2 12-10-6-10 6 2-12-9-8 12-2z" fill="#fbe6c8" opacity=".55" class="amb-twinkle"/>
+    </g>
+  </svg>
+  <div id="skystars"></div>
+  <div id="lanterns"></div>
 </div>
 
 <!-- ===================== APP ===================== -->
@@ -402,6 +555,16 @@ body.high-contrast .panel{border:2px solid var(--teal-dark);}
   <section class="screen" id="screen-title" aria-label="Layar judul">
     <div class="title-wrap">
       <div class="logo-badge">
+        <svg class="ring amb-spin" viewBox="0 0 200 200" aria-hidden="true">
+          <g fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2.4">
+            <path d="M100 6 122 48 168 38 154 82 196 100 154 118 168 162 122 152 100 194 78 152 32 162 46 118 4 100 46 82 32 38 78 48Z"/>
+          </g>
+        </svg>
+        <svg class="ring rev amb-spin-rev" viewBox="0 0 200 200" aria-hidden="true">
+          <g fill="none" stroke="rgba(251,230,200,.65)" stroke-width="2">
+            <circle cx="100" cy="100" r="92" stroke-dasharray="4 13"/>
+          </g>
+        </svg>
         <div class="core">
           <svg viewBox="0 0 100 100" aria-hidden="true" style="width:100%;display:block">
             <path d="M62 14a36 36 0 1 0 22 66A42 42 0 0 1 62 14z" fill="#1e9184"/>
@@ -412,6 +575,7 @@ body.high-contrast .panel{border:2px solid var(--teal-dark);}
 
       <h1 class="game-title">ZAKAT<br>QUEST</h1>
       <div class="game-sub">Petualangan Cahaya Berbagi</div>
+      <div id="title-orn" style="width:220px"></div>
       <p class="title-tag">Jelajahi 7 babak perjalanan: pelajari nisab, haul, 8 asnaf, dan hitung zakatmu sendiri dengan kalkulator yang benar-benar bisa dipakai.</p>
 
       <div class="title-actions">
@@ -557,6 +721,8 @@ body.high-contrast .panel{border:2px solid var(--teal-dark);}
   <div class="panel modal-card" id="modal-card"></div>
 </div>
 
+<div id="wipe" aria-hidden="true"></div>
+
 <script>
 /* ================================================================
    ZAKAT QUEST  —  game edukasi zakat (single file, tanpa build)
@@ -624,12 +790,20 @@ const defaultSave = () => ({
   totalScore: 0,
   scores: [],            // papan skor lokal
   calcPrefs: { gold: 1950000, silver: 21000, rice: 14000 },
-  settings: { sound: true, music: false, motion: true, bigText: false, contrast: false },
+  settings: { sound: true, anim: 'full', bigText: false, contrast: false },
   stats: { correct: 0, wrong: 0, played: 0, perfect: 0 },
   createdAt: Date.now()
 });
 
 let SAVE = defaultSave();
+
+/** Menerima simpanan lama yang memakai motion:true/false. */
+function normalizeSettings(st) {
+  if (st.anim === undefined) st.anim = st.motion === false ? 'off' : 'full';
+  if (!['full', 'lite', 'off'].includes(st.anim)) st.anim = 'full';
+  delete st.motion; delete st.music;
+  return st;
+}
 
 function loadSave() {
   try {
@@ -641,7 +815,7 @@ function loadSave() {
       ...base, ...parsed,
       levels:    { ...base.levels,    ...(parsed.levels    || {}) },
       calcPrefs: { ...base.calcPrefs, ...(parsed.calcPrefs || {}) },
-      settings:  { ...base.settings,  ...(parsed.settings  || {}) },
+      settings:  normalizeSettings({ ...base.settings, ...(parsed.settings || {}) }),
       stats:     { ...base.stats,     ...(parsed.stats     || {}) },
       badges:    Array.isArray(parsed.badges) ? parsed.badges : [],
       scores:    Array.isArray(parsed.scores) ? parsed.scores : []
@@ -699,13 +873,15 @@ const Audio2 = (() => {
     notes.forEach(([f, w, d]) => tone(f, d || 0.13, type, w));
   return {
     unlock,
-    click:   () => tone(620, 0.06, 'square', 0, 0.5),
-    hover:   () => tone(880, 0.03, 'sine', 0, 0.22),
-    correct: () => seq([[659, 0], [784, 0.08], [1047, 0.16, 0.24]]),
-    wrong:   () => seq([[240, 0], [180, 0.1, 0.26]], 'sawtooth'),
-    coin:    () => seq([[988, 0], [1319, 0.06, 0.18]], 'square'),
-    star:    () => seq([[784, 0], [988, 0.09], [1175, 0.18], [1568, 0.27, 0.38]]),
-    win:     () => seq([[523, 0], [659, 0.11], [784, 0.22], [1047, 0.33], [1319, 0.44, 0.5]]),
+    // Nada memakai tangga nada maqam Hijaz (D–Eb–F#–G–A–Bb–C) agar terasa bernuansa Timur Tengah.
+    click:   () => tone(587.33, 0.05, 'triangle', 0, 0.45),
+    hover:   () => tone(880, 0.03, 'sine', 0, 0.2),
+    correct: () => seq([[587.33, 0], [739.99, 0.08], [880, 0.16, 0.26]]),
+    wrong:   () => seq([[233.08, 0], [174.61, 0.1, 0.28]], 'sawtooth'),
+    coin:    () => seq([[880, 0], [1174.66, 0.06, 0.18]], 'square'),
+    star:    () => seq([[440, 0], [466.16, 0.08], [587.33, 0.17], [739.99, 0.26, 0.4]]),
+    win:     () => seq([[293.66, 0], [369.99, 0.1], [440, 0.2], [587.33, 0.3],
+                        [739.99, 0.4], [880, 0.5], [1174.66, 0.62, 0.62]]),
     lose:    () => seq([[392, 0], [330, 0.14], [262, 0.28, 0.5]], 'sawtooth'),
     whoosh:  () => tone(320, 0.2, 'sine', 0, 0.35),
     badge:   () => seq([[1047, 0], [1319, 0.07], [1568, 0.14], [2093, 0.22, 0.3]])
@@ -713,10 +889,87 @@ const Audio2 = (() => {
 })();
 
 /* ---------------------------------------------------------------
-   4. UMPAN BALIK RINGAN
-   Tanpa partikel, getar layar, maupun kilat. Umpan balik jawaban cukup
-   lewat warna pada opsi, bunyi singkat, dan kotak penjelasan.
+   4. GERAK — latar Islami, transisi bintang, umpan balik
+   Semua dikendalikan tiga tingkat: 'full' | 'lite' | 'off'.
    --------------------------------------------------------------- */
+const anim = () => (SAVE.settings && SAVE.settings.anim) || 'full';
+const animOn = () => anim() !== 'off';
+const animFull = () => anim() === 'full';
+
+/** Memberi nomor urut agar unsur muncul bergiliran, bukan serempak. */
+function stagger(nodes, cls = 'enter') {
+  if (!animOn()) return;
+  nodes.forEach((el, i) => { el.style.setProperty('--i', i); el.classList.add(cls); });
+}
+
+/** Bintang delapan kecil memancar dari sebuah unsur. */
+function burstStars(el, n = 7) {
+  if (!animFull() || !el) return;
+  const r = el.getBoundingClientRect();
+  const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+  const glyphs = ['✦', '✧', '★', '✩'];
+  for (let i = 0; i < n; i++) {
+    const a = (Math.PI * 2 * i) / n + rand(-0.3, 0.3), d = rand(64, 128);
+    const sp = document.createElement('span');
+    sp.className = 'burst';
+    sp.textContent = glyphs[randInt(0, glyphs.length - 1)];
+    sp.style.left = cx + 'px';
+    sp.style.top = cy + 'px';
+    sp.style.color = ['#f6c445', '#e8a75f', '#fbe6c8'][randInt(0, 2)];
+    sp.style.fontSize = rand(1.05, 1.9).toFixed(2) + 'rem';
+    sp.style.setProperty('--dx', (Math.cos(a) * d).toFixed(1) + 'px');
+    sp.style.setProperty('--dy', (Math.sin(a) * d - 18).toFixed(1) + 'px');
+    document.body.appendChild(sp);
+    setTimeout(() => sp.remove(), 1050);
+  }
+}
+
+/** Angka poin yang melayang naik dari tombol jawaban. */
+function floatScore(el, text) {
+  if (!animOn() || !el) return;
+  const r = el.getBoundingClientRect();
+  const d = document.createElement('div');
+  d.className = 'floatscore';
+  d.textContent = text;
+  d.style.left = (r.left + r.width / 2 - 24) + 'px';
+  d.style.top = (r.top - 4) + 'px';
+  document.body.appendChild(d);
+  setTimeout(() => d.remove(), 1100);
+}
+
+/** Angka pada layar hasil dihitung naik, bukan muncul begitu saja. */
+function countUp(el, to, ms = 900) {
+  if (!el) return;
+  if (!animOn()) { el.textContent = to.toLocaleString('id-ID'); return; }
+  const t0 = performance.now();
+  (function step(t) {
+    const k = Math.min(1, (t - t0) / ms);
+    const eased = 1 - Math.pow(1 - k, 3);
+    el.textContent = Math.round(to * eased).toLocaleString('id-ID');
+    if (k < 1) requestAnimationFrame(step);
+  })(t0);
+}
+
+/** Bintang & lentera pada latar, dibuat sekali saat permainan dimuat. */
+function buildSky() {
+  $('#skystars').innerHTML = Array.from({ length: 34 }, () => {
+    const sz = rand(1.5, 3.4).toFixed(1);
+    return `<i class="skystar amb-twinkle" style="left:${rand(0, 100).toFixed(2)}%;
+      top:${rand(0, 80).toFixed(2)}%;width:${sz}px;height:${sz}px;
+      animation-delay:${rand(0, 4).toFixed(1)}s"></i>`;
+  }).join('');
+
+  $('#lanterns').innerHTML = Array.from({ length: 5 }, (_, i) => `
+    <svg class="lantern" style="left:${rand(5, 92).toFixed(1)}%;--rise:${randInt(28, 44)}s;
+         animation-delay:${(-i * 7.5).toFixed(1)}s" viewBox="0 0 40 68" aria-hidden="true">
+      <path d="M20 2v7" stroke="#fbe6c8" stroke-width="2" opacity=".5"/>
+      <path d="M20 9l9 7-9 7-9-7z" fill="#fbe6c8" opacity=".45"/>
+      <path d="M9 18h22l-3 32H12z" fill="#e8a75f" opacity=".55"/>
+      <ellipse cx="20" cy="34" rx="7" ry="11" fill="#fff7ec" opacity=".65"/>
+      <path d="M12 50h16v5H12z" fill="#fbe6c8" opacity=".45"/>
+      <path d="M20 55v9" stroke="#fbe6c8" stroke-width="1.6" opacity=".35"/>
+    </svg>`).join('');
+}
 function armButton(btn, fn, ms = 300) {
   btn.disabled = true;                       // terlihat belum aktif, bukan klik yang diabaikan diam-diam
   btn.addEventListener('click', fn);
@@ -769,11 +1022,20 @@ const Router = (() => {
     if (!to) return;
     if (!opts.replace && current !== name) history.push(current);
     Audio2.whoosh();
-    if (from) from.classList.remove('active');
-    to.classList.add('active');
-    to.scrollTop = 0;
-    const sc = to.querySelector('.scroller'); if (sc) sc.scrollTop = 0;
-    current = name;
+    const swap = () => {
+      if (from) from.classList.remove('active');
+      to.classList.add('active');
+      to.scrollTop = 0;
+      const sc = to.querySelector('.scroller'); if (sc) sc.scrollTop = 0;
+      current = name;
+    };
+    if (!animFull()) { swap(); return; }
+    const w = $('#wipe');
+    w.classList.remove('out'); w.classList.add('in');
+    await sleep(260);
+    swap();
+    w.classList.remove('in'); w.classList.add('out');
+    setTimeout(() => w.classList.remove('out'), 320);
   }
   function back() {
     const prev = history.pop() || 'title';
@@ -831,7 +1093,8 @@ function sceneSVG(kind) {
 
   const body = {
     gate: `
-      <circle cx="500" cy="180" r="66" fill="${P.yellow}"/>
+      <circle class="amb-glow" cx="500" cy="180" r="66" fill="${P.yellow}"/>
+      <g class="amb-bird"><g class="amb-flap"><path d="M120 96q13-15 26 0q-13-8-26 0" fill="#3d6b64" opacity=".5"/></g></g>
       ${flatHills(340, '#cfe4d2', 4)}
       <rect x="0" y="390" width="1000" height="210" fill="${P.sand}"/>
       ${flatMosque(470, 390, 220, P.cream, P.teal, P.sandDark)}
@@ -841,7 +1104,7 @@ function sceneSVG(kind) {
       <rect x="160" y="348" width="40" height="42" rx="5" fill="${P.tealDark}"/>`,
 
     market: `
-      <circle cx="850" cy="130" r="54" fill="${P.yellow}"/>
+      <circle class="amb-glow" cx="850" cy="130" r="54" fill="${P.yellow}"/>
       ${flatHills(330, '#a9d8cf', 3)}
       <rect x="0" y="380" width="1000" height="220" fill="${P.sandDark}"/>
       <rect x="0" y="380" width="1000" height="26" fill="${P.sand}"/>
@@ -849,19 +1112,23 @@ function sceneSVG(kind) {
         <g>
           <rect x="${x}" y="${270 + i % 2 * 14}" width="220" height="${110 - i % 2 * 14}" rx="8" fill="${P.cream}"/>
           <rect x="${x - 14}" y="${238 + i % 2 * 14}" width="248" height="34" rx="8" fill="${c}"/>
-          <circle cx="${x + 60}" cy="${325 + i % 2 * 14}" r="22" fill="${P.sand}"/>
+          <circle class="amb-glow" cx="${x + 60}" cy="${325 + i % 2 * 14}" r="22" fill="${P.sand}"
+                  style="animation-delay:${(i * 0.7).toFixed(1)}s"/>
           <circle cx="${x + 120}" cy="${325 + i % 2 * 14}" r="22" fill="${P.tealDark}"/>
           <circle cx="${x + 180}" cy="${325 + i % 2 * 14}" r="22" fill="${P.red}"/>
         </g>`).join('')}`,
 
     field: `
-      <circle cx="150" cy="120" r="58" fill="${P.yellow}"/>
+      <circle class="amb-glow" cx="150" cy="120" r="58" fill="${P.yellow}"/>
+      <g class="amb-bird" style="animation-duration:26s"><g class="amb-flap">
+        <path d="M700 86q14-16 28 0q-14-9-28 0" fill="#3d6b64" opacity=".45"/></g></g>
       ${flatHills(300, '#a9d8cf', 4)}
       <rect x="0" y="340" width="1000" height="260" fill="${P.leaf}"/>
       <rect x="0" y="340" width="1000" height="22" fill="#6fbd74"/>
       ${Array.from({ length: 18 }, (_, i) => {
         const x = 40 + i * 54, y = 420 + (i % 3) * 56;
-        return `<g><rect x="${x - 2}" y="${y - 44}" width="4" height="44" rx="2" fill="#3f7d44"/>
+        return `<g class="amb-sway" style="animation-delay:${(i * 0.17).toFixed(2)}s">
+          <rect x="${x - 2}" y="${y - 44}" width="4" height="44" rx="2" fill="#3f7d44"/>
           <ellipse cx="${x}" cy="${y - 52}" rx="9" ry="16" fill="${P.yellow}"/></g>`;
       }).join('')}
       <g transform="translate(790,250)">
@@ -878,18 +1145,19 @@ function sceneSVG(kind) {
       <rect x="170" y="158" width="660" height="14" fill="${P.teal}"/>
       <text x="500" y="156" font-size="24" text-anchor="middle" fill="${P.white}"
             font-family="sans-serif" font-weight="bold">LEMBAGA AMIL ZAKAT</text>
-      <rect x="220" y="208" width="200" height="150" rx="10" fill="${P.white}"/>
+      <g class="amb-float"><rect x="220" y="208" width="200" height="150" rx="10" fill="${P.white}"/>
       <rect x="244" y="238" width="152" height="14" rx="7" fill="${P.teal}"/>
       <rect x="244" y="266" width="108" height="14" rx="7" fill="#8fd4c9"/>
-      <rect x="244" y="294" width="134" height="14" rx="7" fill="#c3e4dd"/>
+      <rect x="244" y="294" width="134" height="14" rx="7" fill="#c3e4dd"/></g>
       <rect x="452" y="208" width="160" height="150" rx="10" fill="${P.sandPale}"/>
       <text x="532" y="300" font-size="56" text-anchor="middle">🧮</text>
-      <circle cx="720" cy="250" r="40" fill="${P.sand}"/>
-      <text x="720" y="264" font-size="28" text-anchor="middle" fill="#5b3413" font-weight="bold">Rp</text>
-      <circle cx="770" cy="330" r="26" fill="${P.yellow}"/>`,
+      <g class="amb-float" style="animation-delay:-1.6s">
+        <circle cx="720" cy="250" r="40" fill="${P.sand}"/>
+        <text x="720" y="264" font-size="28" text-anchor="middle" fill="#5b3413" font-weight="bold">Rp</text></g>
+      <g class="amb-float" style="animation-delay:-3.2s"><circle cx="770" cy="330" r="26" fill="${P.yellow}"/></g>`,
 
     village: `
-      <circle cx="820" cy="210" r="62" fill="${P.sand}"/>
+      <circle class="amb-glow" cx="820" cy="210" r="62" fill="${P.sand}"/>
       ${flatHills(330, '#e6c39a', 4)}
       <rect x="0" y="400" width="1000" height="200" fill="${P.brown}"/>
       <rect x="0" y="400" width="1000" height="24" fill="${P.sandDark}"/>
@@ -898,28 +1166,34 @@ function sceneSVG(kind) {
           <rect x="0" y="60" width="140" height="88" rx="6" fill="${[P.cream, P.sandPale, P.cream, P.sandPale, P.cream][i]}"/>
           <path d="M-16 60h172L70 8z" fill="${[P.red, P.tealDark, P.red, P.tealDark, P.red][i]}"/>
           <rect x="54" y="100" width="34" height="48" rx="5" fill="${P.brown}"/>
-          <rect x="16" y="82" width="26" height="26" rx="4" fill="${P.yellow}"/>
-          <rect x="100" y="82" width="26" height="26" rx="4" fill="${P.yellow}"/>
+          <rect class="amb-glow" x="16" y="82" width="26" height="26" rx="4" fill="${P.yellow}"
+                style="animation-delay:${(i * 0.6).toFixed(1)}s"/>
+          <rect class="amb-glow" x="100" y="82" width="26" height="26" rx="4" fill="${P.yellow}"
+                style="animation-delay:${(i * 0.9).toFixed(1)}s"/>
         </g>`).join('')}`,
 
     night: `
       ${Array.from({ length: 26 }, (_, i) =>
-        `<circle cx="${(i * 137) % 980 + 12}" cy="${(i * 83) % 250 + 16}" r="${2 + (i % 3)}" fill="${P.white}" opacity=".7"/>`).join('')}
-      <path d="M700 110a62 62 0 1 0 36 112 72 72 0 0 1-36-112z" fill="${P.sandPale}"/>
+        `<circle class="amb-twinkle" cx="${(i * 137) % 980 + 12}" cy="${(i * 83) % 250 + 16}"
+          r="${2 + (i % 3)}" fill="${P.white}" opacity=".7"
+          style="animation-delay:${(i * 0.21).toFixed(2)}s"/>`).join('')}
+      <g class="amb-float"><path d="M700 110a62 62 0 1 0 36 112 72 72 0 0 1-36-112z" fill="${P.sandPale}"/></g>
       <rect x="0" y="420" width="1000" height="180" fill="${P.tealDeep}"/>
       ${flatMosque(470, 420, 240, '#1c6f66', '#2f8f83', P.sand)}
-      ${[140, 240, 780, 880].map(x => `
-        <g><path d="M${x} 210l16 26-16 32-16-32z" fill="${P.sand}"/>
-           <path d="M${x} 252v20" stroke="${P.sandDark}" stroke-width="3"/></g>`).join('')}`,
+      ${[140, 240, 780, 880].map((x, i) => `
+        <g class="amb-float" style="animation-delay:${(i * 0.9).toFixed(1)}s">
+          <path d="M${x} 210l16 26-16 32-16-32z" fill="${P.sand}"/>
+          <circle class="amb-glow" cx="${x}" cy="${236}" r="13" fill="${P.sandPale}" opacity=".5"/>
+          <path d="M${x} 252v20" stroke="${P.sandDark}" stroke-width="3"/></g>`).join('')}`,
 
     hall: `
-      <circle cx="500" cy="150" r="80" fill="${P.sand}"/>
+      <circle class="amb-glow" cx="500" cy="150" r="80" fill="${P.sand}"/>
       <rect x="0" y="400" width="1000" height="200" fill="${P.tealDark}"/>
       <rect x="130" y="190" width="740" height="210" rx="10" fill="${P.cream}"/>
       ${[0, 1, 2, 3, 4, 5].map(i =>
         `<rect x="${180 + i * 118}" y="220" width="26" height="180" rx="13" fill="${P.sandPale}"/>`).join('')}
       <path d="M110 190h780L500 104z" fill="${P.teal}"/>
-      <text x="500" y="340" font-size="72" text-anchor="middle">🏅</text>`
+      <g class="amb-float"><text x="500" y="340" font-size="72" text-anchor="middle">🏅</text></g>`
   };
 
   return `<svg style="width:100%;height:100%;display:block" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice">
@@ -1387,6 +1661,19 @@ const RANKS = [
 ];
 const rankOf = s => RANKS.reduce((acc, r) => (s >= r.min ? r.name : acc), RANKS[0].name);
 
+/** Ornamen arabesque tipis sebagai pemisah bernuansa Islami. */
+function ornament(color = 'var(--sand)') {
+  return `<svg class="ornament" viewBox="0 0 200 22" aria-hidden="true">
+    <g fill="none" stroke="${color}" stroke-width="2" stroke-linecap="round">
+      <path d="M8 11h56"/><path d="M136 11h56"/>
+      <path d="M78 11q11-11 22 0t22 0"/>
+      <path d="M78 11q11 11 22 0t22 0"/>
+      <circle cx="100" cy="11" r="3.4" fill="${color}" stroke="none"/>
+      <circle cx="70" cy="11" r="2" fill="${color}" stroke="none"/>
+      <circle cx="130" cy="11" r="2" fill="${color}" stroke="none"/>
+    </g></svg>`;
+}
+
 /* ---------------------------------------------------------------
    9. PROGRES — helper
    --------------------------------------------------------------- */
@@ -1403,6 +1690,7 @@ function grantBadge(id) {
   persist();
   Audio2.badge();
   toast(`${b.em} Lencana baru: <b>${escapeHTML(b.name)}</b>`, 'gold');
+  burstStars($('#toasts'), 10);
 }
 function addScore(n) {
   SAVE.totalScore = Math.max(0, SAVE.totalScore + n);
@@ -1420,7 +1708,7 @@ function refreshHUD() {
    --------------------------------------------------------------- */
 const NODE_POS = [
   { x: 11, y: 76 }, { x: 25, y: 46 }, { x: 39, y: 74 }, { x: 53, y: 40 },
-  { x: 67, y: 70 }, { x: 80, y: 36 }, { x: 91, y: 70 }
+  { x: 67, y: 70 }, { x: 80, y: 36 }, { x: 89, y: 70 }
 ];
 
 function renderMapBackground() {
@@ -1482,13 +1770,19 @@ function renderMap() {
     });
     host.appendChild(b);
   });
+  stagger($$('.node', host), 'enter-pop');
 
   // jalur yang sudah ditempuh digambar sepanjang kemajuan pemain
   const p = $('#path-done');
   if (p) {
     const len = p.getTotalLength();
     p.style.strokeDasharray = len;
-    p.style.strokeDashoffset = len * (1 - frac);
+    if (animOn()) {
+      p.style.strokeDashoffset = len;
+      requestAnimationFrame(() => { p.style.strokeDashoffset = len * (1 - frac); });
+    } else {
+      p.style.strokeDashoffset = len * (1 - frac);
+    }
   }
 }
 
@@ -1541,7 +1835,7 @@ function startChapter(id) {
    12. CERITA (typewriter)
    --------------------------------------------------------------- */
 const Story = (() => {
-  let idx = 0;
+  let idx = 0, typing = false, timer = null, full = '';
 
   function paint() {
     const lines = GAME.ch.story, line = lines[idx], who = CHARS[line.c];
@@ -1549,13 +1843,29 @@ const Story = (() => {
     $('#story-avatar').textContent = who.em;
     $('#story-avatar').style.fontSize = '1.25rem';
     $('#story-dots').innerHTML = lines.map((_, i) => `<i class="${i <= idx ? 'on' : ''}"></i>`).join('');
-    $('#story-text').innerHTML = line.t;
+    full = line.t;
+    const el = $('#story-text');
+    clearInterval(timer);
+    if (!animFull()) { el.innerHTML = full; typing = false; return; }
+    typing = true;
+    el.innerHTML = '';
+    let i = 0;
+    timer = setInterval(() => {
+      i += 3;
+      let part = full.slice(0, i);
+      // jangan memotong tag HTML di tengah
+      const lastOpen = part.lastIndexOf('<'), lastClose = part.lastIndexOf('>');
+      if (lastOpen > lastClose) part = part.slice(0, lastOpen);
+      el.innerHTML = part + '<span class="caret"></span>';
+      if (i >= full.length) { clearInterval(timer); typing = false; el.innerHTML = full; }
+    }, 16);
   }
   function next() {
+    if (typing) { clearInterval(timer); typing = false; $('#story-text').innerHTML = full; return; }
     if (idx < GAME.ch.story.length - 1) { idx++; paint(); }
     else finish();
   }
-  function finish() { Quiz.start(); }
+  function finish() { clearInterval(timer); typing = false; Quiz.start(); }
   function start() {
     idx = 0;
     $('#story-chapter').textContent = (GAME.ch.boss ? 'Ujian Akbar' : 'Bab ' + GAME.ch.id + ' — ' + GAME.ch.title);
@@ -1628,7 +1938,9 @@ const Quiz = (() => {
         <span class="key">${'ABCD'[i]}</span>
         <span>${o.t}</span>
       </button>`).join('');
-    $$('.opt', opts).forEach(b => b.addEventListener('click', () => answer(+b.dataset.i)));
+    const list = $$('.opt', opts);
+    stagger(list, 'enter-side');
+    list.forEach(b => b.addEventListener('click', () => answer(+b.dataset.i)));
     startTimer();
   }
 
@@ -1656,6 +1968,8 @@ const Quiz = (() => {
       gained = 100 + timeBonus + streakBonus;
       GAME.score += gained;
       Audio2.correct();
+      burstStars(btns[pick], 8);
+      floatScore(btns[pick], '+' + gained);
       if (GAME.streak >= 2) {
         const c = $('#combo');
         c.hidden = false;
@@ -1668,6 +1982,8 @@ const Quiz = (() => {
       SAVE.stats.wrong++;
       Audio2.wrong();
       drawHearts();
+      const lost = $$('.heart')[GAME.lives];   // hati pertama yang baru hilang
+      if (lost) lost.classList.add('hit');
     }
     persist();
     $('#quiz-score').textContent = GAME.score.toLocaleString('id-ID');
@@ -1909,6 +2225,7 @@ const MiniGame = (() => {
       bump(pts);
       const all = right === items.length;
       Audio2[all ? 'win' : right > items.length / 2 ? 'correct' : 'wrong']();
+      if (all) burstStars($('#bins'), 14);
       $('#mg-fb').innerHTML = `
         <div class="feedback ${all ? 'good' : 'bad'}" style="margin-top:14px">
           <b>${all ? '🎉 Sempurna!' : '📘 Hasil: ' + right + ' dari ' + items.length + ' tepat'}</b>
@@ -1978,7 +2295,8 @@ const MiniGame = (() => {
     function judge(pick) {
       const c = cfg.cases[i];
       const ok = pick === c.wajib;
-      if (ok) { right++; bump(80); Audio2.correct(); } else { Audio2.wrong(); }
+      if (ok) { right++; bump(80); Audio2.correct(); burstStars($('.scale-svg'), 8); }
+      else { Audio2.wrong(); }
       $$('[data-w]', card()).forEach(b => b.disabled = true);
       $('#mg-fb').innerHTML = `
         <div class="feedback ${ok ? 'good' : 'bad'}" style="margin-top:14px">
@@ -2035,7 +2353,8 @@ const MiniGame = (() => {
       const s = cfg.steps[i];
       const val = parseFloat(buf || '0');
       const ok = Math.abs(val - s.ans) < 0.011;
-      if (ok) { right++; bump(90); Audio2.correct(); } else { Audio2.wrong(); }
+      if (ok) { right++; bump(90); Audio2.correct(); burstStars($('#numdisp'), 8); }
+      else { Audio2.wrong(); }
       $('#mg-check').disabled = true;
       $$('.numpad button', card()).forEach(b => b.disabled = true);
       $('#mg-fb').innerHTML = `
@@ -2055,7 +2374,7 @@ const MiniGame = (() => {
 
   function summary(right, total) {
     const all = right === total;
-    if (all) Audio2.win();
+    if (all) { Audio2.win(); setTimeout(() => burstStars($('#mini-card'), 14), 120); }
     card().innerHTML = `
       <div style="text-align:center;padding:10px 0">
         <div style="font-size:3rem">${all ? '🎉' : right > total / 2 ? '👏' : '📘'}</div>
@@ -2090,8 +2409,8 @@ $('#btn-mini-quit').addEventListener('click', () => {
    15. HASIL BAB
    --------------------------------------------------------------- */
 const Result = (() => {
-  function starSVG(on) {
-    return `<svg class="star-big ${on ? 'on' : ''}" viewBox="0 0 24 24" aria-hidden="true">
+  function starSVG(on, i) {
+    return `<svg class="star-big ${on ? 'on' : ''}" viewBox="0 0 24 24" style="--i:${i}" aria-hidden="true">
       <path d="M12 2l3 6.6 7.2 1-5.2 5 1.3 7.2L12 18.4 5.7 21.8 7 14.6 1.8 9.6 9 8.6z"
         fill="${on ? '#f6c445' : '#b9cbc7'}"/></svg>`;
   }
@@ -2140,11 +2459,12 @@ const Result = (() => {
             : 'Selesai! Ulangi untuk mengejar tiga bintang.')
           : 'Jangan menyerah. Baca ulang materinya, lalu coba lagi.'}</p>
 
-      <div class="stars-row">${[0, 1, 2].map(i => starSVG(i < stars)).join('')}</div>
-      <div class="score-big">${GAME.score.toLocaleString('id-ID')}</div>
+      <div class="stars-row">${[0, 1, 2].map(i => starSVG(i < stars, i)).join('')}</div>
+      <div class="score-big" id="score-big">0</div>
       <div style="font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);font-weight:700">Poin diperoleh</div>
       ${isBest && completed ? '<div class="pill gold" style="margin-top:10px">✨ Rekor baru!</div>' : ''}
 
+      ${ornament('var(--sand)')}
       <div class="stat-grid">
         <div><b>${GAME.correct}</b><span>Benar</span></div>
         <div><b>${GAME.wrong}</b><span>Salah</span></div>
@@ -2161,8 +2481,11 @@ const Result = (() => {
         <button class="btn ghost sm" id="r-map">🗺 Peta</button>
       </div>`;
 
+    countUp($('#score-big'), GAME.score);
     if (completed) {
       Audio2[stars === 3 ? 'win' : 'star']();
+      if (stars === 3) setTimeout(() => burstStars($('.stars-row'), 14), 480);
+      stagger($$('#result-card .stat-grid div'), 'enter');
     } else Audio2.lose();
 
     const nx = $('#r-next'); if (nx) nx.onclick = () => startChapter(nextCh.id);
@@ -2189,7 +2512,7 @@ function showSummary() {
       <h2 id="modal-title" style="font-size:1.5rem;margin:6px 0">Rangkuman Zakat</h2>
       <p style="color:var(--ink-soft);font-size:.9rem">Bekal yang sudah kamu kuasai</p>
     </div>
-    <div class="divider"></div>
+    ${ornament('var(--teal)')}
     <div style="font-size:.9rem;line-height:1.7">
       <p><b>⚖️ Nisab &amp; kadar</b><br>Emas 85 g · Perak 595 g · Uang/dagang mengikuti 85 g emas → <b>2,5%</b>, haul 1 tahun.</p>
       <p style="margin-top:10px"><b>🌾 Pertanian</b><br>Nisab 5 wasaq ≈ 653 kg gabah. Tadah hujan <b>10%</b>, irigasi berbiaya <b>5%</b>, tiap panen tanpa haul.</p>
@@ -2652,6 +2975,8 @@ function renderProgress() {
     </div>`;
 
   $('#p-name').addEventListener('click', askName);
+  stagger($$('#progress-body .lb-row'), 'enter-side');
+  stagger($$('#progress-body .badge'), 'enter-pop');
 }
 
 function askName(onDone) {
@@ -2682,7 +3007,9 @@ function askName(onDone) {
    18. PENGATURAN & BANTUAN
    --------------------------------------------------------------- */
 function applySettings() {
-  document.body.classList.toggle('reduce-motion', !SAVE.settings.motion);
+  const lvl = SAVE.settings.anim || 'full';
+  document.body.classList.remove('anim-full', 'anim-lite', 'anim-off');
+  document.body.classList.add('anim-' + lvl);
   document.body.classList.toggle('big-text', !!SAVE.settings.bigText);
   document.body.classList.toggle('high-contrast', !!SAVE.settings.contrast);
 }
@@ -2699,10 +3026,23 @@ function openSettings() {
   openModal(`
     <h2 id="modal-title" style="font-size:1.4rem">⚙️ Pengaturan</h2>
     <div class="divider"></div>
-    ${row('sound', '🔊', 'Efek suara', 'Nada untuk jawaban benar, salah, dan koin.')}
-    ${row('motion', '✨', 'Animasi penuh', 'Matikan bila perangkat terasa berat atau kamu sensitif terhadap gerakan.')}
+    ${row('sound', '🔊', 'Efek suara', 'Nada untuk jawaban benar, salah, dan bintang.')}
     ${row('bigText', '🔠', 'Teks lebih besar', 'Memperbesar seluruh teks permainan.')}
     ${row('contrast', '🌓', 'Kontras tinggi', 'Mempertegas garis dan latar untuk keterbacaan.')}
+    <div class="divider"></div>
+    <div style="font-weight:700;font-size:.95rem;font-family:var(--font-display);margin-bottom:4px">✨ Animasi</div>
+    <p style="font-size:.78rem;color:var(--ink-soft);line-height:1.45;margin-bottom:9px">
+      Turunkan bila perangkat terasa berat atau kamu sensitif terhadap gerakan.</p>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px">
+      ${[['full', 'Penuh', 'Latar bergerak, transisi bintang'],
+         ['lite', 'Ringan', 'Hanya transisi seperlunya'],
+         ['off', 'Mati', 'Diam sepenuhnya']].map(([v, t, d]) => `
+        <button class="btn ${SAVE.settings.anim === v ? '' : 'ghost'} sm" data-anim="${v}"
+                style="flex-direction:column;gap:2px;padding:10px 6px" title="${d}">
+          <span>${t}</span>
+          <span style="font-size:.6rem;font-weight:500;opacity:.8;font-family:var(--font-body)">${d}</span>
+        </button>`).join('')}
+    </div>
     <div class="divider"></div>
     <button class="btn ghost sm block" id="set-name">✏️ Ubah nama pemain</button>
     <button class="btn sm block" id="set-close" style="margin-top:10px">Selesai</button>`);
@@ -2710,6 +3050,12 @@ function openSettings() {
     SAVE.settings[c.dataset.s] = c.checked;
     persist(true); applySettings();
     if (c.dataset.s === 'sound' && c.checked) Audio2.coin();
+  }));
+  $$('#modal-card [data-anim]').forEach(b => b.addEventListener('click', () => {
+    SAVE.settings.anim = b.dataset.anim;
+    persist(true); applySettings();
+    $$('#modal-card [data-anim]').forEach(o => o.classList.toggle('ghost', o !== b));
+    if (b.dataset.anim !== 'off') Audio2.star();
   }));
   $('#set-name').onclick = askName;
   $('#set-close').onclick = closeModal;
@@ -2800,6 +3146,8 @@ function boot() {
   booted = true;
   SAVE = loadSave();
   applySettings();
+  buildSky();
+  $('#title-orn').innerHTML = ornament('rgba(251,230,200,.8)');
   refreshHUD();
 
   const done = doneCount();
