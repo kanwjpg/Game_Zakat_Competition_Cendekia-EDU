@@ -40,9 +40,15 @@ hanyalah contoh dan **harus diperbarui** agar hasilnya akurat.
 Bintang per bab (maksimal 21), poin, tingkatan (Pemula → Ahli Zakat), **8 lencana**,
 papan skor lokal, dan statistik akurasi. Semua tersimpan di `localStorage`.
 
+### Gaya visual
+Desain **datar (flat)**: warna blok, sudut membulat, tanpa gradien, tanpa bayangan tebal,
+tanpa partikel atau paralaks. Palet dikunci pada tiga warna — teal, pasir, dan krem —
+dengan merah hanya untuk keadaan salah. Gerak dibatasi pada hal yang membantu membaca
+keadaan: bilah waktu, pergantian layar, dan perubahan warna pada pilihan jawaban.
+
 ### Aksesibilitas
 - Pintasan papan ketik: `A–D` / `1–4` memilih jawaban, `H` petunjuk, `Enter` lanjut, `Esc` tutup.
-- Sakelar **efek suara**, **animasi penuh**, **teks besar**, dan **kontras tinggi**.
+- Sakelar **efek suara**, **animasi**, **teks besar**, dan **kontras tinggi**.
 - Menghormati `prefers-reduced-motion`.
 - Efek suara disintesis lewat Web Audio API — tidak ada berkas audio yang perlu diunduh.
 
@@ -79,14 +85,14 @@ Seluruh permainan berada di `index.html`, disusun berurutan agar mudah ditelusur
 
 | Bagian | Isi |
 |--------|-----|
-| `<style>` | Token desain, latar langit beranimasi, komponen, tata letak responsif |
-| 1–6 | Util, penyimpanan, audio, partikel FX, pembantu UI, *router* layar |
-| 7 | `sceneSVG()` — latar cerita SVG yang digambar lewat kode |
+| `<style>` | Token desain datar, komponen, tata letak responsif |
+| 1–6 | Util, penyimpanan, audio, pembantu UI, *router* layar |
+| 7 | `sceneSVG()` — latar cerita SVG datar yang digambar lewat kode |
 | 8 | **`CHAPTERS`** — seluruh materi: cerita, soal, mini-game |
 | 9–13 | Progres, peta, keadaan permainan, mesin cerita, mesin kuis |
 | 14 | Mesin mini-game (`sort`, `scale`, `calc`) |
 | 15–16 | Layar hasil, kalkulator zakat |
-| 17–20 | Papan skor & lencana, pengaturan, latar paralaks, *boot* |
+| 17–19 | Papan skor & lencana, pengaturan, *boot* |
 
 ### Menambah bab baru
 Cukup tambahkan satu objek ke larik `CHAPTERS` — peta, pembukaan kunci, bintang, dan papan skor
@@ -139,6 +145,21 @@ Fondasi berikut sudah siap dipakai untuk pengembangan lanjutan:
 - **Mode turnamen** — papan skor sudah menyimpan nama, skor, bab, dan tanggal.
 - **Sertifikat cetak** — layar rangkuman sudah ada, tinggal ditambah `window.print()` bergaya.
 - **Ensiklopedia zakat** — istilah sudah tersebar di `why`/`dalil`, siap dikumpulkan jadi glosarium.
+
+---
+
+## 🎨 Mengubah Warna
+
+Seluruh warna berada pada satu blok `:root` di bagian atas `<style>`. Mengganti tiga token
+berikut sudah cukup untuk mengubah keseluruhan tampilan:
+
+```css
+--teal:#1e9184;   /* warna latar utama  */
+--sand:#e8a75f;   /* aksen & tombol     */
+--cream:#fff7ec;  /* bidang terang      */
+```
+
+Ilustrasi latar cerita memakai palet yang sama lewat objek `PAL` di bagian 7.
 
 ---
 
