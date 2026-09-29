@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <meta name="theme-color" content="#1e9184" />
-<meta name="description" content="Zakat Quest — game edukasi petualangan tentang zakat untuk pelajar SMP & SMA. Enam bab cerita bergambar, kuis, mini-game, dan kalkulator zakat lengkap." />
-<title>Zakat Quest — Petualangan Cahaya Berbagi</title>
+<meta name="description" content="Zakat Quest: The Path of Prosperity — an HTML5 learning game on zakat for secondary students. Eight illustrated chapters, quizzes, mini-games, and a working zakat calculator." />
+<title>Zakat Quest — The Path of Prosperity</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -127,7 +127,7 @@ p{margin:0;}
 .panel{background:var(--white);border-radius:var(--r-lg);position:relative;overflow:hidden;}
 /* motif bintang delapan samar di sudut kanan atas setiap panel */
 .panel::after{
-  content:"";position:absolute;right:-26px;top:-26px;width:130px;height:130px;pointer-events:none;opacity:.06;
+  content:"";position:absolute;right:-26px;top:-26px;width:118px;height:118px;pointer-events:none;opacity:.045;
   background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%2313675e' stroke-width='4'%3E%3Cpath d='M60 6 76 32 106 24 98 54 118 60 98 66 106 96 76 88 60 114 44 88 14 96 22 66 2 60 22 54 14 24 44 32Z'/%3E%3Ccircle cx='60' cy='60' r='18'/%3E%3C/g%3E%3C/svg%3E") center/contain no-repeat;
 }
 .panel.no-motif::after{display:none;}
@@ -141,6 +141,10 @@ p{margin:0;}
 .kicker{font-size:.74rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--sand-dark);}
 
 /* ---------- Layar judul ---------- */
+.title-facts{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:4px;}
+.title-facts span{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:var(--r-pill);
+  background:rgba(255,255,255,.14);color:var(--cream);font-size:.76rem;font-weight:600;}
+.title-facts b{font-family:var(--font-display);font-weight:700;}
 #screen-title{justify-content:center;align-items:center;text-align:center;overflow-y:auto;}
 .title-wrap{display:flex;flex-direction:column;align-items:center;gap:6px;max-width:600px;width:100%;}
 .logo-badge{width:clamp(118px,21vw,158px);aspect-ratio:1;display:grid;place-items:center;margin-bottom:14px;}
@@ -178,7 +182,7 @@ p{margin:0;}
 
 .node{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:5px;
   cursor:pointer;background:none;border:0;padding:0;}
-.node .orb{width:clamp(50px,8vw,64px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;
+.node .orb{width:clamp(44px,7vw,58px);aspect-ratio:1;border-radius:50%;display:grid;place-items:center;
   background:var(--white);border:3px solid var(--teal-dark);font-size:clamp(1.3rem,3vw,1.7rem);
   transition:transform var(--t);}
 .node:hover .orb{transform:scale(1.07);}
@@ -186,8 +190,9 @@ p{margin:0;}
 .node.locked .orb{border-color:var(--muted);background:#eef3f2;}
 .node.current .orb{border-color:var(--red);}
 .node.boss .orb{border-color:var(--red);}
-.node .label{font-family:var(--font-display);font-weight:700;font-size:.74rem;color:var(--white);
-  background:var(--teal-dark);padding:3px 9px;border-radius:var(--r-pill);white-space:nowrap;}
+.node .label{font-family:var(--font-display);font-weight:700;font-size:.68rem;color:var(--white);
+  background:var(--teal-dark);padding:3px 8px;border-radius:var(--r-pill);white-space:nowrap;}
+@media (max-width:720px){.node .label{font-size:.6rem;padding:2px 6px;}}
 .node .stars{display:flex;gap:1px;font-size:.62rem;}
 .map-cloud{display:none;}
 
@@ -523,7 +528,7 @@ body.high-contrast .panel{border:2px solid var(--teal-dark);}
   <svg id="sky-pattern" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice">
     <defs>
       <pattern id="girih-tile" width="120" height="120" patternUnits="userSpaceOnUse">
-        <g fill="none" stroke="#ffffff" stroke-width="1.5" opacity=".11">
+        <g fill="none" stroke="#ffffff" stroke-width="1.4" opacity=".075">
           <path d="M60 8 73 33 100 22 89 49 114 60 89 71 100 98 73 87 60 112 47 87 20 98 31 71 6 60 31 49 20 22 47 33Z"/>
           <circle cx="60" cy="60" r="15"/>
           <path d="M0 0 12 0M120 0 108 0M0 120 12 120M120 120 108 120"/>
@@ -552,7 +557,7 @@ body.high-contrast .panel{border:2px solid var(--teal-dark);}
 <div class="stage">
 
   <!-- ---------- TITLE ---------- -->
-  <section class="screen" id="screen-title" aria-label="Layar judul">
+  <section class="screen" id="screen-title" aria-label="Title screen">
     <div class="title-wrap">
       <div class="logo-badge">
         <svg class="ring amb-spin" viewBox="0 0 200 200" aria-hidden="true">
@@ -574,50 +579,51 @@ body.high-contrast .panel{border:2px solid var(--teal-dark);}
       </div>
 
       <h1 class="game-title">ZAKAT<br>QUEST</h1>
-      <div class="game-sub">Petualangan Cahaya Berbagi</div>
+      <div class="game-sub">The Path of Prosperity</div>
       <div id="title-orn" style="width:220px"></div>
-      <p class="title-tag">Jelajahi 7 babak perjalanan: pelajari nisab, haul, 8 asnaf, dan hitung zakatmu sendiri dengan kalkulator yang benar-benar bisa dipakai.</p>
+      <div class="title-facts" id="title-facts"></div>
+      <p class="title-tag">Eight chapters, from your own pocket to the wider world: nisab, haul, the eight recipients, zakat and the global goals — and a calculator you can really use.</p>
 
       <div class="title-actions">
-        <button class="btn" id="btn-play"><span class="ico">▶</span><span id="play-label">Mulai Petualangan</span></button>
-        <button class="btn emerald" id="btn-calc"><span class="ico">🧮</span>Kalkulator Zakat</button>
+        <button class="btn" id="btn-play"><span class="ico">▶</span><span id="play-label">Start the Journey</span></button>
+        <button class="btn emerald" id="btn-calc"><span class="ico">🧮</span>Zakat Calculator</button>
       </div>
       <div class="title-foot">
-        <button class="btn ghost sm" id="btn-progress"><span class="ico">🏆</span>Progres &amp; Papan Skor</button>
-        <button class="btn ghost sm" id="btn-howto"><span class="ico">❓</span>Cara Main</button>
-        <button class="btn ghost sm" id="btn-settings"><span class="ico">⚙️</span>Pengaturan</button>
+        <button class="btn ghost sm" id="btn-progress"><span class="ico">🏆</span>Progress &amp; Scores</button>
+        <button class="btn ghost sm" id="btn-howto"><span class="ico">❓</span>How to Play</button>
+        <button class="btn ghost sm" id="btn-settings"><span class="ico">⚙️</span>Settings</button>
       </div>
       <p class="saved-note" id="saved-note" hidden></p>
     </div>
   </section>
 
   <!-- ---------- WORLD MAP ---------- -->
-  <section class="screen" id="screen-map" aria-label="Peta perjalanan">
+  <section class="screen" id="screen-map" aria-label="Journey map">
     <div class="hud glass map-head">
-      <button class="iconbtn" data-nav="title" aria-label="Kembali ke menu utama">←</button>
-      <div class="hud-stat"><span class="ico">⭐</span><span id="map-stars">0</span><span style="opacity:.55;font-weight:600">/21</span></div>
+      <button class="iconbtn" data-nav="title" aria-label="Back to main menu">←</button>
+      <div class="hud-stat"><span class="ico">⭐</span><span id="map-stars">0</span><span style="opacity:.55;font-weight:600">/24</span></div>
       <div class="hud-stat"><span class="ico">💎</span><span id="map-score">0</span></div>
       <div class="grow"></div>
-      <div class="pill gold" id="map-rank">Pemula</div>
-      <button class="iconbtn" id="btn-map-calc" aria-label="Buka kalkulator zakat">🧮</button>
-      <button class="iconbtn" id="btn-map-progress" aria-label="Lihat progres">🏆</button>
+      <div class="pill gold" id="map-rank">Beginner</div>
+      <button class="iconbtn" id="btn-map-calc" aria-label="Open zakat calculator">🧮</button>
+      <button class="iconbtn" id="btn-map-progress" aria-label="View progress">🏆</button>
     </div>
     <div class="map-canvas" id="map-canvas">
       <svg class="mapsvg" id="map-bg" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice" aria-hidden="true"></svg>
       <div id="map-nodes"></div>
     </div>
     <p style="color:rgba(255,251,235,.62);font-size:.8rem;text-align:center;margin-top:8px" id="map-tip">
-      Pilih bab untuk memulai. Selesaikan bab untuk membuka jalur berikutnya.
+      Pick a chapter to begin. Finish one to unlock the next stop on the path.
     </p>
   </section>
 
   <!-- ---------- STORY ---------- -->
-  <section class="screen" id="screen-story" aria-label="Cerita">
+  <section class="screen" id="screen-story" aria-label="Story">
     <div class="hud glass" style="margin-bottom:10px">
-      <button class="iconbtn" data-nav="map" aria-label="Kembali ke peta">←</button>
-      <div class="hud-stat"><span id="story-chapter">Bab 1</span></div>
+      <button class="iconbtn" data-nav="map" aria-label="Back to map">←</button>
+      <div class="hud-stat"><span id="story-chapter">Chapter 1</span></div>
       <div class="grow"></div>
-      <button class="btn ghost sm" id="btn-skip-story">Lewati ⏭</button>
+      <button class="btn ghost sm" id="btn-skip-story">Skip ⏭</button>
     </div>
     <div class="story-stage">
       <div class="story-art" id="story-art"></div>
@@ -630,17 +636,17 @@ body.high-contrast .panel{border:2px solid var(--teal-dark);}
         <div class="story-nav">
           <div class="dots" id="story-dots"></div>
           <div class="grow" style="flex:1"></div>
-          <button class="btn sm" id="btn-story-next">Lanjut <span class="ico">›</span></button>
+          <button class="btn sm" id="btn-story-next">Next <span class="ico">›</span></button>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ---------- QUIZ ---------- -->
-  <section class="screen" id="screen-quiz" aria-label="Kuis">
+  <section class="screen" id="screen-quiz" aria-label="Quiz">
     <div class="hud glass" style="margin-bottom:10px">
-      <button class="iconbtn" id="btn-quiz-quit" aria-label="Keluar dari kuis">✕</button>
-      <div class="hearts" id="hearts" aria-label="Nyawa tersisa"></div>
+      <button class="iconbtn" id="btn-quiz-quit" aria-label="Leave the quiz">✕</button>
+      <div class="hearts" id="hearts" aria-label="Lives remaining"></div>
       <div class="hud-stat"><span class="ico">💎</span><span id="quiz-score">0</span></div>
       <div class="grow"></div>
       <div class="hud-stat" id="quiz-streak-wrap" hidden><span class="ico">🔥</span><span id="quiz-streak">0</span></div>
@@ -651,17 +657,17 @@ body.high-contrast .panel{border:2px solid var(--teal-dark);}
       <div class="panel q-card" id="q-card" style="position:relative">
         <div class="combo" id="combo" hidden></div>
         <div class="q-meta">
-          <span class="pill emerald" id="q-counter">Soal 1 / 5</span>
-          <span class="pill gold" id="q-topic">Dasar Zakat</span>
+          <span class="pill emerald" id="q-counter">Question 1 / 5</span>
+          <span class="pill gold" id="q-topic">Zakat Basics</span>
         </div>
         <h2 class="q-text" id="q-text">—</h2>
         <div id="q-visual"></div>
         <div class="opts" id="q-opts"></div>
         <div id="q-feedback"></div>
         <div style="display:flex;gap:9px;margin-top:14px;flex-wrap:wrap">
-          <button class="btn ghost sm" id="btn-hint"><span class="ico">💡</span>Petunjuk (−30)</button>
+          <button class="btn ghost sm" id="btn-hint"><span class="ico">💡</span>Hint (−30)</button>
           <div class="grow" style="flex:1"></div>
-          <button class="btn sm" id="btn-next-q" hidden>Lanjut <span class="ico">›</span></button>
+          <button class="btn sm" id="btn-next-q" hidden>Next <span class="ico">›</span></button>
         </div>
       </div>
     </div>
@@ -670,7 +676,7 @@ body.high-contrast .panel{border:2px solid var(--teal-dark);}
   <!-- ---------- MINI GAME ---------- -->
   <section class="screen" id="screen-mini" aria-label="Mini game">
     <div class="hud glass" style="margin-bottom:10px">
-      <button class="iconbtn" id="btn-mini-quit" aria-label="Keluar dari mini game">✕</button>
+      <button class="iconbtn" id="btn-mini-quit" aria-label="Leave the mini game">✕</button>
       <div class="hud-stat"><span class="ico">🎮</span><span id="mini-name">Mini Game</span></div>
       <div class="grow"></div>
       <div class="hud-stat"><span class="ico">💎</span><span id="mini-score">0</span></div>
@@ -681,17 +687,17 @@ body.high-contrast .panel{border:2px solid var(--teal-dark);}
   </section>
 
   <!-- ---------- RESULT ---------- -->
-  <section class="screen" id="screen-result" aria-label="Hasil">
+  <section class="screen" id="screen-result" aria-label="Results">
     <div class="panel result-card" id="result-card"></div>
   </section>
 
   <!-- ---------- CALCULATOR ---------- -->
-  <section class="screen" id="screen-calc" aria-label="Kalkulator zakat">
+  <section class="screen" id="screen-calc" aria-label="Zakat calculator">
     <div class="hud glass" style="margin-bottom:10px">
-      <button class="iconbtn" data-nav="back" aria-label="Kembali">←</button>
-      <div class="hud-stat"><span class="ico">🧮</span>Kalkulator Zakat</div>
+      <button class="iconbtn" data-nav="back" aria-label="Back">←</button>
+      <div class="hud-stat"><span class="ico">🧮</span>Zakat Calculator</div>
       <div class="grow"></div>
-      <button class="iconbtn" id="btn-calc-help" aria-label="Bantuan kalkulator">❓</button>
+      <button class="iconbtn" id="btn-calc-help" aria-label="Calculator help">❓</button>
     </div>
     <div class="calc-tabs" id="calc-tabs" role="tablist"></div>
     <div class="scroller">
@@ -701,10 +707,10 @@ body.high-contrast .panel{border:2px solid var(--teal-dark);}
   </section>
 
   <!-- ---------- PROGRESS ---------- -->
-  <section class="screen" id="screen-progress" aria-label="Progres dan papan skor">
+  <section class="screen" id="screen-progress" aria-label="Progress and scores">
     <div class="hud glass" style="margin-bottom:10px">
       <button class="iconbtn" data-nav="back" aria-label="Kembali">←</button>
-      <div class="hud-stat"><span class="ico">🏆</span>Progres &amp; Papan Skor</div>
+      <div class="hud-stat"><span class="ico">🏆</span>Progress &amp; Scores</div>
       <div class="grow"></div>
       <button class="btn ghost sm" id="btn-reset"><span class="ico">🗑</span>Reset</button>
     </div>
@@ -750,18 +756,20 @@ function shuffle(arr) {
   }
   return a;
 }
-const rupiah = n => {
-  if (!isFinite(n)) return 'Rp 0';
-  return 'Rp ' + Math.round(n).toLocaleString('id-ID');
+/** Formats an amount with the currency label the player chose. */
+const cash = n => {
+  const cur = (SAVE && SAVE.calcPrefs && SAVE.calcPrefs.cur) || 'Rp';
+  if (!isFinite(n)) return cur + ' 0';
+  return cur + ' ' + Math.round(n).toLocaleString('en-US');
 };
-const numberID = n => (Math.round(n * 100) / 100).toLocaleString('id-ID');
-/** Membaca angka bergaya Indonesia: titik = pemisah ribuan, koma = desimal.
- *  "1.500.000" → 1500000 · "1500000" → 1500000 · "2,5" → 2.5
- *  Aturan tetap (tidak menebak-nebak) supaya pemformatan ulang saat mengetik
- *  selalu bisa dibaca balik dengan hasil yang sama. */
-function splitID(str) {
-  const clean = String(str).replace(/[^\d,]/g, '');   // titik ribuan ikut dibuang
-  const [intPart, ...rest] = clean.split(',');
+const numberFmt = n => (Math.round(n * 100) / 100).toLocaleString('en-US');
+/** Reads numbers written in English style: comma = thousands, dot = decimal.
+ *  "1,500,000" → 1500000 · "1500000" → 1500000 · "2.5" → 2.5
+ *  The rule is fixed rather than guessed, so text re-formatted while typing
+ *  always reads back to the same value. */
+function splitNum(str) {
+  const clean = String(str).replace(/[^\d.]/g, '');   // thousands commas are dropped
+  const [intPart, ...rest] = clean.split('.');
   return {
     int: intPart || '',
     dec: rest.length ? rest.join('').slice(0, 2) : null
@@ -770,7 +778,7 @@ function splitID(str) {
 function parseNum(str) {
   if (typeof str === 'number') return isFinite(str) ? str : 0;
   if (!str) return 0;
-  const { int, dec } = splitID(str);
+  const { int, dec } = splitNum(str);
   const n = parseFloat((int || '0') + (dec !== null ? '.' + dec : ''));
   return isFinite(n) ? n : 0;
 }
@@ -789,8 +797,8 @@ const defaultSave = () => ({
   badges: [],
   totalScore: 0,
   scores: [],            // papan skor lokal
-  calcPrefs: { gold: 1950000, silver: 21000, rice: 14000 },
-  settings: { sound: true, anim: 'full', bigText: false, contrast: false },
+  calcPrefs: { cur: 'Rp', gold: 1950000, silver: 21000, rice: 14000 },
+  settings: { sound: true, music: true, anim: 'full', bigText: false, contrast: false },
   stats: { correct: 0, wrong: 0, played: 0, perfect: 0 },
   createdAt: Date.now()
 });
@@ -801,7 +809,8 @@ let SAVE = defaultSave();
 function normalizeSettings(st) {
   if (st.anim === undefined) st.anim = st.motion === false ? 'off' : 'full';
   if (!['full', 'lite', 'off'].includes(st.anim)) st.anim = 'full';
-  delete st.motion; delete st.music;
+  delete st.motion;
+  if (typeof st.music !== 'boolean') st.music = true;
   return st;
 }
 
@@ -852,10 +861,12 @@ const Audio2 = (() => {
     return ctx;
   }
   function unlock() {
-    if (unlocked) return;
     const c = ensure();
     if (c && c.state === 'suspended') c.resume();
+    if (unlocked) return;
     unlocked = true;
+    // browsers only allow sound after a gesture, so music starts here
+    if (typeof Music !== 'undefined') Music.sync();
   }
   function tone(freq, dur = 0.14, type = 'sine', when = 0, vol = 1) {
     if (!SAVE.settings.sound) return;
@@ -873,6 +884,7 @@ const Audio2 = (() => {
     notes.forEach(([f, w, d]) => tone(f, d || 0.13, type, w));
   return {
     unlock,
+    context: () => ensure(),
     // Nada memakai tangga nada maqam Hijaz (D–Eb–F#–G–A–Bb–C) agar terasa bernuansa Timur Tengah.
     click:   () => tone(587.33, 0.05, 'triangle', 0, 0.45),
     hover:   () => tone(880, 0.03, 'sine', 0, 0.2),
@@ -886,6 +898,84 @@ const Audio2 = (() => {
     whoosh:  () => tone(320, 0.2, 'sine', 0, 0.35),
     badge:   () => seq([[1047, 0], [1319, 0.07], [1568, 0.14], [2093, 0.22, 0.3]])
   };
+})();
+
+/* ---------------------------------------------------------------
+   3b. AMBIENT MUSIC
+   A quiet drone plus a slow melody drawn from maqam Hijaz, written
+   with oscillators so the game still needs no audio files at all.
+   Browsers block sound until the first tap, so playback begins on
+   the player's first interaction.
+   --------------------------------------------------------------- */
+const Music = (() => {
+  // Hijaz on D: D  Eb  F#  G  A  Bb  C  D
+  const SCALE = [293.66, 311.13, 369.99, 392.00, 440.00, 466.16, 523.25, 587.33];
+  const PHRASE = [0, 2, 3, 4, 3, 2, 0, 1, 0, 4, 5, 4, 3, 2, 1, 0];
+
+  let ctx = null, bus = null, drone = [], timer = null, step = 0, running = false;
+
+  function build() {
+    ctx = Audio2.context();
+    if (!ctx) return false;
+    bus = ctx.createGain();
+    bus.gain.value = 0;
+    const warm = ctx.createBiquadFilter();
+    warm.type = 'lowpass';
+    warm.frequency.value = 1400;
+    bus.connect(warm);
+    warm.connect(ctx.destination);
+
+    // two sustained notes underneath, a fifth apart
+    [146.83, 220.00].forEach((f, i) => {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = i ? 'sine' : 'triangle';
+      o.frequency.value = f;
+      g.gain.value = i ? 0.018 : 0.03;
+      o.connect(g); g.connect(bus);
+      o.start();
+      drone.push(o);
+    });
+    return true;
+  }
+
+  function note() {
+    if (!ctx) return;
+    const f = SCALE[PHRASE[step % PHRASE.length]];
+    step++;
+    const t = ctx.currentTime;
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = 'triangle';
+    o.frequency.setValueAtTime(f, t);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(0.05, t + 0.5);          // slow swell, never percussive
+    g.gain.exponentialRampToValueAtTime(0.0001, t + 2.6);
+    o.connect(g); g.connect(bus);
+    o.start(t); o.stop(t + 2.8);
+  }
+
+  function start() {
+    if (running || !SAVE.settings.music) return;
+    if (!ctx && !build()) return;
+    if (ctx.state === 'suspended') ctx.resume();
+    running = true;
+    bus.gain.cancelScheduledValues(ctx.currentTime);
+    bus.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 2.5);   // fade in gently
+    note();
+    timer = setInterval(note, 2400);
+  }
+
+  function stop() {
+    if (!running) return;
+    running = false;
+    clearInterval(timer); timer = null;
+    if (bus) {
+      bus.gain.cancelScheduledValues(ctx.currentTime);
+      bus.gain.linearRampToValueAtTime(0, ctx.currentTime + 1.2);
+    }
+  }
+
+  const sync = () => (SAVE.settings.music ? start() : stop());
+  return { start, stop, sync };
 })();
 
 /* ---------------------------------------------------------------
@@ -903,7 +993,7 @@ function stagger(nodes, cls = 'enter') {
 }
 
 /** Bintang delapan kecil memancar dari sebuah unsur. */
-function burstStars(el, n = 7) {
+function burstStars(el, n = 5) {
   if (!animFull() || !el) return;
   const r = el.getBoundingClientRect();
   const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
@@ -940,28 +1030,28 @@ function floatScore(el, text) {
 /** Angka pada layar hasil dihitung naik, bukan muncul begitu saja. */
 function countUp(el, to, ms = 900) {
   if (!el) return;
-  if (!animOn()) { el.textContent = to.toLocaleString('id-ID'); return; }
+  if (!animOn()) { el.textContent = to.toLocaleString('en-US'); return; }
   const t0 = performance.now();
   (function step(t) {
     const k = Math.min(1, (t - t0) / ms);
     const eased = 1 - Math.pow(1 - k, 3);
-    el.textContent = Math.round(to * eased).toLocaleString('id-ID');
+    el.textContent = Math.round(to * eased).toLocaleString('en-US');
     if (k < 1) requestAnimationFrame(step);
   })(t0);
 }
 
 /** Bintang & lentera pada latar, dibuat sekali saat permainan dimuat. */
 function buildSky() {
-  $('#skystars').innerHTML = Array.from({ length: 34 }, () => {
+  $('#skystars').innerHTML = Array.from({ length: 18 }, () => {
     const sz = rand(1.5, 3.4).toFixed(1);
     return `<i class="skystar amb-twinkle" style="left:${rand(0, 100).toFixed(2)}%;
       top:${rand(0, 80).toFixed(2)}%;width:${sz}px;height:${sz}px;
       animation-delay:${rand(0, 4).toFixed(1)}s"></i>`;
   }).join('');
 
-  $('#lanterns').innerHTML = Array.from({ length: 5 }, (_, i) => `
+  $('#lanterns').innerHTML = Array.from({ length: 3 }, (_, i) => `
     <svg class="lantern" style="left:${rand(5, 92).toFixed(1)}%;--rise:${randInt(28, 44)}s;
-         animation-delay:${(-i * 7.5).toFixed(1)}s" viewBox="0 0 40 68" aria-hidden="true">
+         animation-delay:${(-i * 12).toFixed(1)}s" viewBox="0 0 40 68" aria-hidden="true">
       <path d="M20 2v7" stroke="#fbe6c8" stroke-width="2" opacity=".5"/>
       <path d="M20 9l9 7-9 7-9-7z" fill="#fbe6c8" opacity=".45"/>
       <path d="M9 18h22l-3 32H12z" fill="#e8a75f" opacity=".55"/>
@@ -1087,8 +1177,8 @@ function flatHills(y, color, n = 4) {
 function sceneSVG(kind) {
   const P = PAL;
   const sky = {
-    gate: P.skyWarm, market: P.sky, field: P.sky,
-    office: P.sky, village: P.skyWarm, night: P.skyNight, hall: P.sandPale
+    gate: P.skyWarm, market: P.sky, field: P.sky, office: P.sky,
+    village: P.skyWarm, night: P.skyNight, world: '#9fd8d0', hall: P.sandPale
   }[kind] || P.sky;
 
   const body = {
@@ -1186,6 +1276,31 @@ function sceneSVG(kind) {
           <circle class="amb-glow" cx="${x}" cy="${236}" r="13" fill="${P.sandPale}" opacity=".5"/>
           <path d="M${x} 252v20" stroke="${P.sandDark}" stroke-width="3"/></g>`).join('')}`,
 
+    world: `
+      <circle class="amb-glow" cx="500" cy="236" r="168" fill="${P.white}" opacity=".5"/>
+      <circle cx="500" cy="236" r="140" fill="${P.teal}"/>
+      <g fill="${P.leaf}" opacity=".9">
+        <path d="M420 176q44-16 76 6t-10 50-70 10-32-45 36-21z"/>
+        <path d="M538 202q50-6 68 24t-28 47-74-5-11-48 45-18z"/>
+        <path d="M432 292q56-12 84 21t-24 53-87-8-13-50 40-16z"/>
+      </g>
+      <g fill="none" stroke="${P.sandPale}" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="2 10">
+        <path d="M382 212q118-96 236-16"/>
+        <path d="M392 292q112 90 229 6"/>
+      </g>
+      <g fill="${P.sand}">
+        <circle cx="382" cy="212" r="9"/><circle cx="618" cy="196" r="9"/>
+        <circle cx="392" cy="292" r="9"/><circle cx="621" cy="298" r="9"/>
+      </g>
+      ${[['💧', 128, 150, 'CLEAN WATER', 0], ['🎓', 872, 150, 'EDUCATION', -1.6],
+         ['🏥', 128, 352, 'HEALTH CARE', -3.1], ['🍚', 872, 352, 'FOOD RELIEF', -4.4]]
+        .map(([em, x, y, label, d]) => `
+        <g class="amb-float" style="animation-delay:${d}s">
+          <text x="${x}" y="${y}" font-size="46" text-anchor="middle">${em}</text>
+          <text x="${x}" y="${y + 30}" font-size="17" font-family="sans-serif" font-weight="bold"
+                text-anchor="middle" fill="#0c4a43" opacity=".55">${label}</text>
+        </g>`).join('')}`,
+
     hall: `
       <circle class="amb-glow" cx="500" cy="150" r="80" fill="${P.sand}"/>
       <rect x="0" y="400" width="1000" height="200" fill="${P.tealDark}"/>
@@ -1203,461 +1318,546 @@ function sceneSVG(kind) {
 }
 
 /* ---------------------------------------------------------------
-   8. KONTEN — 7 bab: cerita, kuis, mini-game
-   Materi mengacu pada fikih zakat arus utama di Indonesia
-   (QS At-Taubah 60 & 103, Fatwa MUI No. 3/2003, pedoman BAZNAS).
+   8. CONTENT — 8 chapters: story, quiz, mini-game
+   Rulings follow mainstream zakat fiqh as applied in Indonesia
+   (Qur'an 9:60 & 9:103, MUI Fatwa No. 3/2003, BAZNAS guidance),
+   plus one chapter on zakat as a global development instrument.
    --------------------------------------------------------------- */
 const CHARS = {
-  zaki:   { name: 'Zaki',            em: '🧒' },
-  ustadz: { name: 'Ustadz Hamid',    em: '👳' },
-  amil:   { name: 'Bu Aminah, Amil', em: '👩‍💼' },
-  tani:   { name: 'Pak Karim',       em: '👨‍🌾' },
-  rahma:  { name: 'Rahma',           em: '👧' },
-  nar:    { name: 'Narator',         em: '📖' }
+  zaki:   { name: 'Zaki',              em: '🧒' },
+  ustadz: { name: 'Ustadh Hamid',      em: '👳' },
+  amil:   { name: 'Ms. Aminah, Amil',  em: '👩‍💼' },
+  tani:   { name: 'Mr. Karim',         em: '👨‍🌾' },
+  rahma:  { name: 'Rahma',             em: '👧' },
+  global: { name: 'Layla, Field Officer', em: '🌍' },
+  nar:    { name: 'Narrator',          em: '📖' }
 };
 
 const CHAPTERS = [
-  /* ============================ BAB 1 ============================ */
+  /* ============================ CHAPTER 1 ============================ */
   {
-    id: 1, title: 'Gerbang Ilmu', topic: 'Dasar Zakat', emoji: '🕌', scene: 'gate',
-    blurb: 'Makna zakat, dasar hukum, dan bedanya dengan infak & sedekah.',
+    id: 1, title: 'Gate of Knowledge', topic: 'Zakat Basics', emoji: '🕌', scene: 'gate',
+    blurb: 'What zakat means, where the obligation comes from, and how it differs from sadaqah.',
     story: [
-      { c: 'nar',    t: 'Fajar baru merekah di Kampung Barokah. Zaki berlari kecil menuju gerbang madrasah, membawa satu pertanyaan yang mengganjal sejak semalam.' },
-      { c: 'zaki',   t: 'Ustadz! Semalam Ayah menyebut kata "zakat" sambil menghitung tabungannya. Zakat itu sebenarnya apa, sih?' },
-      { c: 'ustadz', t: 'Pertanyaan yang bagus, Zaki. Secara bahasa, zakat berarti <b>tumbuh, suci, dan berkah</b>. Harta yang dizakati tidak berkurang — ia justru dibersihkan dan ditumbuhkan.' },
-      { c: 'ustadz', t: 'Secara istilah, zakat adalah <b>kadar harta tertentu</b> yang <b>wajib</b> dikeluarkan pada <b>waktu tertentu</b> dan diberikan kepada <b>golongan tertentu</b>. Ia rukun Islam yang ketiga.' },
-      { c: 'zaki',   t: 'Berarti beda dengan sedekah yang sering Ibu berikan ke tetangga?' },
-      { c: 'ustadz', t: 'Tepat. <b>Zakat itu wajib</b> — ada nisab, ada kadar, ada penerimanya. <b>Infak dan sedekah itu sunnah</b> — bebas jumlah, bebas waktu, bebas penerimanya. Ayo, buktikan pemahamanmu!' }
+      { c: 'nar',    t: 'Dawn breaks over Barokah Village. Zaki hurries toward the madrasah gate, carrying a question that kept him awake all night.' },
+      { c: 'zaki',   t: 'Ustadh! Last night my father counted his savings and said the word "zakat". What exactly is zakat?' },
+      { c: 'ustadz', t: 'A fine question, Zaki. In Arabic, <b>zakat</b> means <b>to grow, to purify, to bless</b>. Wealth you pay zakat on does not shrink — it is cleansed, and it grows.' },
+      { c: 'ustadz', t: 'In law, zakat is a <b>fixed share of wealth</b> that must be given at a <b>fixed time</b> to <b>fixed categories of people</b>. It is the third pillar of Islam.' },
+      { c: 'zaki',   t: 'So it is different from the sadaqah my mother gives to our neighbours?' },
+      { c: 'ustadz', t: 'Exactly. <b>Zakat is obligatory</b> — it has a threshold, a rate, and named recipients. <b>Infaq and sadaqah are voluntary</b> — any amount, any time, to anyone. Now, let us test what you understood.' }
     ],
     questions: [
-      { q: 'Secara bahasa, kata "zakat" berarti…',
-        opts: ['Tumbuh, suci, dan berkah', 'Menahan dan menyimpan', 'Berkurang sedikit demi sedikit', 'Meminjamkan sementara'],
-        a: 0, hint: 'Lawan dari "berkurang". Ada hubungannya dengan tumbuhan yang subur.',
-        why: 'Zakat (زكاة) berakar dari kata <i>zakaa</i> yang berarti tumbuh, bertambah, suci, dan berkah. Harta yang dizakati justru dibersihkan dan ditumbuhkan.',
-        dalil: 'QS At-Taubah 103: "Ambillah zakat dari harta mereka, guna membersihkan dan menyucikan mereka."' },
-      { q: 'Zakat menempati urutan rukun Islam yang ke…',
-        opts: ['Ke-2', 'Ke-3', 'Ke-4', 'Ke-5'],
-        a: 1, hint: 'Urutannya: syahadat → shalat → ? → puasa → haji.',
-        why: 'Urutan rukun Islam: (1) syahadat, (2) shalat, (3) <b>zakat</b>, (4) puasa Ramadan, (5) haji. Zakat adalah rukun ketiga.',
-        dalil: 'HR. Bukhari & Muslim dari Ibnu Umar — hadis "Islam dibangun di atas lima perkara".' },
-      { q: 'Manakah perbedaan paling tepat antara ZAKAT dan SEDEKAH?',
-        opts: ['Zakat hanya untuk orang kaya, sedekah untuk orang miskin',
-               'Zakat wajib dengan nisab & kadar tertentu; sedekah sunnah dan bebas jumlahnya',
-               'Zakat hanya berupa uang, sedekah hanya berupa barang',
-               'Zakat dibayar setahun sekali, sedekah setiap hari'],
-        a: 1, hint: 'Kuncinya pada kata "wajib" vs "sunnah".',
-        why: 'Zakat <b>wajib</b> — terikat syarat nisab, haul, kadar, dan 8 golongan penerima. Infak/sedekah <b>sunnah</b> — bebas jumlah, waktu, dan penerimanya.' },
-      { q: 'Orang yang wajib mengeluarkan zakat disebut…',
+      { q: 'In the Arabic language, the word "zakat" means…',
+        opts: ['To grow, to purify, to bless', 'To hold back and store away', 'To shrink little by little', 'To lend temporarily'],
+        a: 0, hint: 'The opposite of "to shrink". Think of a plant thriving.',
+        why: 'Zakat (زكاة) comes from the root <i>zakaa</i> — to grow, to increase, to purify, to bless. Wealth that is zakated is cleansed, not diminished.',
+        dalil: 'Qur’an 9:103 — "Take from their wealth a charity by which you purify them and cause them increase."' },
+      { q: 'Zakat is which pillar of Islam?',
+        opts: ['The second', 'The third', 'The fourth', 'The fifth'],
+        a: 1, hint: 'The order runs: shahada → prayer → ? → fasting → hajj.',
+        why: 'The five pillars are (1) the shahada, (2) prayer, (3) <b>zakat</b>, (4) fasting in Ramadan, (5) hajj. Zakat is the third.',
+        dalil: 'Narrated by al-Bukhari & Muslim from Ibn Umar — "Islam is built upon five."' },
+      { q: 'Which statement best separates ZAKAT from SADAQAH?',
+        opts: ['Zakat is only for the rich, sadaqah only for the poor',
+               'Zakat is obligatory with a fixed threshold and rate; sadaqah is voluntary and unlimited',
+               'Zakat is only money, sadaqah is only goods',
+               'Zakat is paid yearly, sadaqah is paid daily'],
+        a: 1, hint: 'The key words are "obligatory" and "voluntary".',
+        why: 'Zakat is <b>obligatory</b> and bound by nisab, haul, a fixed rate, and eight named recipients. Infaq and sadaqah are <b>voluntary</b> — free in amount, timing, and recipient.' },
+      { q: 'A person who is obliged to pay zakat is called…',
         opts: ['Mustahik', 'Muzakki', 'Amil', 'Gharim'],
-        a: 1, hint: 'Yang menerima disebut mustahik. Yang memberi?',
-        why: '<b>Muzakki</b> = pemberi zakat. <b>Mustahik</b> = penerima zakat. <b>Amil</b> = pengelola zakat. <b>Gharim</b> = orang yang terlilit utang.' },
-      { q: 'Apa hukum menunaikan zakat bagi muslim yang hartanya telah mencapai nisab dan haul?',
-        opts: ['Sunnah muakkad', 'Mubah', 'Wajib (fardhu ‘ain)', 'Makruh jika sedikit'],
-        a: 2, hint: 'Ia salah satu rukun Islam — tidak bisa ditawar.',
-        why: 'Zakat hukumnya <b>fardhu ‘ain</b> (wajib atas setiap individu) bila syaratnya terpenuhi. Menolaknya termasuk dosa besar.',
-        dalil: 'QS Al-Baqarah 43: "Dan dirikanlah shalat, tunaikanlah zakat…"' },
-      { q: 'Salah satu hikmah zakat bagi MUZAKKI (pemberi) adalah…',
-        opts: ['Membersihkan harta dan jiwa dari sifat kikir', 'Menambah beban pajak negara',
-               'Membuat harta cepat habis', 'Menghapus kewajiban shalat'],
-        a: 0, hint: 'Ingat arti "menyucikan" pada QS At-Taubah 103.',
-        why: 'Zakat menyucikan harta dari hak orang lain dan menyucikan jiwa pemiliknya dari kikir (<i>bakhil</i>) serta cinta dunia berlebihan.' }
+        a: 1, hint: 'The receiver is the mustahik. What about the giver?',
+        why: '<b>Muzakki</b> = the one who pays zakat. <b>Mustahik</b> = the one who receives it. <b>Amil</b> = the one who administers it. <b>Gharim</b> = a person trapped in debt.' },
+      { q: 'For a Muslim whose wealth has met both nisab and haul, paying zakat is…',
+        opts: ['A strongly recommended sunnah', 'Permissible but optional', 'Obligatory (fard ‘ayn)', 'Disliked if the amount is small'],
+        a: 2, hint: 'It is a pillar of Islam — there is no room to negotiate.',
+        why: 'Zakat is <b>fard ‘ayn</b> — binding on each individual once the conditions are met. Withholding it is a grave sin.',
+        dalil: 'Qur’an 2:43 — "And establish prayer and give zakat…"' },
+      { q: 'One benefit of zakat for the MUZAKKI (the giver) is that it…',
+        opts: ['Purifies wealth and the soul from greed', 'Increases the national tax burden',
+               'Makes wealth run out faster', 'Removes the duty to pray'],
+        a: 0, hint: 'Recall the word "purify" in Qur’an 9:103.',
+        why: 'Zakat purifies wealth from the share that belongs to others, and purifies the owner from miserliness (<i>bukhl</i>) and attachment to this world.' }
     ],
     mini: {
-      type: 'sort', name: 'Wajib atau Sunnah?',
-      desc: 'Seret (atau ketuk) setiap kartu ke keranjang yang benar. Zakat itu <b>wajib</b>; infak, sedekah, dan wakaf hukum asalnya <b>sunnah</b>.',
-      bins: [{ id: 'w', label: 'ZAKAT — Wajib', em: '⚖️' }, { id: 's', label: 'INFAK / SEDEKAH — Sunnah', em: '🤲' }],
+      type: 'sort', name: 'Obligatory or Voluntary?',
+      desc: 'Drag (or tap) each card into the right basket. Zakat is <b>obligatory</b>; infaq, sadaqah and waqf are <b>voluntary</b> by default.',
+      bins: [{ id: 'w', label: 'ZAKAT — Obligatory', em: '⚖️' }, { id: 's', label: 'INFAQ / SADAQAH — Voluntary', em: '🤲' }],
       items: [
-        { t: 'Zakat fitrah akhir Ramadan', em: '🍚', bin: 'w' },
-        { t: 'Menyumbang korban banjir', em: '🌊', bin: 's' },
-        { t: 'Zakat emas 90 gram (sudah 1 tahun)', em: '🪙', bin: 'w' },
-        { t: 'Memberi makan tetangga', em: '🍱', bin: 's' },
-        { t: 'Zakat hasil panen padi', em: '🌾', bin: 'w' },
-        { t: 'Wakaf tanah untuk masjid', em: '🕌', bin: 's' },
-        { t: 'Zakat perdagangan toko', em: '🏪', bin: 'w' },
-        { t: 'Tersenyum kepada saudara', em: '😊', bin: 's' }
+        { t: 'Zakat al-Fitr at the end of Ramadan', em: '🍚', bin: 'w' },
+        { t: 'Donating to flood victims', em: '🌊', bin: 's' },
+        { t: 'Zakat on 90 g of gold held a year', em: '🪙', bin: 'w' },
+        { t: 'Feeding a neighbour', em: '🍱', bin: 's' },
+        { t: 'Zakat on a rice harvest', em: '🌾', bin: 'w' },
+        { t: 'Endowing land for a mosque', em: '🕌', bin: 's' },
+        { t: 'Zakat on shop inventory', em: '🏪', bin: 'w' },
+        { t: 'Smiling at your brother', em: '😊', bin: 's' }
       ]
     }
   },
 
-  /* ============================ BAB 2 ============================ */
+  /* ============================ CHAPTER 2 ============================ */
   {
-    id: 2, title: 'Pasar Barokah', topic: 'Zakat Mal', emoji: '🪙', scene: 'market',
-    blurb: 'Nisab, haul, dan zakat emas, perak, serta uang simpanan.',
+    id: 2, title: 'Barokah Market', topic: 'Zakat on Wealth', emoji: '🪙', scene: 'market',
+    blurb: 'Nisab, haul, and zakat on gold, silver and cash savings.',
     story: [
-      { c: 'nar',    t: 'Pasar Barokah ramai sejak pagi. Zaki menemani Bu Aminah, seorang amil zakat, berkeliling mendata para pedagang.' },
-      { c: 'amil',   t: 'Zaki, tidak semua harta wajib dizakati. Ada dua gerbang yang harus dilewati dulu: <b>nisab</b> dan <b>haul</b>.' },
-      { c: 'zaki',   t: 'Nisab… batas minimal harta, ya, Bu?' },
-      { c: 'amil',   t: 'Benar! <b>Nisab</b> adalah batas minimal harta agar wajib zakat. Untuk emas: <b>85 gram</b>. Perak: <b>595 gram</b>. Uang dan tabungan mengikuti nilai 85 gram emas.' },
-      { c: 'amil',   t: 'Lalu <b>haul</b> — harta itu harus dimiliki penuh selama <b>satu tahun hijriah</b>. Kalau keduanya terpenuhi, kadar zakatnya <b>2,5%</b> atau 1/40 bagian.' },
-      { c: 'zaki',   t: 'Jadi kalau Ayah punya 100 gram emas selama setahun, zakatnya 2,5 gram?' },
-      { c: 'amil',   t: 'Persis! Kamu cepat menangkap. Mari kita uji di antara lapak-lapak ini.' }
+      { c: 'nar',  t: 'Barokah Market is busy from sunrise. Zaki walks the aisles beside Ms. Aminah, an amil registering the traders.' },
+      { c: 'amil', t: 'Zaki, not all wealth is zakatable. It must pass through two gates first: <b>nisab</b> and <b>haul</b>.' },
+      { c: 'zaki', t: 'Nisab — that is the minimum amount, isn’t it?' },
+      { c: 'amil', t: 'Correct. <b>Nisab</b> is the minimum holding that triggers zakat. For gold it is <b>85 grams</b>. For silver, <b>595 grams</b>. Cash and savings follow the value of 85 g of gold.' },
+      { c: 'amil', t: 'Then comes <b>haul</b> — the wealth must be fully owned for <b>one lunar year</b>. If both gates are passed, the rate is <b>2.5%</b>, or one fortieth.' },
+      { c: 'zaki', t: 'So if my father holds 100 grams of gold for a year, his zakat is 2.5 grams?' },
+      { c: 'amil', t: 'Exactly right. You learn quickly. Let us test that among these stalls.' }
     ],
     questions: [
-      { q: 'Berapa nisab zakat emas?',
-        opts: ['20 gram', '85 gram', '200 gram', '595 gram'],
-        a: 1, hint: 'Setara 20 dinar. Angkanya di bawah 100.',
-        why: 'Nisab emas = <b>85 gram</b> emas murni (20 dinar). Nisab perak = 595 gram (200 dirham).' },
-      { q: 'Berapa kadar (persentase) zakat mal untuk emas, perak, dan uang simpanan?',
-        opts: ['2,5%', '5%', '10%', '20%'],
-        a: 0, hint: 'Sama dengan 1/40 bagian.',
-        why: 'Kadarnya <b>2,5%</b> atau 1/40. Contoh: harta Rp 100.000.000 → zakat Rp 2.500.000.' },
-      { q: 'Apa yang dimaksud dengan HAUL dalam zakat mal?',
-        opts: ['Harta harus halal', 'Harta dimiliki penuh selama satu tahun hijriah',
-               'Harta harus berupa emas', 'Harta harus disimpan di bank'],
-        a: 1, hint: 'Berhubungan dengan waktu, bukan jenis harta.',
-        why: '<b>Haul</b> = kepemilikan harta genap <b>satu tahun hijriah</b> (±354 hari). Tidak berlaku untuk zakat pertanian dan rikaz.' },
-      { q: 'Bu Salma memiliki tabungan Rp 120.000.000 yang telah mengendap satu tahun. Jika nisab saat itu Rp 165.750.000, maka…',
-        opts: ['Wajib zakat Rp 3.000.000', 'Wajib zakat Rp 1.200.000',
-               'Belum wajib zakat karena belum mencapai nisab', 'Wajib zakat 10%'],
-        a: 2, hint: 'Bandingkan dulu hartanya dengan nisab. Mana yang lebih besar?',
-        why: 'Rp 120 juta <b>di bawah</b> nisab (Rp 165,75 juta ≈ 85 g emas). Zakat mal belum wajib, tetapi tetap dianjurkan bersedekah/infak.' },
-      { q: 'Pak Rudi menyimpan 200 gram emas selama 1 tahun penuh. Berapa gram zakatnya?',
-        opts: ['2 gram', '5 gram', '10 gram', '20 gram'],
-        a: 1, hint: '200 × 2,5% = ?',
-        why: '200 g melebihi nisab 85 g. Zakat = 200 × 2,5% = <b>5 gram</b> (atau nilai uangnya).' },
-      { q: 'Manakah yang BUKAN syarat wajib zakat mal?',
-        opts: ['Harta dimiliki secara penuh', 'Harta berpotensi berkembang',
-               'Harta disimpan dalam bentuk tunai', 'Harta melebihi kebutuhan pokok'],
-        a: 2, hint: 'Bentuk harta tidak harus tunai — emas, ternak, dan barang dagang pun kena zakat.',
-        why: 'Syarat zakat mal: milik penuh, berpotensi berkembang (<i>nama’</i>), mencapai nisab, melebihi kebutuhan pokok, bebas dari utang jatuh tempo, dan genap haul. Bentuk tunai <b>bukan</b> syarat.' }
+      { q: 'What is the nisab for zakat on gold?',
+        opts: ['20 grams', '85 grams', '200 grams', '595 grams'],
+        a: 1, hint: 'It equals 20 dinars. The number is below 100.',
+        why: 'The gold nisab is <b>85 grams</b> of pure gold (20 dinars). The silver nisab is 595 grams (200 dirhams).' },
+      { q: 'What is the zakat rate on gold, silver and cash savings?',
+        opts: ['2.5%', '5%', '10%', '20%'],
+        a: 0, hint: 'The same as one fortieth.',
+        why: 'The rate is <b>2.5%</b>, or 1/40. Example: wealth of 100,000,000 → zakat of 2,500,000.' },
+      { q: 'What does HAUL mean in zakat on wealth?',
+        opts: ['The wealth must be lawful', 'The wealth must be fully owned for one lunar year',
+               'The wealth must be in gold', 'The wealth must be kept in a bank'],
+        a: 1, hint: 'It concerns time, not the type of asset.',
+        why: '<b>Haul</b> means full ownership for <b>one lunar year</b> (about 354 days). It does not apply to agricultural zakat or to rikaz.' },
+      { q: 'Ms. Salma has savings of 120,000,000 held for a full year. If the nisab that day is 165,750,000, then…',
+        opts: ['Zakat of 3,000,000 is due', 'Zakat of 1,200,000 is due',
+               'No zakat is due — the nisab is not reached', 'Zakat of 10% is due'],
+        a: 2, hint: 'Compare the wealth against the nisab first. Which is larger?',
+        why: '120 million is <b>below</b> the nisab (165.75 million ≈ 85 g of gold), so zakat on wealth is not yet due. Voluntary sadaqah remains encouraged.' },
+      { q: 'Mr. Rudi has held 200 grams of gold for one full year. How many grams is his zakat?',
+        opts: ['2 grams', '5 grams', '10 grams', '20 grams'],
+        a: 1, hint: '200 × 2.5% = ?',
+        why: '200 g exceeds the 85 g nisab. Zakat = 200 × 2.5% = <b>5 grams</b>, or its cash value.' },
+      { q: 'Which of these is NOT a condition for zakat on wealth?',
+        opts: ['The wealth is fully owned', 'The wealth has potential to grow',
+               'The wealth is held as cash', 'The wealth exceeds basic needs'],
+        a: 2, hint: 'Gold, livestock and trade goods are zakatable too — so the form cannot be the condition.',
+        why: 'The conditions are: full ownership, growth potential (<i>nama’</i>), reaching nisab, exceeding basic needs, being free of due debt, and completing the haul. Being held as cash is <b>not</b> one of them.' }
     ],
     mini: {
-      type: 'scale', name: 'Timbangan Nisab',
-      desc: 'Perhatikan timbangan. Putuskan: harta ini sudah <b>wajib zakat</b> atau <b>belum</b>? Gunakan patokan nisab emas <b>85 gram</b>.',
+      type: 'scale', name: 'The Nisab Scale',
+      desc: 'Read the scale, then decide: is zakat <b>due</b> on this wealth, or <b>not yet</b>? Use the gold nisab of <b>85 grams</b> as your benchmark.',
       cases: [
-        { who: 'Pak Anwar', em: '🪙', detail: 'Emas batangan disimpan 14 bulan', val: 96, unit: 'gram emas', nisab: 85, wajib: true,
-          why: '96 g > 85 g dan sudah lewat haul → <b>wajib</b>. Zakatnya 96 × 2,5% = 2,4 gram.' },
-        { who: 'Mbak Laras', em: '💍', detail: 'Perhiasan emas dipakai harian, 60 gram', val: 60, unit: 'gram emas', nisab: 85, wajib: false,
-          why: '60 g <b>belum</b> mencapai nisab 85 g. Selain itu mayoritas ulama memandang perhiasan yang wajar dipakai tidak wajib dizakati.' },
-        { who: 'Bu Tuti', em: '🥈', detail: 'Perak warisan 700 gram, tersimpan 2 tahun', val: 700, unit: 'gram perak', nisab: 595, wajib: true,
-          why: '700 g > nisab perak 595 g dan sudah lewat haul → <b>wajib</b>. Zakat = 700 × 2,5% = 17,5 gram.' },
-        { who: 'Pak Dimas', em: '💵', detail: 'Tabungan baru 5 bulan, senilai 120 gram emas', val: 120, unit: 'gram emas (5 bulan)', nisab: 85, wajib: false,
-          why: 'Nisab memang terlampaui, tetapi <b>haul belum genap</b> 1 tahun hijriah. Tunggu sampai haul terpenuhi.' },
-        { who: 'Bu Sari', em: '🏪', detail: 'Modal + laba dagang setara 310 gram emas, 1 tahun', val: 310, unit: 'gram emas', nisab: 85, wajib: true,
-          why: 'Harta dagang setara 310 g emas, melebihi nisab dan genap haul → <b>wajib</b> 2,5%.' }
+        { who: 'Mr. Anwar', em: '🪙', detail: 'Gold bars stored for 14 months', val: 96, unit: 'grams of gold', nisab: 85, wajib: true,
+          why: '96 g > 85 g and the haul has passed → zakat is <b>due</b>. It comes to 96 × 2.5% = 2.4 grams.' },
+        { who: 'Ms. Laras', em: '💍', detail: 'Gold jewellery worn daily, 60 grams', val: 60, unit: 'grams of gold', nisab: 85, wajib: false,
+          why: '60 g is <b>below</b> the 85 g nisab. Most scholars also hold that jewellery worn in reasonable amounts is not zakatable.' },
+        { who: 'Ms. Tuti', em: '🥈', detail: 'Inherited silver, 700 grams, held two years', val: 700, unit: 'grams of silver', nisab: 595, wajib: true,
+          why: '700 g > the 595 g silver nisab and the haul has passed → <b>due</b>. Zakat = 700 × 2.5% = 17.5 grams.' },
+        { who: 'Mr. Dimas', em: '💵', detail: 'Savings held 5 months, worth 120 g of gold', val: 120, unit: 'grams of gold (5 months)', nisab: 85, wajib: false,
+          why: 'The nisab is passed, but the <b>haul is not complete</b>. Wait until one lunar year of ownership has elapsed.' },
+        { who: 'Ms. Sari', em: '🏪', detail: 'Trade capital and profit worth 310 g of gold, one year', val: 310, unit: 'grams of gold', nisab: 85, wajib: true,
+          why: 'Trade assets worth 310 g of gold exceed the nisab and the haul is complete → <b>2.5% is due</b>.' }
       ]
     }
   },
 
-  /* ============================ BAB 3 ============================ */
+  /* ============================ CHAPTER 3 ============================ */
   {
-    id: 3, title: 'Sawah Hijau', topic: 'Pertanian & Ternak', emoji: '🌾', scene: 'field',
-    blurb: 'Zakat hasil pertanian (5% & 10%) serta zakat hewan ternak.',
+    id: 3, title: 'Green Fields', topic: 'Crops & Livestock', emoji: '🌾', scene: 'field',
+    blurb: 'Zakat on harvests at 5% or 10%, on livestock, and on buried treasure.',
     story: [
-      { c: 'nar',  t: 'Angin siang menyapu hamparan padi. Pak Karim baru saja selesai panen, wajahnya berseri.' },
-      { c: 'tani', t: 'Alhamdulillah, Zaki! Panen tahun ini melimpah. Nah, zakat pertanian itu istimewa — ia <b>tidak menunggu haul</b>.' },
-      { c: 'zaki', t: 'Lho, langsung dizakati begitu panen?' },
-      { c: 'tani', t: 'Betul. Dikeluarkan <b>setiap kali panen</b>, asalkan mencapai nisab <b>5 wasaq</b> — sekitar <b>653 kg gabah</b> atau <b>±520 kg beras</b>.' },
-      { c: 'tani', t: 'Kadarnya ada dua: <b>10%</b> bila sawah diairi hujan atau mata air tanpa biaya, dan <b>5%</b> bila diairi dengan biaya — pompa, irigasi berbayar, beli solar.' },
-      { c: 'zaki', t: 'Jadi makin besar biaya pengairan, makin kecil zakatnya. Adil, ya!' },
-      { c: 'tani', t: 'Itulah keindahan syariat. Ayo, hitung bersamaku.' }
+      { c: 'nar',  t: 'A midday breeze sweeps across the paddies. Mr. Karim has just finished his harvest, and his face is bright.' },
+      { c: 'tani', t: 'Alhamdulillah, Zaki! A generous year. Now — zakat on crops is special. It does <b>not</b> wait for a haul.' },
+      { c: 'zaki', t: 'You pay it the moment you harvest?' },
+      { c: 'tani', t: 'Just so. It is due <b>at every harvest</b>, provided it reaches the nisab of <b>five wasaq</b> — roughly <b>653 kg of unhusked rice</b>, or about <b>520 kg of milled rice</b>.' },
+      { c: 'tani', t: 'There are two rates: <b>10%</b> if the field is watered by rain or a spring at no cost, and <b>5%</b> if watering costs money — pumps, paid irrigation, fuel.' },
+      { c: 'zaki', t: 'So the more you spend on water, the less zakat you owe. That is fair.' },
+      { c: 'tani', t: 'That is the beauty of the law. Come, let us work through the numbers together.' }
     ],
     questions: [
-      { q: 'Berapa nisab zakat pertanian (biji-bijian & buah yang dapat disimpan)?',
-        opts: ['5 wasaq ≈ 653 kg gabah', '10 wasaq ≈ 1.300 kg gabah', '85 kg', '2,5 kuintal'],
-        a: 0, hint: 'Ukuran klasiknya "wasaq", bukan gram.',
-        why: 'Nisabnya <b>5 wasaq</b> = ±653 kg gabah kering atau ±520 kg beras.',
-        dalil: 'HR. Bukhari & Muslim: "Tidak ada zakat pada hasil bumi di bawah lima wasaq."' },
-      { q: 'Sawah yang diairi air hujan tanpa biaya dikenai zakat sebesar…',
-        opts: ['2,5%', '5%', '10%', '20%'],
-        a: 2, hint: 'Tanpa biaya = kadar tertinggi.',
-        why: 'Pengairan alami (hujan, mata air, sungai) tanpa biaya → <b>10%</b>. Bila memakai biaya (pompa/irigasi berbayar) → 5%.' },
-      { q: 'Kapan zakat pertanian dikeluarkan?',
-        opts: ['Setiap akhir tahun hijriah', 'Setiap kali panen', 'Setiap bulan Ramadan', 'Setiap lima tahun'],
-        a: 1, hint: 'Zakat pertanian tidak mengenal haul.',
-        why: 'Zakat pertanian dikeluarkan <b>setiap kali panen</b>, tanpa menunggu haul.',
-        dalil: 'QS Al-An‘am 141: "…dan tunaikanlah haknya di hari memetik hasilnya."' },
-      { q: 'Pak Karim panen 2.000 kg gabah dengan irigasi berbayar. Berapa zakatnya?',
+      { q: 'What is the nisab for zakat on crops (grains and storable fruit)?',
+        opts: ['5 wasaq ≈ 653 kg of unhusked rice', '10 wasaq ≈ 1,300 kg', '85 kg', '250 kg'],
+        a: 0, hint: 'The classical unit is the "wasaq", not the gram.',
+        why: 'The nisab is <b>five wasaq</b> = about 653 kg of dried unhusked rice, or about 520 kg of milled rice.',
+        dalil: 'Narrated by al-Bukhari & Muslim — "There is no zakat on produce below five wasaq."' },
+      { q: 'A field watered by rainfall at no cost is charged zakat of…',
+        opts: ['2.5%', '5%', '10%', '20%'],
+        a: 2, hint: 'No cost means the higher rate.',
+        why: 'Natural watering — rain, springs, rivers — at no cost carries <b>10%</b>. Where watering costs money (pumps, paid irrigation), the rate is 5%.' },
+      { q: 'When is zakat on crops paid?',
+        opts: ['At the end of each lunar year', 'At every harvest', 'Every Ramadan', 'Once every five years'],
+        a: 1, hint: 'Crop zakat knows no haul.',
+        why: 'It is paid <b>at every harvest</b>, without waiting for a haul.',
+        dalil: 'Qur’an 6:141 — "…and give its due on the day of its harvest."' },
+      { q: 'Mr. Karim harvests 2,000 kg of rice using paid irrigation. What is his zakat?',
         opts: ['50 kg', '100 kg', '200 kg', '400 kg'],
-        a: 1, hint: 'Irigasi berbiaya → kadar 5%.',
-        why: '2.000 kg sudah melebihi nisab 653 kg. Irigasi berbiaya → 5%. Zakat = 2.000 × 5% = <b>100 kg</b>.' },
-      { q: 'Berapa nisab zakat kambing/domba?',
-        opts: ['5 ekor', '30 ekor', '40 ekor', '100 ekor'],
-        a: 2, hint: 'Lebih banyak dari nisab sapi (30), lebih dari unta (5).',
-        why: 'Nisab kambing = <b>40 ekor</b> → zakatnya 1 ekor kambing. Sapi: 30 ekor → 1 anak sapi (tabi‘). Unta: 5 ekor → 1 ekor kambing.' },
-      { q: 'Harta temuan atau barang tambang (rikaz) dikenai zakat sebesar…',
-        opts: ['2,5% dengan haul', '5% saat ditemukan', '10% saat ditemukan', '20% saat ditemukan, tanpa nisab & haul'],
-        a: 3, hint: 'Kadar terbesar dalam zakat — seperlima.',
-        why: '<b>Rikaz</b> (harta terpendam/tambang) dizakati <b>20% (1/5)</b> seketika saat ditemukan, tanpa syarat nisab maupun haul.',
-        dalil: 'HR. Bukhari & Muslim: "Dan pada rikaz zakatnya seperlima."' }
+        a: 1, hint: 'Paid irrigation means the 5% rate.',
+        why: '2,000 kg is above the 653 kg nisab. Paid irrigation → 5%. Zakat = 2,000 × 5% = <b>100 kg</b>.' },
+      { q: 'What is the nisab for zakat on sheep and goats?',
+        opts: ['5 head', '30 head', '40 head', '100 head'],
+        a: 2, hint: 'More than the cattle nisab (30) and far more than camels (5).',
+        why: 'The nisab for sheep and goats is <b>40 head</b> → one animal is due. Cattle: 30 head → one yearling (<i>tabi‘</i>). Camels: 5 head → one sheep.' },
+      { q: 'Buried treasure or mined wealth (rikaz) carries zakat of…',
+        opts: ['2.5% after a haul', '5% on discovery', '10% on discovery', '20% on discovery, with no nisab or haul'],
+        a: 3, hint: 'The highest rate in zakat — one fifth.',
+        why: '<b>Rikaz</b> — buried or mined wealth — carries <b>20% (1/5)</b> immediately on discovery, with neither nisab nor haul required.',
+        dalil: 'Narrated by al-Bukhari & Muslim — "And on rikaz, a fifth."' }
     ],
     mini: {
-      type: 'calc', name: 'Hitung Panen',
-      desc: 'Hitung zakat hasil pertanian. Ketik jawabanmu lalu tekan <b>Periksa</b>.',
+      type: 'calc', name: 'Harvest Maths',
+      desc: 'Work out the zakat on these harvests. Type your answer, then press <b>Check</b>.',
       steps: [
-        { prompt: 'Panen <b>1.200 kg</b> gabah, sawah <b>tadah hujan</b> (tanpa biaya). Berapa kg zakatnya?',
-          ans: 120, unit: 'kg', hint: 'Tanpa biaya → 10%.', why: '1.200 kg > nisab 653 kg. Tadah hujan → 10% × 1.200 = <b>120 kg</b>.' },
-        { prompt: 'Panen <b>3.000 kg</b> gabah dengan <b>pompa air berbayar</b>. Berapa kg zakatnya?',
-          ans: 150, unit: 'kg', hint: 'Ada biaya pengairan → 5%.', why: 'Irigasi berbiaya → 5% × 3.000 = <b>150 kg</b>.' },
-        { prompt: 'Panen hanya <b>500 kg</b> gabah, tadah hujan. Berapa kg zakatnya?',
-          ans: 0, unit: 'kg', hint: 'Bandingkan dulu dengan nisab 653 kg.', why: '500 kg <b>belum</b> mencapai nisab 653 kg → zakat = <b>0 kg</b>. Tetap dianjurkan bersedekah.' },
-        { prompt: 'Pak Karim menemukan guci emas kuno senilai <b>Rp 50.000.000</b>. Berapa rupiah zakat rikaznya?',
-          ans: 10000000, unit: 'Rp', hint: 'Rikaz = 20%, langsung tanpa nisab.', why: '20% × Rp 50.000.000 = <b>Rp 10.000.000</b>, dikeluarkan saat itu juga.' }
+        { prompt: 'A harvest of <b>1,200 kg</b> of rice from a <b>rain-fed</b> field (no watering cost). How many kg is the zakat?',
+          ans: 120, unit: 'kg', hint: 'No cost → 10%.', why: '1,200 kg > the 653 kg nisab. Rain-fed → 10% × 1,200 = <b>120 kg</b>.' },
+        { prompt: 'A harvest of <b>3,000 kg</b> of rice watered by a <b>paid pump</b>. How many kg is the zakat?',
+          ans: 150, unit: 'kg', hint: 'Watering costs money → 5%.', why: 'Paid irrigation → 5% × 3,000 = <b>150 kg</b>.' },
+        { prompt: 'A harvest of only <b>500 kg</b> of rice, rain-fed. How many kg is the zakat?',
+          ans: 0, unit: 'kg', hint: 'Compare it with the 653 kg nisab first.', why: '500 kg does <b>not</b> reach the 653 kg nisab → zakat is <b>0 kg</b>. Voluntary sadaqah is still encouraged.' },
+        { prompt: 'Mr. Karim unearths an antique gold jar worth <b>50,000,000</b>. How much is the rikaz zakat?',
+          ans: 10000000, unit: 'Rp', hint: 'Rikaz is 20%, due at once with no nisab.', why: '20% × 50,000,000 = <b>10,000,000</b>, payable immediately.' }
       ]
     }
   },
 
-  /* ============================ BAB 4 ============================ */
+  /* ============================ CHAPTER 4 ============================ */
   {
-    id: 4, title: 'Kantor Amil', topic: 'Penghasilan & Dagang', emoji: '🏢', scene: 'office',
-    blurb: 'Zakat penghasilan/profesi dan zakat perdagangan.',
+    id: 4, title: 'The Amil’s Office', topic: 'Income & Trade', emoji: '🏢', scene: 'office',
+    blurb: 'Zakat on professional income and on business inventory.',
     story: [
-      { c: 'nar',  t: 'Ruangan lembaga amil zakat sejuk dan rapi. Di layar komputer, angka-angka tersusun dalam tabel.' },
-      { c: 'amil', t: 'Zaki, zaman sekarang banyak orang berpenghasilan dari gaji, bukan sawah. Inilah <b>zakat penghasilan</b> atau zakat profesi.' },
-      { c: 'zaki', t: 'Apakah ada dasarnya, Bu?' },
-      { c: 'amil', t: 'Ada. <b>Fatwa MUI No. 3 Tahun 2003</b> menetapkan zakat penghasilan wajib bila mencapai nisab <b>85 gram emas per tahun</b>, dengan kadar <b>2,5%</b>. Boleh dicicil tiap bulan.' },
-      { c: 'amil', t: 'Untuk pedagang, rumusnya: <b>(modal berputar + laba + piutang lancar) − (utang jatuh tempo + kerugian)</b>, lalu dikalikan 2,5% bila mencapai nisab dan genap haul.' },
-      { c: 'zaki', t: 'Jadi stok barang di toko juga dihitung, ya?' },
-      { c: 'amil', t: 'Tepat sekali — dihitung dengan harga jual saat haul tiba. Mari berlatih.' }
+      { c: 'nar',  t: 'The zakat agency office is cool and orderly. On the screen, numbers line up in neat columns.' },
+      { c: 'amil', t: 'Zaki, most people today earn a salary rather than a harvest. That is where <b>zakat on income</b> comes in.' },
+      { c: 'zaki', t: 'Is there a basis for it?' },
+      { c: 'amil', t: 'There is. <b>MUI Fatwa No. 3 of 2003</b> holds that zakat on income is due once it reaches the nisab of <b>85 grams of gold per year</b>, at a rate of <b>2.5%</b>. It may be paid monthly.' },
+      { c: 'amil', t: 'For traders the formula is: <b>(working capital + profit + collectible receivables) − (debt due + losses)</b>, multiplied by 2.5% once nisab and haul are met.' },
+      { c: 'zaki', t: 'So the stock sitting in the shop counts as well?' },
+      { c: 'amil', t: 'Precisely — valued at its selling price on the day the haul completes. Let us practise.' }
     ],
     questions: [
-      { q: 'Zakat penghasilan (profesi) di Indonesia berlandaskan pada…',
-        opts: ['Fatwa MUI No. 3 Tahun 2003', 'UU Ketenagakerjaan', 'Ijma sahabat secara langsung', 'Qiyas terhadap zakat fitrah'],
-        a: 0, hint: 'Sebuah fatwa resmi tahun 2003.',
-        why: 'Fatwa MUI No. 3 Tahun 2003 tentang Zakat Penghasilan, diperkuat UU No. 23 Tahun 2011 tentang Pengelolaan Zakat.' },
-      { q: 'Nisab zakat penghasilan setahun setara dengan…',
-        opts: ['20 gram emas', '85 gram emas', '595 gram perak saja', '653 kg beras'],
-        a: 1, hint: 'Sama dengan nisab zakat mal.',
-        why: 'Nisabnya <b>85 gram emas per tahun</b>. Jika harga emas Rp 1.950.000/g, nisab ≈ Rp 165.750.000 per tahun (≈ Rp 13.812.500 per bulan).' },
-      { q: 'Gaji Pak Yusuf Rp 20.000.000/bulan. Dengan asumsi nisab bulanan Rp 13.812.500, berapa zakat penghasilan sebulan?',
-        opts: ['Rp 200.000', 'Rp 500.000', 'Rp 2.000.000', 'Belum wajib zakat'],
-        a: 1, hint: 'Gaji melebihi nisab → kalikan 2,5%.',
-        why: 'Rp 20.000.000 > nisab bulanan. Zakat = 2,5% × Rp 20.000.000 = <b>Rp 500.000</b> per bulan.' },
-      { q: 'Dalam zakat perdagangan, komponen manakah yang menjadi PENGURANG?',
-        opts: ['Laba bersih', 'Stok barang dagangan', 'Utang jatuh tempo', 'Piutang lancar'],
-        a: 2, hint: 'Sesuatu yang harus dibayar, bukan yang dimiliki.',
-        why: 'Rumus: (modal berputar + laba + piutang lancar) − (<b>utang jatuh tempo</b> + kerugian), lalu × 2,5%.' },
-      { q: 'Toko Bu Sari: stok Rp 80.000.000, laba Rp 25.000.000, piutang lancar Rp 10.000.000, utang jatuh tempo Rp 15.000.000. Berapa zakatnya?',
-        opts: ['Rp 2.500.000', 'Rp 2.000.000', 'Rp 3.250.000', 'Rp 1.750.000'],
-        a: 0, hint: '80 + 25 + 10 − 15 = 100 juta. Lalu 2,5%.',
-        why: 'Harta zakat = 80 + 25 + 10 − 15 = Rp 100.000.000. Zakat = 2,5% × 100 juta = <b>Rp 2.500.000</b>.' },
-      { q: 'Bolehkah zakat penghasilan dibayarkan setiap bulan?',
-        opts: ['Tidak boleh, harus setahun sekali', 'Boleh, sebagai cicilan dari zakat tahunan',
-               'Boleh, tetapi kadarnya menjadi 5%', 'Hanya boleh bila diminta atasan'],
-        a: 1, hint: 'Yang berubah hanya jadwal bayarnya, bukan kadarnya.',
-        why: 'Boleh — pembayaran bulanan dianggap <b>ta‘jil</b> (menyegerakan) dari kewajiban tahunan. Kadarnya tetap 2,5%.' }
+      { q: 'Zakat on professional income in Indonesia rests on…',
+        opts: ['MUI Fatwa No. 3 of 2003', 'The Labour Act', 'A direct consensus of the Companions', 'Analogy with zakat al-fitr'],
+        a: 0, hint: 'An official fatwa issued in 2003.',
+        why: 'MUI Fatwa No. 3 of 2003 on Zakat on Income, reinforced by Law No. 23 of 2011 on Zakat Management.' },
+      { q: 'The annual nisab for zakat on income is equivalent to…',
+        opts: ['20 grams of gold', '85 grams of gold', '595 grams of silver only', '653 kg of rice'],
+        a: 1, hint: 'The same as the nisab for zakat on wealth.',
+        why: 'The nisab is <b>85 grams of gold per year</b>. At a gold price of 1,950,000 per gram, that is about 165,750,000 a year, or about 13,812,500 a month.' },
+      { q: 'Mr. Yusuf earns 20,000,000 a month. Assuming a monthly nisab of 13,812,500, what is his monthly zakat on income?',
+        opts: ['200,000', '500,000', '2,000,000', 'None is due'],
+        a: 1, hint: 'The salary clears the nisab — apply 2.5%.',
+        why: '20,000,000 is above the monthly nisab. Zakat = 2.5% × 20,000,000 = <b>500,000</b> a month.' },
+      { q: 'In zakat on trade, which item is a DEDUCTION?',
+        opts: ['Net profit', 'Inventory', 'Debt falling due', 'Collectible receivables'],
+        a: 2, hint: 'Something you must pay out, not something you hold.',
+        why: 'The formula is (working capital + profit + collectible receivables) − (<b>debt falling due</b> + losses), then × 2.5%.' },
+      { q: 'Ms. Sari’s shop: stock 80,000,000, profit 25,000,000, receivables 10,000,000, debt due 15,000,000. What is her zakat?',
+        opts: ['2,500,000', '2,000,000', '3,250,000', '1,750,000'],
+        a: 0, hint: '80 + 25 + 10 − 15 = 100 million. Then 2.5%.',
+        why: 'Zakatable base = 80 + 25 + 10 − 15 = 100,000,000. Zakat = 2.5% × 100 million = <b>2,500,000</b>.' },
+      { q: 'May zakat on income be paid every month?',
+        opts: ['No, it must be annual', 'Yes, as an instalment against the annual obligation',
+               'Yes, but the rate becomes 5%', 'Only if an employer requires it'],
+        a: 1, hint: 'Only the payment schedule changes, not the rate.',
+        why: 'It may — monthly payment counts as <b>ta‘jil</b>, bringing forward the annual duty. The rate stays at 2.5%.' }
     ],
     mini: {
-      type: 'calc', name: 'Meja Hitung Amil',
-      desc: 'Bantu Bu Aminah menghitung. Ketik angka saja (tanpa "Rp" atau titik), lalu tekan <b>Periksa</b>.',
+      type: 'calc', name: 'The Amil’s Desk',
+      desc: 'Help Ms. Aminah run the numbers. Type digits only, then press <b>Check</b>.',
       steps: [
-        { prompt: 'Gaji <b>Rp 12.000.000</b>/bulan. Nisab bulanan <b>Rp 13.812.500</b>. Berapa rupiah zakat penghasilan bulan ini?',
-          ans: 0, unit: 'Rp', hint: 'Gaji di bawah nisab bulanan.', why: 'Rp 12.000.000 < nisab bulanan → <b>belum wajib</b>, zakat = Rp 0. (Jika dihitung tahunan dan total setahun melewati nisab, barulah wajib.)' },
-        { prompt: 'Gaji <b>Rp 18.000.000</b>/bulan, di atas nisab. Berapa rupiah zakatnya sebulan?',
-          ans: 450000, unit: 'Rp', hint: '2,5% dari 18 juta.', why: '2,5% × Rp 18.000.000 = <b>Rp 450.000</b>.' },
-        { prompt: 'Toko: stok <b>60 juta</b> + laba <b>20 juta</b> + piutang <b>5 juta</b> − utang <b>25 juta</b>. Berapa rupiah zakatnya?',
-          ans: 1500000, unit: 'Rp', hint: '60+20+5−25 = 60 juta, lalu 2,5%.', why: 'Harta zakat = Rp 60.000.000. Zakat = 2,5% × 60 juta = <b>Rp 1.500.000</b>.' },
-        { prompt: 'Tabungan <b>Rp 200.000.000</b> genap 1 haul, di atas nisab. Berapa rupiah zakat malnya?',
-          ans: 5000000, unit: 'Rp', hint: '2,5% dari 200 juta.', why: '2,5% × Rp 200.000.000 = <b>Rp 5.000.000</b>.' }
+        { prompt: 'A salary of <b>12,000,000</b> a month against a monthly nisab of <b>13,812,500</b>. How much zakat on income is due this month?',
+          ans: 0, unit: 'Rp', hint: 'The salary falls under the monthly nisab.', why: '12,000,000 < the monthly nisab → <b>nothing is due yet</b>. (If the yearly total clears the annual nisab, zakat becomes due at the end of the haul.)' },
+        { prompt: 'A salary of <b>18,000,000</b> a month, above the nisab. How much is the monthly zakat?',
+          ans: 450000, unit: 'Rp', hint: '2.5% of 18 million.', why: '2.5% × 18,000,000 = <b>450,000</b>.' },
+        { prompt: 'A shop: stock <b>60m</b> + profit <b>20m</b> + receivables <b>5m</b> − debt <b>25m</b>. How much zakat is due?',
+          ans: 1500000, unit: 'Rp', hint: '60+20+5−25 = 60 million, then 2.5%.', why: 'Zakatable base = 60,000,000. Zakat = 2.5% × 60 million = <b>1,500,000</b>.' },
+        { prompt: 'Savings of <b>200,000,000</b> held one full haul, above nisab. How much zakat on wealth is due?',
+          ans: 5000000, unit: 'Rp', hint: '2.5% of 200 million.', why: '2.5% × 200,000,000 = <b>5,000,000</b>.' }
       ]
     }
   },
 
-  /* ============================ BAB 5 ============================ */
+  /* ============================ CHAPTER 5 ============================ */
   {
-    id: 5, title: 'Kampung Asnaf', topic: '8 Golongan', emoji: '🤲', scene: 'village',
-    blurb: 'Delapan golongan penerima zakat dan siapa yang tidak berhak.',
+    id: 5, title: 'Asnaf Village', topic: 'The Eight Recipients', emoji: '🤲', scene: 'village',
+    blurb: 'The eight categories entitled to zakat — and who is not.',
     story: [
-      { c: 'nar',    t: 'Senja menyapu Kampung Asnaf. Lampu-lampu rumah mulai menyala satu per satu.' },
-      { c: 'ustadz', t: 'Zaki, zakat tidak boleh diberikan kepada sembarang orang. Allah sendiri yang menetapkan penerimanya — ada <b>delapan golongan</b>.' },
-      { c: 'zaki',   t: 'Delapan? Bisa disebutkan, Ustadz?' },
-      { c: 'ustadz', t: '<b>Fakir</b> (tak punya apa-apa), <b>Miskin</b> (punya tapi tak cukup), <b>Amil</b> (pengelola zakat), <b>Mualaf</b> (baru masuk Islam / dilunakkan hatinya).' },
-      { c: 'ustadz', t: 'Lalu <b>Riqab</b> (memerdekakan perbudakan), <b>Gharim</b> (terlilit utang), <b>Fi Sabilillah</b> (di jalan Allah), dan <b>Ibnu Sabil</b> (musafir kehabisan bekal).' },
-      { c: 'zaki',   t: 'Berarti tidak boleh diberikan ke sembarang orang kaya, ya?' },
-      { c: 'ustadz', t: 'Benar. Orang kaya, orang kuat yang mampu bekerja, dan keluarga inti yang sudah jadi tanggunganmu sendiri — mereka tidak berhak menerima zakatmu.' }
+      { c: 'nar',    t: 'Dusk settles over Asnaf Village. One by one, the lamps in the houses come on.' },
+      { c: 'ustadz', t: 'Zaki, zakat may not be handed to just anyone. Allah Himself named the recipients — there are <b>eight categories</b>.' },
+      { c: 'zaki',   t: 'Eight? Could you name them, Ustadh?' },
+      { c: 'ustadz', t: '<b>Fakir</b> (destitute), <b>Miskin</b> (poor), <b>Amil</b> (zakat administrators), <b>Muallaf</b> (new Muslims and those whose hearts are being reconciled).' },
+      { c: 'ustadz', t: 'Then <b>Riqab</b> (freeing people from bondage), <b>Gharim</b> (the debt-burdened), <b>Fi Sabilillah</b> (in the path of Allah), and <b>Ibn Sabil</b> (the stranded traveller).' },
+      { c: 'zaki',   t: 'So it cannot go to just any wealthy person?' },
+      { c: 'ustadz', t: 'It cannot. The wealthy, the able-bodied who can earn, and the immediate family you already support — none of them may receive your zakat.' }
     ],
     questions: [
-      { q: 'Delapan golongan penerima zakat ditegaskan dalam surah…',
-        opts: ['QS Al-Baqarah 183', 'QS At-Taubah 60', 'QS Al-Ma‘un 1–7', 'QS Al-Kautsar 1–3'],
-        a: 1, hint: 'Surah ke-9, ayat 60.',
-        why: 'QS At-Taubah ayat 60 merinci delapan asnaf penerima zakat.',
-        dalil: 'QS At-Taubah 60: "Sesungguhnya zakat itu hanyalah untuk orang-orang fakir, orang miskin, amil zakat…"' },
-      { q: 'Apa perbedaan FAKIR dan MISKIN?',
-        opts: ['Fakir tidak punya harta/penghasilan sama sekali; miskin punya tetapi tidak mencukupi',
-               'Fakir orang desa; miskin orang kota',
-               'Fakir tidak bekerja; miskin sudah bekerja',
-               'Tidak ada perbedaan, keduanya sama'],
-        a: 0, hint: 'Bedanya pada ada/tidaknya sumber penghasilan.',
-        why: '<b>Fakir</b>: tidak memiliki harta maupun penghasilan. <b>Miskin</b>: memiliki penghasilan tetapi tidak mencukupi kebutuhan pokok.' },
-      { q: 'Seorang musafir yang kehabisan bekal di perjalanan (bukan maksiat) termasuk golongan…',
-        opts: ['Gharim', 'Riqab', 'Ibnu Sabil', 'Mualaf'],
-        a: 2, hint: 'Secara harfiah berarti "anak jalan".',
-        why: '<b>Ibnu Sabil</b> = musafir yang kehabisan bekal dalam perjalanan yang bukan untuk maksiat.' },
-      { q: 'Orang yang terlilit utang untuk kebutuhan pokok dan tidak mampu melunasinya disebut…',
+      { q: 'The eight categories of zakat recipients are set out in…',
+        opts: ['Qur’an 2:183', 'Qur’an 9:60', 'Qur’an 107:1–7', 'Qur’an 108:1–3'],
+        a: 1, hint: 'The ninth surah, verse 60.',
+        why: 'Qur’an 9:60 (Surah at-Tawbah) lists the eight asnaf entitled to zakat.',
+        dalil: 'Qur’an 9:60 — "Zakat is only for the poor and the needy, and those employed to collect it…"' },
+      { q: 'What separates FAKIR from MISKIN?',
+        opts: ['Fakir has no wealth or income at all; miskin has income that does not suffice',
+               'Fakir lives in villages; miskin lives in cities',
+               'Fakir does not work; miskin already works',
+               'There is no difference between them'],
+        a: 0, hint: 'The difference lies in whether any income exists at all.',
+        why: '<b>Fakir</b>: possesses neither wealth nor income. <b>Miskin</b>: has some income, but not enough to meet basic needs.' },
+      { q: 'A traveller stranded without funds on a lawful journey belongs to which category?',
+        opts: ['Gharim', 'Riqab', 'Ibn Sabil', 'Muallaf'],
+        a: 2, hint: 'The name literally means "child of the road".',
+        why: '<b>Ibn Sabil</b> — a traveller who has run out of provisions on a journey that is not for sin.' },
+      { q: 'Someone crushed by debt taken on for basic needs, unable to repay, is called…',
         opts: ['Gharim', 'Amil', 'Fi Sabilillah', 'Fakir'],
-        a: 0, hint: 'Berkaitan dengan utang.',
-        why: '<b>Gharim</b> = orang yang berutang untuk kebutuhan halal/darurat dan tidak sanggup melunasi.' },
-      { q: 'Manakah yang TIDAK berhak menerima zakat?',
-        opts: ['Amil zakat yang bekerja mengelola', 'Mualaf yang baru masuk Islam',
-               'Orang kaya yang berkecukupan', 'Musafir yang kehabisan bekal'],
-        a: 2, hint: 'Cari yang justru berkewajiban membayar, bukan menerima.',
-        why: 'Orang kaya tidak berhak menerima zakat — ia justru muzakki. Juga tidak berhak: orang kuat yang mampu bekerja, serta orang tua, anak, dan istri yang menjadi tanggungan muzakki.' },
-      { q: 'Apa tugas utama AMIL zakat?',
-        opts: ['Menentukan besarnya nisab sendiri', 'Menghimpun, mengelola, dan menyalurkan zakat',
-               'Memberi pinjaman berbunga kepada mustahik', 'Menyimpan zakat selama 5 tahun'],
-        a: 1, hint: 'Pengelola, bukan pemilik.',
-        why: '<b>Amil</b> bertugas menghimpun, mencatat, mengelola, dan menyalurkan zakat kepada yang berhak. Ia mendapat bagian sebagai imbalan kerjanya.' }
+        a: 0, hint: 'It concerns debt.',
+        why: '<b>Gharim</b> — a person who took on lawful or emergency debt and cannot repay it.' },
+      { q: 'Which of these is NOT entitled to receive zakat?',
+        opts: ['An amil who administers the fund', 'A new Muslim',
+               'A wealthy person who wants for nothing', 'A traveller stranded without funds'],
+        a: 2, hint: 'Look for the one who should be paying instead of receiving.',
+        why: 'The wealthy are not entitled — they are muzakki. Nor are the able-bodied who can earn, nor the parents, children and spouse a muzakki already supports.' },
+      { q: 'What is the chief duty of an AMIL?',
+        opts: ['To set the nisab themselves', 'To collect, manage and distribute zakat',
+               'To lend to mustahik at interest', 'To hold zakat for five years'],
+        a: 1, hint: 'An administrator, not an owner.',
+        why: 'The <b>amil</b> collects, records, manages and distributes zakat to those entitled. A share is allotted to them as payment for that work.' }
     ],
     mini: {
-      type: 'sort', name: 'Salurkan ke Asnaf',
-      desc: 'Bu Aminah punya amplop zakat. Tempatkan setiap warga pada golongan (<b>asnaf</b>) yang tepat.',
+      type: 'sort', name: 'Direct the Zakat',
+      desc: 'Ms. Aminah has zakat envelopes to hand out. Place each villager in the correct category (<b>asnaf</b>).',
       bins: [
         { id: 'fakir', label: 'Fakir / Miskin', em: '🏚️' },
         { id: 'gharim', label: 'Gharim', em: '📄' },
-        { id: 'ibnu', label: 'Ibnu Sabil', em: '🧳' },
-        { id: 'bukan', label: 'Tidak Berhak', em: '🚫' }
+        { id: 'ibnu', label: 'Ibn Sabil', em: '🧳' },
+        { id: 'bukan', label: 'Not Entitled', em: '🚫' }
       ],
       items: [
-        { t: 'Nenek Ijah, tak punya penghasilan', em: '👵', bin: 'fakir' },
-        { t: 'Pak Toha, utang biaya operasi', em: '🏥', bin: 'gharim' },
-        { t: 'Pelajar kehabisan ongkos pulang', em: '🚌', bin: 'ibnu' },
-        { t: 'Juragan Amir, pemilik 3 toko', em: '💼', bin: 'bukan' },
-        { t: 'Buruh harian, upah tak cukup', em: '🧹', bin: 'fakir' },
-        { t: 'Pedagang bangkrut, utang menumpuk', em: '📉', bin: 'gharim' },
-        { t: 'Musafir terlantar di terminal', em: '🚏', bin: 'ibnu' },
-        { t: 'Anak kandung muzakki sendiri', em: '👦', bin: 'bukan' }
+        { t: 'Grandma Ijah, no income at all', em: '👵', bin: 'fakir' },
+        { t: 'Mr. Toha, in debt for surgery', em: '🏥', bin: 'gharim' },
+        { t: 'Student stranded without fare home', em: '🚌', bin: 'ibnu' },
+        { t: 'Mr. Amir, owner of three shops', em: '💼', bin: 'bukan' },
+        { t: 'Day labourer whose wage falls short', em: '🧹', bin: 'fakir' },
+        { t: 'Bankrupt trader buried in debt', em: '📉', bin: 'gharim' },
+        { t: 'Traveller stranded at the terminal', em: '🚏', bin: 'ibnu' },
+        { t: 'The muzakki’s own child', em: '👦', bin: 'bukan' }
       ]
     }
   },
 
-  /* ============================ BAB 6 ============================ */
+  /* ============================ CHAPTER 6 ============================ */
   {
-    id: 6, title: 'Malam Takbir', topic: 'Zakat Fitrah', emoji: '🌙', scene: 'night',
-    blurb: 'Besaran, waktu, dan ketentuan zakat fitrah.',
+    id: 6, title: 'Night of Takbir', topic: 'Zakat al-Fitr', emoji: '🌙', scene: 'night',
+    blurb: 'The amount, the timing, and the rules of zakat al-fitr.',
     story: [
-      { c: 'nar',    t: 'Takbir bersahut-sahutan. Malam terakhir Ramadan, langit penuh bintang, dan Rahma menarik lengan kakaknya.' },
-      { c: 'rahma',  t: 'Kak Zaki! Ibu menyuruh mengantar beras ke masjid. Katanya untuk zakat fitrah. Kenapa harus beras?' },
-      { c: 'zaki',   t: 'Karena zakat fitrah dibayar dengan <b>makanan pokok</b> daerah setempat, Rahma. Di sini berarti beras.' },
-      { c: 'ustadz', t: 'Tepat. Ukurannya <b>1 sha‘</b> — setara <b>2,5 kg</b> atau <b>3,5 liter</b> per jiwa. Wajib bagi setiap muslim, besar maupun kecil, laki-laki maupun perempuan.' },
-      { c: 'ustadz', t: 'Waktunya: boleh sejak awal Ramadan, <b>wajib</b> saat matahari terbenam di akhir Ramadan, dan <b>paling utama</b> sebelum shalat Idulfitri.' },
-      { c: 'rahma',  t: 'Kalau telat, bagaimana?' },
-      { c: 'ustadz', t: 'Jika dibayar <b>setelah</b> shalat Id, ia dinilai sebagai sedekah biasa — kewajiban fitrahnya dianggap tidak tertunaikan pada waktunya. Jangan sampai terlambat, ya.' }
+      { c: 'nar',    t: 'Takbir echoes from street to street. On the last night of Ramadan, under a sky full of stars, Rahma tugs at her brother’s sleeve.' },
+      { c: 'rahma',  t: 'Zaki! Mother asked us to carry rice to the mosque. She called it zakat al-fitr. Why does it have to be rice?' },
+      { c: 'zaki',   t: 'Because zakat al-fitr is paid in the <b>staple food</b> of the place, Rahma. Here, that means rice.' },
+      { c: 'ustadz', t: 'Just so. The measure is <b>one sa‘</b> — about <b>2.5 kg</b>, or <b>3.5 litres</b> — for each person. It is due from every Muslim, young or old, male or female.' },
+      { c: 'ustadz', t: 'As for timing: it may be given from early Ramadan, it becomes <b>obligatory</b> at sunset on the last day, and it is <b>best</b> given before the Eid prayer.' },
+      { c: 'rahma',  t: 'And if we are late?' },
+      { c: 'ustadz', t: 'If it is paid <b>after</b> the Eid prayer, it counts as ordinary sadaqah — the duty of fitr is no longer fulfilled in its proper time. So do not leave it late.' }
     ],
     questions: [
-      { q: 'Berapa besaran zakat fitrah per jiwa?',
-        opts: ['1 sha‘ ≈ 2,5 kg / 3,5 liter makanan pokok', '2 kg makanan pokok', '5 kg makanan pokok', '2,5% dari penghasilan'],
-        a: 0, hint: 'Satuan klasiknya "sha‘".',
-        why: 'Zakat fitrah = <b>1 sha‘</b> ≈ 2,5 kg atau 3,5 liter makanan pokok per jiwa.' },
-      { q: 'Siapa yang wajib dikeluarkan zakat fitrahnya?',
-        opts: ['Hanya kepala keluarga', 'Hanya yang sudah balig',
-               'Setiap jiwa muslim, termasuk bayi yang lahir sebelum matahari terbenam akhir Ramadan', 'Hanya yang berpuasa penuh'],
-        a: 2, hint: 'Bahkan bayi pun dihitung.',
-        why: 'Wajib atas <b>setiap jiwa muslim</b> — tua, muda, bahkan bayi yang lahir sebelum terbenamnya matahari di akhir Ramadan. Ditanggung oleh kepala keluarga.',
-        dalil: 'HR. Bukhari & Muslim dari Ibnu Umar tentang kewajiban zakat fitrah.' },
-      { q: 'Kapan waktu PALING UTAMA (afdhal) menunaikan zakat fitrah?',
-        opts: ['Awal Ramadan', 'Sebelum shalat Idulfitri', 'Setelah shalat Idulfitri', 'Saat malam takbiran saja'],
-        a: 1, hint: 'Sebelum kaum muslimin berangkat shalat Id.',
-        why: 'Waktu afdhal adalah <b>sebelum shalat Idulfitri</b>. Boleh sejak awal Ramadan (waktu jawaz), wajib sejak terbenam matahari akhir Ramadan.' },
-      { q: 'Zakat fitrah yang dibayarkan SETELAH shalat Idulfitri hukumnya…',
-        opts: ['Tetap sah sebagai zakat fitrah', 'Dinilai sebagai sedekah biasa',
-               'Wajib diulang tahun depan dua kali', 'Batal dan berdosa besar'],
-        a: 1, hint: 'Ia tetap bernilai kebaikan, tapi bukan lagi zakat fitrah.',
-        why: 'Menurut jumhur ulama, membayar setelah shalat Id menjadikannya <b>sedekah biasa</b>, bukan zakat fitrah. Karena itu jangan ditunda.' },
-      { q: 'Keluarga Pak Hasan terdiri atas 5 jiwa. Berapa kg beras zakat fitrah keluarganya?',
-        opts: ['10 kg', '12,5 kg', '15 kg', '17,5 kg'],
-        a: 1, hint: '5 × 2,5 kg.',
-        why: '5 jiwa × 2,5 kg = <b>12,5 kg</b> beras.' },
-      { q: 'Apa fungsi utama zakat fitrah bagi orang yang berpuasa?',
-        opts: ['Mengganti puasa yang batal', 'Menyucikan puasa dari perbuatan sia-sia dan memberi makan orang miskin',
-               'Menambah pahala haji', 'Menghapus utang piutang'],
-        a: 1, hint: 'Ada dua fungsi: menyucikan dan memberi makan.',
-        why: 'Zakat fitrah menyucikan orang yang berpuasa dari perbuatan sia-sia (<i>lagw</i>) dan ucapan kotor (<i>rafats</i>), sekaligus memberi makan orang miskin di hari raya.',
-        dalil: 'HR. Abu Dawud & Ibnu Majah dari Ibnu Abbas.' }
+      { q: 'How much zakat al-fitr is due per person?',
+        opts: ['One sa‘ ≈ 2.5 kg / 3.5 litres of staple food', '2 kg of staple food', '5 kg of staple food', '2.5% of income'],
+        a: 0, hint: 'The classical unit is the "sa‘".',
+        why: 'Zakat al-fitr is <b>one sa‘</b> ≈ 2.5 kg or 3.5 litres of the local staple food, per person.' },
+      { q: 'Who must zakat al-fitr be paid for?',
+        opts: ['Only the head of the household', 'Only those who have reached puberty',
+               'Every Muslim soul, including a baby born before sunset on the last day of Ramadan', 'Only those who fasted the whole month'],
+        a: 2, hint: 'Even an infant is counted.',
+        why: 'It is due for <b>every Muslim soul</b> — old, young, even a baby born before sunset on the last day of Ramadan. The head of the household carries the cost.',
+        dalil: 'Narrated by al-Bukhari & Muslim from Ibn Umar on the obligation of zakat al-fitr.' },
+      { q: 'When is the BEST (afdal) time to give zakat al-fitr?',
+        opts: ['Early in Ramadan', 'Before the Eid prayer', 'After the Eid prayer', 'Only on the night of takbir'],
+        a: 1, hint: 'Before the congregation leaves for the Eid prayer.',
+        why: 'The best time is <b>before the Eid prayer</b>. It is permitted from early Ramadan, and becomes obligatory at sunset on the final day.' },
+      { q: 'Zakat al-fitr paid AFTER the Eid prayer is…',
+        opts: ['Still valid as zakat al-fitr', 'Counted as ordinary sadaqah',
+               'Owed twice over the following year', 'Void and a major sin'],
+        a: 1, hint: 'It still carries reward, but it is no longer zakat al-fitr.',
+        why: 'According to the majority of scholars, paying after the Eid prayer makes it <b>ordinary sadaqah</b> rather than zakat al-fitr. So do not delay it.' },
+      { q: 'Mr. Hasan’s household has five people. How many kg of rice is their zakat al-fitr?',
+        opts: ['10 kg', '12.5 kg', '15 kg', '17.5 kg'],
+        a: 1, hint: '5 × 2.5 kg.',
+        why: '5 people × 2.5 kg = <b>12.5 kg</b> of rice.' },
+      { q: 'What is the main purpose of zakat al-fitr for the one who fasted?',
+        opts: ['To replace a broken fast', 'To purify the fast from idle acts and to feed the poor',
+               'To add the reward of hajj', 'To cancel outstanding debts'],
+        a: 1, hint: 'Two purposes: purifying, and feeding.',
+        why: 'Zakat al-fitr purifies the fasting person from idle talk (<i>laghw</i>) and indecency (<i>rafath</i>), and at the same time feeds the poor on the day of Eid.',
+        dalil: 'Narrated by Abu Dawud & Ibn Majah from Ibn Abbas.' }
     ],
     mini: {
-      type: 'sort', name: 'Waktu Zakat Fitrah',
-      desc: 'Kelompokkan waktu pembayaran zakat fitrah berikut ini dengan tepat.',
+      type: 'sort', name: 'Timing the Fitr',
+      desc: 'Sort these moments for paying zakat al-fitr into the right group.',
       bins: [
-        { id: 'afdhal', label: 'Paling Utama (Afdhal)', em: '⭐' },
-        { id: 'boleh', label: 'Boleh (Jawaz)', em: '✅' },
-        { id: 'telat', label: 'Terlambat → Sedekah Biasa', em: '⏰' }
+        { id: 'afdhal', label: 'Best (Afdal)', em: '⭐' },
+        { id: 'boleh', label: 'Permitted (Jawaz)', em: '✅' },
+        { id: 'telat', label: 'Too Late → Ordinary Sadaqah', em: '⏰' }
       ],
       items: [
-        { t: 'Subuh hari raya, sebelum shalat Id', em: '🌅', bin: 'afdhal' },
-        { t: 'Malam takbiran', em: '🌙', bin: 'afdhal' },
-        { t: 'Hari ke-10 Ramadan', em: '📅', bin: 'boleh' },
-        { t: 'Awal Ramadan', em: '🗓️', bin: 'boleh' },
-        { t: 'Siang hari raya, seusai shalat Id', em: '🕛', bin: 'telat' },
-        { t: 'Hari kedua Syawal', em: '📆', bin: 'telat' }
+        { t: 'Eid morning, before the prayer', em: '🌅', bin: 'afdhal' },
+        { t: 'The night of takbir', em: '🌙', bin: 'afdhal' },
+        { t: 'The tenth day of Ramadan', em: '📅', bin: 'boleh' },
+        { t: 'The first day of Ramadan', em: '🗓️', bin: 'boleh' },
+        { t: 'Eid midday, after the prayer', em: '🕛', bin: 'telat' },
+        { t: 'The second day of Shawwal', em: '📆', bin: 'telat' }
       ]
     }
   },
 
-  /* ============================ BAB 7 — BOSS ============================ */
+  /* ============================ CHAPTER 7 — GLOBAL ============================ */
   {
-    id: 7, title: 'Ujian Akbar', topic: 'Ujian Campuran', emoji: '🏅', scene: 'hall', boss: true,
-    blurb: 'Ujian penutup: semua materi, waktu lebih ketat, tanpa petunjuk.',
+    id: 7, title: 'World of Giving', topic: 'Zakat Goes Global', emoji: '🌍', scene: 'world',
+    blurb: 'How zakat becomes a global instrument: the SDGs, refugees, and cross-border giving.',
     story: [
-      { c: 'nar',    t: 'Aula madrasah dipenuhi peserta. Papan bertuliskan "UJIAN AKBAR ZAKAT" berdiri megah di depan.' },
-      { c: 'ustadz', t: 'Zaki, inilah ujian terakhirmu. Semua materi akan diuji — dari makna zakat sampai perhitungan.' },
-      { c: 'ustadz', t: 'Peringatan: waktumu lebih singkat, dan <b>tidak ada petunjuk</b>. Tapi aku yakin kamu siap.' },
-      { c: 'zaki',   t: 'Bismillah. Aku sudah belajar dari pasar, sawah, kantor amil, sampai kampung asnaf. Ayo mulai!' }
+      { c: 'nar',    t: 'A video call lights up the amil office. On the screen, a field officer speaks from a refugee settlement, dust still on her collar.' },
+      { c: 'global', t: 'Salam, Zaki. I am Layla. Everything you have learned so far stops at your village border. Today it crosses the world.' },
+      { c: 'zaki',   t: 'Can zakat really travel that far?' },
+      { c: 'global', t: 'It can. The default is to serve your own community first — but most scholars permit <b>transferring zakat abroad</b> when the need elsewhere is far greater: famine, war, disaster.' },
+      { c: 'global', t: 'Look at who lives here. Families who fled with nothing are <b>fakir</b> and <b>miskin</b>. People stranded far from home are <b>ibn sabil</b>. The Qur’an already named them — fourteen centuries ago.' },
+      { c: 'zaki',   t: 'So the eight asnaf still hold, just on a larger map.' },
+      { c: 'global', t: 'Exactly. And zakat has something ordinary aid does not: it is <b>obligatory</b> and it arrives <b>every single year</b>. Donations rise and fall with the headlines. Zakat does not.' },
+      { c: 'global', t: 'That is why it now funds clean water, clinics, schools and renewable energy — work the world calls the <b>Sustainable Development Goals</b>. This is the path of prosperity, Zaki. It begins in one pocket and ends in another continent.' }
     ],
     questions: [
-      { q: 'Harta senilai Rp 300.000.000 genap satu haul dan melebihi nisab. Berapa zakat malnya?',
-        opts: ['Rp 3.000.000', 'Rp 7.500.000', 'Rp 15.000.000', 'Rp 30.000.000'],
-        a: 1, hint: '', why: '2,5% × Rp 300.000.000 = <b>Rp 7.500.000</b>.' },
-      { q: 'Manakah jenis zakat yang TIDAK mensyaratkan haul?',
-        opts: ['Zakat emas', 'Zakat perdagangan', 'Zakat pertanian', 'Zakat tabungan'],
-        a: 2, hint: '', why: 'Zakat pertanian dikeluarkan <b>setiap panen</b> tanpa menunggu haul. Begitu pula rikaz, yang langsung 20% saat ditemukan.' },
-      { q: 'Panen 4.000 kg gabah dengan irigasi berbayar. Zakatnya…',
-        opts: ['100 kg', '200 kg', '400 kg', '800 kg'],
-        a: 1, hint: '', why: 'Irigasi berbiaya → 5%. 5% × 4.000 = <b>200 kg</b>.' },
-      { q: 'Golongan yang hatinya baru dilunakkan / baru memeluk Islam disebut…',
-        opts: ['Riqab', 'Mualaf', 'Gharim', 'Ibnu Sabil'],
-        a: 1, hint: '', why: '<b>Mualaf</b> — orang yang baru masuk Islam atau yang hatinya dilunakkan agar mantap dalam Islam.' },
-      { q: 'Keluarga 7 jiwa membayar zakat fitrah berupa beras. Totalnya…',
-        opts: ['14 kg', '15,5 kg', '17,5 kg', '21 kg'],
-        a: 2, hint: '', why: '7 × 2,5 kg = <b>17,5 kg</b>.' },
-      { q: 'Toko: modal Rp 150 juta, laba Rp 40 juta, piutang Rp 20 juta, utang jatuh tempo Rp 10 juta. Zakatnya…',
-        opts: ['Rp 4.000.000', 'Rp 5.000.000', 'Rp 5.500.000', 'Rp 6.000.000'],
-        a: 1, hint: '', why: '150 + 40 + 20 − 10 = Rp 200.000.000. Zakat = 2,5% × 200 juta = <b>Rp 5.000.000</b>.' },
-      { q: 'Kadar zakat rikaz (harta temuan) adalah…',
-        opts: ['2,5%', '5%', '10%', '20%'],
-        a: 3, hint: '', why: 'Rikaz dizakati <b>20%</b> seketika, tanpa nisab dan tanpa haul.' },
-      { q: 'Pernyataan yang BENAR tentang zakat fitrah adalah…',
-        opts: ['Hanya wajib bagi orang dewasa yang berpuasa penuh',
-               'Wajib atas setiap jiwa muslim dan paling utama ditunaikan sebelum shalat Id',
-               'Boleh dibayar kapan saja sepanjang tahun',
-               'Besarnya 2,5% dari penghasilan bulanan'],
-        a: 1, hint: '', why: 'Zakat fitrah wajib atas <b>setiap jiwa muslim</b> (termasuk bayi), sebesar 1 sha‘ ≈ 2,5 kg, paling utama sebelum shalat Idulfitri.' }
+      { q: 'Refugee families who fled their homes with nothing fall under which asnaf?',
+        opts: ['Amil', 'Fakir and miskin', 'Riqab only', 'They are not entitled to zakat'],
+        a: 1, hint: 'Judge by their condition, not their passport.',
+        why: 'Zakat is assigned by <b>condition</b>, not nationality. Displaced families with no wealth or income are <b>fakir</b> and <b>miskin</b>; those stranded far from home also fit <b>ibn sabil</b>.',
+        dalil: 'Qur’an 9:60 names the categories by circumstance, without restricting them to one land.' },
+      { q: 'What is the majority scholarly position on sending zakat to another country?',
+        opts: ['Absolutely forbidden in every case',
+               'Permitted, though local need normally comes first, especially where need abroad is far greater',
+               'Obligatory to send it all abroad',
+               'Permitted only during Ramadan'],
+        a: 1, hint: 'There is a default — and an exception for greater need.',
+        why: 'Transferring zakat (<i>naql al-zakat</i>) is generally permitted. The default is to serve the local community first, but most scholars allow — and sometimes prefer — sending it where the need is far more severe, such as famine or war.' },
+      { q: 'What makes zakat structurally different from voluntary aid as a source of development funding?',
+        opts: ['It is obligatory and recurs every year, so the flow is predictable',
+               'It is larger than every government budget',
+               'It may only be spent on mosques',
+               'It never has to be reported'],
+        a: 0, hint: 'Think about reliability, not size.',
+        why: 'Voluntary donations spike after a disaster and fade once attention moves on. Zakat is <b>obligatory and annual</b>, so it produces a <b>predictable flow</b> that long-term programmes can actually be planned around.' },
+      { q: 'Building a clean-water well in a drought-hit village mainly serves which Sustainable Development Goal?',
+        opts: ['SDG 6 — Clean Water and Sanitation', 'SDG 13 — Climate Action',
+               'SDG 16 — Peace and Justice', 'SDG 17 — Partnerships'],
+        a: 0, hint: 'Read the name of the goal literally.',
+        why: 'Clean water maps to <b>SDG 6</b>. Zakat programmes also commonly serve SDG 1 (No Poverty), SDG 2 (Zero Hunger), SDG 3 (Good Health), SDG 4 (Quality Education) and SDG 8 (Decent Work).' },
+      { q: 'Which UN agency operates a dedicated zakat fund for refugees and displaced people?',
+        opts: ['UNESCO', 'UNHCR', 'WHO', 'IMF'],
+        a: 1, hint: 'The agency whose mandate is refugees.',
+        why: '<b>UNHCR</b>, the UN Refugee Agency, launched its Refugee Zakat Fund in 2019 to channel zakat to refugees and internally displaced families under scholarly supervision.' },
+      { q: 'Scholars and agencies estimate the world’s annual zakat potential at…',
+        opts: ['A few million US dollars', 'Hundreds of billions of US dollars, though estimates vary widely',
+               'Exactly one trillion US dollars', 'Less than any single national aid budget'],
+        a: 1, hint: 'Large — but no one can state it to the last dollar.',
+        why: 'Studies place global zakat potential in the <b>hundreds of billions of US dollars a year</b>. Estimates vary widely because methods and coverage differ, so treat any single figure with care. What is certain is that only a fraction is currently collected and recorded — which is precisely the opportunity for your generation.' }
     ],
     mini: {
-      type: 'calc', name: 'Ujian Hitung Akhir',
-      desc: 'Empat soal penutup. Jawab dengan angka saja.',
+      type: 'sort', name: 'Zakat Meets the SDGs',
+      desc: 'Every zakat programme below advances a global goal. Place each one under the goal it serves most directly.',
+      bins: [
+        { id: 'poverty', label: 'SDG 1 & 2 — No Poverty, Zero Hunger', em: '🍚' },
+        { id: 'health', label: 'SDG 3 & 6 — Health, Clean Water', em: '💧' },
+        { id: 'future', label: 'SDG 4 & 8 — Education, Decent Work', em: '🎓' }
+      ],
+      items: [
+        { t: 'Emergency food for a famine zone', em: '🥘', bin: 'poverty' },
+        { t: 'Cash support for destitute families', em: '💵', bin: 'poverty' },
+        { t: 'A clinic inside a refugee camp', em: '🏥', bin: 'health' },
+        { t: 'Wells and water filters', em: '🚰', bin: 'health' },
+        { t: 'Scholarships for orphans', em: '🎒', bin: 'future' },
+        { t: 'Vocational training and tool kits', em: '🛠️', bin: 'future' },
+        { t: 'Maternal and infant care', em: '🤱', bin: 'health' },
+        { t: 'Rebuilding a destroyed school', em: '🏫', bin: 'future' }
+      ]
+    }
+  },
+
+  /* ============================ CHAPTER 8 — FINAL ============================ */
+  {
+    id: 8, title: 'Final Test', topic: 'Mixed Final', emoji: '🏅', scene: 'hall', boss: true,
+    blurb: 'The closing trial: every topic, a tighter clock, and no hints.',
+    story: [
+      { c: 'nar',    t: 'The madrasah hall is full. A banner reads "THE PATH OF PROSPERITY — FINAL TEST".' },
+      { c: 'ustadz', t: 'Zaki, this is your last trial. Everything will be tested — from the meaning of the word to the arithmetic, from your village to the world.' },
+      { c: 'ustadz', t: 'A warning: your clock is shorter, and there are <b>no hints</b>. But I believe you are ready.' },
+      { c: 'zaki',   t: 'Bismillah. I have learned in the market, the fields, the amil office, the village — and across the world. Let us begin.' }
+    ],
+    questions: [
+      { q: 'Wealth of 300,000,000 completes one haul and exceeds the nisab. What is the zakat?',
+        opts: ['3,000,000', '7,500,000', '15,000,000', '30,000,000'],
+        a: 1, hint: '', why: '2.5% × 300,000,000 = <b>7,500,000</b>.' },
+      { q: 'Which type of zakat does NOT require a haul?',
+        opts: ['Zakat on gold', 'Zakat on trade', 'Zakat on crops', 'Zakat on savings'],
+        a: 2, hint: '', why: 'Zakat on crops is due <b>at every harvest</b>, with no haul. The same is true of rikaz, taken at 20% on discovery.' },
+      { q: 'A harvest of 4,000 kg of rice under paid irrigation. The zakat is…',
+        opts: ['100 kg', '200 kg', '400 kg', '800 kg'],
+        a: 1, hint: '', why: 'Paid irrigation → 5%. 5% × 4,000 = <b>200 kg</b>.' },
+      { q: 'A person newly embraced Islam, or whose heart is being reconciled, is called…',
+        opts: ['Riqab', 'Muallaf', 'Gharim', 'Ibn Sabil'],
+        a: 1, hint: '', why: '<b>Muallaf</b> — one who has newly accepted Islam, or whose heart is drawn closer so that their faith may settle.' },
+      { q: 'A household of seven pays zakat al-fitr in rice. The total is…',
+        opts: ['14 kg', '15.5 kg', '17.5 kg', '21 kg'],
+        a: 2, hint: '', why: '7 × 2.5 kg = <b>17.5 kg</b>.' },
+      { q: 'A shop: capital 150m, profit 40m, receivables 20m, debt due 10m. The zakat is…',
+        opts: ['4,000,000', '5,000,000', '5,500,000', '6,000,000'],
+        a: 1, hint: '', why: '150 + 40 + 20 − 10 = 200,000,000. Zakat = 2.5% × 200 million = <b>5,000,000</b>.' },
+      { q: 'The rate of zakat on rikaz (unearthed wealth) is…',
+        opts: ['2.5%', '5%', '10%', '20%'],
+        a: 3, hint: '', why: 'Rikaz carries <b>20%</b>, due immediately, with neither nisab nor haul.' },
+      { q: 'Which statement about zakat al-fitr is CORRECT?',
+        opts: ['It is due only from adults who fasted the whole month',
+               'It is due from every Muslim soul and is best given before the Eid prayer',
+               'It may be paid at any point in the year',
+               'It is 2.5% of monthly income'],
+        a: 1, hint: '', why: 'Zakat al-fitr is due from <b>every Muslim soul</b> (infants included), at one sa‘ ≈ 2.5 kg, and is best given before the Eid prayer.' },
+      { q: 'Why can zakat fund long-term development where emergency appeals often cannot?',
+        opts: ['Because it is obligatory and recurs annually, making the flow predictable',
+               'Because it is exempt from all reporting',
+               'Because it may only be given to governments',
+               'Because it is collected once a decade'],
+        a: 0, hint: '', why: 'Zakat is an <b>annual, obligatory</b> flow. That predictability is what allows multi-year programmes — water systems, schools, clinics — to be planned and sustained.' },
+      { q: 'Displaced people living in a camp abroad may receive your zakat because…',
+        opts: ['Zakat is assigned by condition — they are fakir, miskin, or ibn sabil',
+               'Zakat must always leave the country',
+               'They are automatically counted as amil',
+               'Only if they hold the same nationality as the giver'],
+        a: 0, hint: '', why: 'The eight asnaf are defined by <b>circumstance</b>, not by borders. Sending zakat abroad is permitted, and is preferred by many scholars when the need there is far more severe.' }
+    ],
+    mini: {
+      type: 'calc', name: 'Final Reckoning',
+      desc: 'Four closing problems. Answer with digits only.',
       steps: [
-        { prompt: 'Emas <b>140 gram</b> tersimpan 1 haul. Berapa <b>gram</b> zakatnya?',
-          ans: 3.5, unit: 'gram', hint: '', why: '140 × 2,5% = <b>3,5 gram</b>.' },
-        { prompt: 'Gaji <b>Rp 25.000.000</b>/bulan di atas nisab. Berapa <b>rupiah</b> zakat sebulan?',
-          ans: 625000, unit: 'Rp', hint: '', why: '2,5% × Rp 25.000.000 = <b>Rp 625.000</b>.' },
-        { prompt: 'Panen <b>6.000 kg</b> gabah, sawah <b>tadah hujan</b>. Berapa <b>kg</b> zakatnya?',
-          ans: 600, unit: 'kg', hint: '', why: 'Tadah hujan → 10% × 6.000 = <b>600 kg</b>.' },
-        { prompt: 'Keluarga <b>9 jiwa</b> membayar zakat fitrah beras. Berapa <b>kg</b> totalnya?',
-          ans: 22.5, unit: 'kg', hint: '', why: '9 × 2,5 kg = <b>22,5 kg</b>.' }
+        { prompt: '<b>140 grams</b> of gold held one haul. How many <b>grams</b> is the zakat?',
+          ans: 3.5, unit: 'grams', hint: '', why: '140 × 2.5% = <b>3.5 grams</b>.' },
+        { prompt: 'A salary of <b>25,000,000</b> a month, above nisab. How much is the monthly zakat?',
+          ans: 625000, unit: 'Rp', hint: '', why: '2.5% × 25,000,000 = <b>625,000</b>.' },
+        { prompt: 'A harvest of <b>6,000 kg</b> of rice from a <b>rain-fed</b> field. How many <b>kg</b> is the zakat?',
+          ans: 600, unit: 'kg', hint: '', why: 'Rain-fed → 10% × 6,000 = <b>600 kg</b>.' },
+        { prompt: 'A household of <b>9 people</b> paying zakat al-fitr in rice. How many <b>kg</b> in total?',
+          ans: 22.5, unit: 'kg', hint: '', why: '9 × 2.5 kg = <b>22.5 kg</b>.' }
       ]
     }
   }
 ];
 
-/* Lencana / achievement */
+/* Badges / achievements */
 const BADGES = [
-  { id: 'first',    em: '🌱', name: 'Langkah Pertama', desc: 'Selesaikan Bab 1' },
-  { id: 'perfect',  em: '💯', name: 'Tanpa Cela',      desc: 'Selesaikan satu bab tanpa salah' },
-  { id: 'streak5',  em: '🔥', name: 'Lima Beruntun',   desc: 'Jawab 5 soal benar berturut-turut' },
-  { id: 'calc',     em: '🧮', name: 'Ahli Hitung',     desc: 'Gunakan kalkulator zakat' },
-  { id: 'half',     em: '🧭', name: 'Separuh Jalan',   desc: 'Tuntaskan 4 bab' },
-  { id: 'allstars', em: '⭐', name: 'Bintang Penuh',   desc: 'Raih 21 bintang' },
-  { id: 'boss',     em: '🏅', name: 'Juara Zakat',     desc: 'Taklukkan Ujian Akbar' },
-  { id: 'nohint',   em: '🦉', name: 'Mandiri',         desc: 'Tuntaskan bab tanpa petunjuk' }
+  { id: 'first',    em: '🌱', name: 'First Step',      desc: 'Finish Chapter 1' },
+  { id: 'perfect',  em: '💯', name: 'Flawless',        desc: 'Finish a chapter with no mistakes' },
+  { id: 'streak5',  em: '🔥', name: 'Five in a Row',   desc: 'Answer 5 questions correctly in a row' },
+  { id: 'calc',     em: '🧮', name: 'Number Keeper',   desc: 'Use the zakat calculator' },
+  { id: 'half',     em: '🧭', name: 'Halfway There',   desc: 'Complete 4 chapters' },
+  { id: 'global',   em: '🌍', name: 'Global Citizen',  desc: 'Finish the World of Giving chapter' },
+  { id: 'allstars', em: '⭐', name: 'Full Sky',        desc: 'Earn all 24 stars' },
+  { id: 'boss',     em: '🏅', name: 'Zakat Champion',  desc: 'Conquer the Grand Test' },
+  { id: 'nohint',   em: '🦉', name: 'Self-Reliant',    desc: 'Finish a chapter without hints' }
 ];
 
 const RANKS = [
-  { min: 0,     name: 'Pemula' },
-  { min: 1500,  name: 'Santri' },
-  { min: 3500,  name: 'Pelajar Zakat' },
-  { min: 6000,  name: 'Calon Amil' },
-  { min: 9000,  name: 'Amil Muda' },
-  { min: 13000, name: 'Ahli Zakat' }
+  { min: 0,     name: 'Beginner' },
+  { min: 1500,  name: 'Student' },
+  { min: 3500,  name: 'Zakat Learner' },
+  { min: 6000,  name: 'Amil in Training' },
+  { min: 9000,  name: 'Young Amil' },
+  { min: 13000, name: 'Zakat Expert' }
 ];
 const rankOf = s => RANKS.reduce((acc, r) => (s >= r.min ? r.name : acc), RANKS[0].name);
 
@@ -1689,8 +1889,8 @@ function grantBadge(id) {
   SAVE.badges.push(id);
   persist();
   Audio2.badge();
-  toast(`${b.em} Lencana baru: <b>${escapeHTML(b.name)}</b>`, 'gold');
-  burstStars($('#toasts'), 10);
+  toast(`${b.em} Badge unlocked: <b>${escapeHTML(b.name)}</b>`, 'gold');
+  burstStars($('#toasts'), 8);
 }
 function addScore(n) {
   SAVE.totalScore = Math.max(0, SAVE.totalScore + n);
@@ -1699,7 +1899,7 @@ function addScore(n) {
 function refreshHUD() {
   const s = totalStars();
   $('#map-stars').textContent = s;
-  $('#map-score').textContent = SAVE.totalScore.toLocaleString('id-ID');
+  $('#map-score').textContent = SAVE.totalScore.toLocaleString('en-US');
   $('#map-rank').textContent = rankOf(SAVE.totalScore);
 }
 
@@ -1707,8 +1907,8 @@ function refreshHUD() {
    10. PETA PERJALANAN
    --------------------------------------------------------------- */
 const NODE_POS = [
-  { x: 11, y: 76 }, { x: 25, y: 46 }, { x: 39, y: 74 }, { x: 53, y: 40 },
-  { x: 67, y: 70 }, { x: 80, y: 36 }, { x: 89, y: 70 }
+  { x: 8,  y: 74 }, { x: 20, y: 44 }, { x: 32, y: 74 }, { x: 44, y: 44 },
+  { x: 56, y: 74 }, { x: 68, y: 44 }, { x: 79, y: 74 }, { x: 88, y: 46 }
 ];
 
 function renderMapBackground() {
@@ -1729,7 +1929,7 @@ function renderMapBackground() {
     ${cacti.map(cactus).join('')}
     ${rocks.map(rock).join('')}
     <text x="500" y="100" text-anchor="middle" font-family="sans-serif" font-size="21"
-          font-weight="bold" fill="#8a5a24" opacity=".8">PERJALANAN BELAJAR ZAKAT</text>`;
+          font-weight="bold" fill="#8a5a24" opacity=".8">THE PATH OF PROSPERITY</text>`;
 }
 
 function renderMap() {
@@ -1756,14 +1956,14 @@ function renderMap() {
     b.style.left = NODE_POS[i].x + '%';
     b.style.top  = NODE_POS[i].y + '%';
     b.setAttribute('aria-label',
-      `Bab ${ch.id}: ${ch.title}. ${open ? (st.done ? st.stars + ' dari 3 bintang' : 'terbuka') : 'terkunci'}`);
+      `Chapter ${ch.id}: ${ch.title}. ${open ? (st.done ? st.stars + ' of 3 stars' : 'unlocked') : 'locked'}`);
     b.innerHTML = `
       <span class="orb">${open ? ch.emoji : '🔒'}</span>
       <span class="label">${escapeHTML(ch.id + '. ' + ch.title)}</span>
       <span class="stars">${open && st.done ? '⭐'.repeat(st.stars) + '☆'.repeat(3 - st.stars) : ''}</span>`;
     b.addEventListener('click', () => {
       if (!open) {
-        toast('🔒 Selesaikan bab sebelumnya dulu', 'bad');
+        toast('🔒 Finish the previous chapter first', 'bad');
         return;
       }
       openChapterCard(ch);
@@ -1791,17 +1991,17 @@ function openChapterCard(ch) {
   openModal(`
     <div style="text-align:center">
       <div style="font-size:3.2rem;line-height:1">${ch.emoji}</div>
-      <span class="pill ${ch.boss ? 'gold' : 'emerald'}" style="margin:8px 0">${ch.boss ? 'UJIAN AKHIR' : 'BAB ' + ch.id}</span>
+      <span class="pill ${ch.boss ? 'gold' : 'emerald'}" style="margin:8px 0">${ch.boss ? 'FINAL TEST' : 'CHAPTER ' + ch.id}</span>
       <h2 id="modal-title" style="font-size:1.7rem;margin:6px 0">${escapeHTML(ch.title)}</h2>
       <p style="color:var(--ink-soft);font-size:.94rem;line-height:1.6">${ch.blurb}</p>
       <div class="stat-grid" style="margin:16px 0">
-        <div><b>${ch.questions.length}</b><span>Soal</span></div>
-        <div><b>${st.stars}/3</b><span>Bintang</span></div>
-        <div><b>${st.best.toLocaleString('id-ID')}</b><span>Skor Terbaik</span></div>
+        <div><b>${ch.questions.length}</b><span>Questions</span></div>
+        <div><b>${st.stars}/3</b><span>Stars</span></div>
+        <div><b>${st.best.toLocaleString('en-US')}</b><span>Best Score</span></div>
       </div>
       <div style="display:flex;gap:9px;flex-wrap:wrap;justify-content:center">
-        <button class="btn" id="m-start">${st.done ? '🔁 Ulangi Bab' : '▶ Mulai Bab'}</button>
-        <button class="btn ghost sm" id="m-close">Nanti</button>
+        <button class="btn" id="m-start">${st.done ? '🔁 Replay Chapter' : '▶ Start Chapter'}</button>
+        <button class="btn ghost sm" id="m-close">Later</button>
       </div>
     </div>`);
   $('#m-start').onclick = () => { closeModal(); startChapter(ch.id); };
@@ -1868,7 +2068,7 @@ const Story = (() => {
   function finish() { clearInterval(timer); typing = false; Quiz.start(); }
   function start() {
     idx = 0;
-    $('#story-chapter').textContent = (GAME.ch.boss ? 'Ujian Akbar' : 'Bab ' + GAME.ch.id + ' — ' + GAME.ch.title);
+    $('#story-chapter').textContent = (GAME.ch.boss ? GAME.ch.title : 'Chapter ' + GAME.ch.id + ' — ' + GAME.ch.title);
     $('#story-art').innerHTML = sceneSVG(GAME.ch.scene);
     Router.go('story');
     paint();
@@ -1920,8 +2120,8 @@ const Quiz = (() => {
     const q = GAME.qs[GAME.qi];
     GAME.answered = false; hintShown = false; nextArmed = false;
     drawHearts();
-    $('#quiz-score').textContent = GAME.score.toLocaleString('id-ID');
-    $('#q-counter').textContent = `Soal ${GAME.qi + 1} / ${GAME.qs.length}`;
+    $('#quiz-score').textContent = GAME.score.toLocaleString('en-US');
+    $('#q-counter').textContent = `Question ${GAME.qi + 1} / ${GAME.qs.length}`;
     $('#q-topic').textContent = GAME.ch.topic;
     $('#q-text').innerHTML = q.q;
     $('#q-feedback').innerHTML = '';
@@ -1968,7 +2168,7 @@ const Quiz = (() => {
       gained = 100 + timeBonus + streakBonus;
       GAME.score += gained;
       Audio2.correct();
-      burstStars(btns[pick], 8);
+      burstStars(btns[pick], 6);
       floatScore(btns[pick], '+' + gained);
       if (GAME.streak >= 2) {
         const c = $('#combo');
@@ -1986,15 +2186,15 @@ const Quiz = (() => {
       if (lost) lost.classList.add('hit');
     }
     persist();
-    $('#quiz-score').textContent = GAME.score.toLocaleString('id-ID');
+    $('#quiz-score').textContent = GAME.score.toLocaleString('en-US');
     $('#quiz-streak-wrap').hidden = GAME.streak < 2;
     $('#quiz-streak').textContent = GAME.streak;
 
     const correctText = q.order[q.answer].t;
     $('#q-feedback').innerHTML = `
       <div class="feedback ${ok ? 'good' : 'bad'}">
-        <b>${ok ? '✅ Benar! +' + gained + ' poin' : (pick === -1 ? '⏰ Waktu habis!' : '❌ Kurang tepat')}</b>
-        ${ok ? '' : `Jawaban benar: <b>${escapeHTML(correctText)}</b><br>`}
+        <b>${ok ? '✅ Correct! +' + gained + ' pts' : (pick === -1 ? '⏰ Time is up!' : '❌ Not quite')}</b>
+        ${ok ? '' : `Correct answer: <b>${escapeHTML(correctText)}</b><br>`}
         ${q.why}
         ${q.dalil ? `<span class="dalil">📖 ${q.dalil}</span>` : ''}
       </div>`;
@@ -2009,7 +2209,7 @@ const Quiz = (() => {
     }, 300);
 
     if (GAME.lives <= 0) {
-      setTimeout(() => { $('#btn-next-q').textContent = 'Lihat Hasil'; }, 30);
+      setTimeout(() => { $('#btn-next-q').textContent = 'See Results'; }, 30);
     }
   }
 
@@ -2026,13 +2226,13 @@ const Quiz = (() => {
     const q = GAME.qs[GAME.qi];
     hintShown = true; GAME.hints++;
     GAME.score = Math.max(0, GAME.score - 30);
-    $('#quiz-score').textContent = GAME.score.toLocaleString('id-ID');
+    $('#quiz-score').textContent = GAME.score.toLocaleString('en-US');
     // buang satu opsi salah + tampilkan petunjuk
     const wrongIdx = q.order.map((_, i) => i).filter(i => i !== q.answer);
     const kill = wrongIdx[randInt(0, wrongIdx.length - 1)];
     const b = $$('.opt')[kill];
     if (b) { b.classList.add('dim'); b.disabled = true; }
-    $('#q-feedback').innerHTML = `<div class="q-hintbox">💡 ${q.hint || 'Baca ulang soal dengan tenang — kata kuncinya ada di sana.'}</div>`;
+    $('#q-feedback').innerHTML = `<div class="q-hintbox">💡 ${q.hint || 'Read the question again slowly — the key word is in there.'}</div>`;
     $('#btn-hint').disabled = true;
     Audio2.coin();
   }
@@ -2045,11 +2245,11 @@ const Quiz = (() => {
   function quit() {
     stopTimer();
     openModal(`
-      <h2 id="modal-title" style="font-size:1.35rem">Keluar dari bab ini?</h2>
-      <p style="color:var(--ink-soft);margin-top:8px;line-height:1.6">Progres bab yang sedang berjalan tidak akan disimpan.</p>
+      <h2 id="modal-title" style="font-size:1.35rem">Leave this chapter?</h2>
+      <p style="color:var(--ink-soft);margin-top:8px;line-height:1.6">Progress in the chapter you are playing will not be saved.</p>
       <div style="display:flex;gap:9px;margin-top:18px">
-        <button class="btn danger sm" id="q-yes">Ya, keluar</button>
-        <button class="btn emerald sm" id="q-no">Lanjut main</button>
+        <button class="btn danger sm" id="q-yes">Yes, leave</button>
+        <button class="btn emerald sm" id="q-no">Keep playing</button>
       </div>`, () => { if (Router.current === 'quiz' && !GAME.answered) startTimer(); });
     $('#q-yes').onclick = () => {
       modalOnClose = null;          // jangan hidupkan ulang timer
@@ -2108,7 +2308,7 @@ const MiniGame = (() => {
   }
   function bump(n) {
     GAME.miniScore += n;
-    $('#mini-score').textContent = (GAME.score + GAME.miniScore).toLocaleString('id-ID');
+    $('#mini-score').textContent = (GAME.score + GAME.miniScore).toLocaleString('en-US');
   }
   function finish() {
     GAME.score += GAME.miniScore;
@@ -2123,11 +2323,11 @@ const MiniGame = (() => {
 
     card().innerHTML = header(cfg) + `
       <div class="divider"></div>
-      <div class="tray" id="tray" aria-label="Kartu yang belum ditempatkan"></div>
+      <div class="tray" id="tray" aria-label="Cards not yet placed"></div>
       <div class="bins ${cols}" id="bins"></div>
       <div style="display:flex;gap:9px;margin-top:16px;flex-wrap:wrap;align-items:center">
-        <button class="btn emerald" id="mg-check" disabled>Periksa Jawaban</button>
-        <button class="btn ghost sm" id="mg-reset">↺ Ulangi</button>
+        <button class="btn emerald" id="mg-check" disabled>Check Answers</button>
+        <button class="btn ghost sm" id="mg-reset">↺ Reset</button>
         <div style="flex:1"></div>
         <span style="font-size:.82rem;color:var(--ink-soft)" id="mg-left"></span>
       </div>
@@ -2148,15 +2348,15 @@ const MiniGame = (() => {
     }
     function render() {
       $('#tray').innerHTML = items.filter(i => !i.at).map(chipHTML).join('') ||
-        '<span style="color:var(--ink-soft);font-size:.86rem;align-self:center">Semua kartu sudah ditempatkan 👍</span>';
+        '<span style="color:var(--ink-soft);font-size:.86rem;align-self:center">Every card is placed 👍</span>';
       cfg.bins.forEach(b => {
         $(`[data-slot="${b.id}"]`).innerHTML = items.filter(i => i.at === b.id).map(chipHTML).join('');
       });
       const left = items.filter(i => !i.at).length;
       const sel = selected && items.find(i => i.uid === selected);
       $('#mg-left').innerHTML = sel
-        ? `👉 Pilih keranjang untuk <b>${escapeHTML(sel.t)}</b>`
-        : (left ? `${left} kartu tersisa` : 'Siap diperiksa!');
+        ? `👉 Now pick a basket for <b>${escapeHTML(sel.t)}</b>`
+        : (left ? `${left} card${left > 1 ? 's' : ''} left` : 'Ready to check!');
       $('#mg-check').disabled = left > 0 || state.checked;
       wireChips();
     }
@@ -2225,21 +2425,21 @@ const MiniGame = (() => {
       bump(pts);
       const all = right === items.length;
       Audio2[all ? 'win' : right > items.length / 2 ? 'correct' : 'wrong']();
-      if (all) burstStars($('#bins'), 14);
+      if (all) burstStars($('#bins'), 10);
       $('#mg-fb').innerHTML = `
         <div class="feedback ${all ? 'good' : 'bad'}" style="margin-top:14px">
-          <b>${all ? '🎉 Sempurna!' : '📘 Hasil: ' + right + ' dari ' + items.length + ' tepat'}</b>
-          ${all ? 'Semua kartu berada di tempat yang benar. ' : 'Kartu bertanda merah salah tempat. '}
-          Kamu memperoleh <b>+${pts}</b> poin.
+          <b>${all ? '🎉 Perfect!' : '📘 Result: ' + right + ' of ' + items.length + ' correct'}</b>
+          ${all ? 'Every card is in the right basket. ' : 'Cards marked red are in the wrong basket. '}
+          You earned <b>+${pts}</b> points.
           <span class="dalil">${items.filter(i => i.at !== i.bin).slice(0, 3)
-            .map(i => `• <b>${escapeHTML(i.t)}</b> seharusnya di “${escapeHTML(cfg.bins.find(b => b.id === i.bin).label)}”`).join('<br>') || 'Kerja bagus, pertahankan!'}</span>
+            .map(i => `• <b>${escapeHTML(i.t)}</b> belongs in “${escapeHTML(cfg.bins.find(b => b.id === i.bin).label)}”`).join('<br>') || 'Well done — keep it up!'}</span>
         </div>`;
       $('#mg-check').disabled = true;
       $('#mg-reset').hidden = true;
       const go = document.createElement('button');
       go.className = 'btn';
       go.style.marginTop = '12px';
-      go.innerHTML = 'Lanjut ke Hasil <span class="ico">›</span>';
+      go.innerHTML = 'Continue to Results <span class="ico">›</span>';
       armButton(go, finish);
       $('#mg-fb').appendChild(go);
     }
@@ -2257,7 +2457,7 @@ const MiniGame = (() => {
       const ratio = clamp(c.val / c.nisab, 0, 2.4);
       // rotasi negatif = sisi kiri (HARTA) turun, jadi harta yang lebih berat menukik
       const tilt = -clamp((ratio - 1) * 20, -17, 17);
-      card().innerHTML = header(cfg, `<span class="pill gold">Kasus ${i + 1}/${cfg.cases.length}</span>`) + `
+      card().innerHTML = header(cfg, `<span class="pill gold">Case ${i + 1}/${cfg.cases.length}</span>`) + `
         <div class="divider"></div>
         <div class="scale-wrap">
           <svg class="scale-svg" viewBox="0 0 300 220" aria-hidden="true">
@@ -2273,19 +2473,19 @@ const MiniGame = (() => {
                 <path d="M206 94h68l-12 28h-44z" fill="#8fd4c9"/>
                 <text x="240" y="116" font-size="17" text-anchor="middle">⚖️</text></g>
             </g>
-            <text x="60" y="152" font-size="11" text-anchor="middle" fill="#9c6b43" font-weight="bold">HARTA</text>
+            <text x="60" y="152" font-size="11" text-anchor="middle" fill="#9c6b43" font-weight="bold">WEALTH</text>
             <text x="240" y="152" font-size="11" text-anchor="middle" fill="#13675e" font-weight="bold">NISAB</text>
           </svg>
           <div>
             <div class="case-card">
               <div style="font-size:.78rem;font-weight:800;letter-spacing:.1em;color:var(--sand-dark);text-transform:uppercase">${escapeHTML(c.who)}</div>
-              <div class="amount">${numberID(c.val)} <span style="font-size:.9rem;font-weight:600">${escapeHTML(c.unit)}</span></div>
+              <div class="amount">${numberFmt(c.val)} <span style="font-size:.9rem;font-weight:600">${escapeHTML(c.unit)}</span></div>
               <p style="font-size:.86rem;color:var(--ink-soft);margin-top:5px;line-height:1.5">${escapeHTML(c.detail)}</p>
-              <p style="font-size:.8rem;color:#5c7a6e;margin-top:7px">Nisab: <b>${numberID(c.nisab)}</b></p>
+              <p style="font-size:.8rem;color:#5c7a6e;margin-top:7px">Nisab: <b>${numberFmt(c.nisab)}</b></p>
             </div>
             <div class="judge">
-              <button class="btn emerald sm" data-w="1">✅ Wajib Zakat</button>
-              <button class="btn ghost sm" data-w="0">⏳ Belum Wajib</button>
+              <button class="btn emerald sm" data-w="1">✅ Zakat is due</button>
+              <button class="btn ghost sm" data-w="0">⏳ Not yet due</button>
             </div>
           </div>
         </div>
@@ -2295,16 +2495,16 @@ const MiniGame = (() => {
     function judge(pick) {
       const c = cfg.cases[i];
       const ok = pick === c.wajib;
-      if (ok) { right++; bump(80); Audio2.correct(); burstStars($('.scale-svg'), 8); }
+      if (ok) { right++; bump(80); Audio2.correct(); burstStars($('.scale-svg'), 6); }
       else { Audio2.wrong(); }
       $$('[data-w]', card()).forEach(b => b.disabled = true);
       $('#mg-fb').innerHTML = `
         <div class="feedback ${ok ? 'good' : 'bad'}" style="margin-top:14px">
-          <b>${ok ? '✅ Tepat! +80 poin' : '❌ Kurang tepat'}</b>${c.why}
+          <b>${ok ? '✅ Right! +80 pts' : '❌ Not quite'}</b>${c.why}
         </div>`;
       const go = document.createElement('button');
       go.className = 'btn'; go.style.marginTop = '12px';
-      go.innerHTML = (i < cfg.cases.length - 1 ? 'Kasus berikutnya' : 'Lanjut ke Hasil') + ' <span class="ico">›</span>';
+      go.innerHTML = (i < cfg.cases.length - 1 ? 'Next case' : 'Continue to Results') + ' <span class="ico">›</span>';
       armButton(go, () => { if (i < cfg.cases.length - 1) { i++; paint(); } else { summary(right, cfg.cases.length); } });
       $('#mg-fb').appendChild(go);
     }
@@ -2316,7 +2516,7 @@ const MiniGame = (() => {
     let i = 0, right = 0, buf = '';
     function paint() {
       const s = cfg.steps[i];
-      card().innerHTML = header(cfg, `<span class="pill gold">Soal ${i + 1}/${cfg.steps.length}</span>`) + `
+      card().innerHTML = header(cfg, `<span class="pill gold">Problem ${i + 1}/${cfg.steps.length}</span>`) + `
         <div class="divider"></div>
         <p style="font-size:1.05rem;line-height:1.6;font-weight:600">${s.prompt}</p>
         <div class="numdisplay" id="numdisp" aria-live="polite">
@@ -2326,11 +2526,11 @@ const MiniGame = (() => {
         </div>
         <div class="numpad">
           ${[1,2,3,4,5,6,7,8,9].map(n => `<button data-k="${n}">${n}</button>`).join('')}
-          <button data-k=".">,</button><button data-k="0">0</button><button data-k="del">⌫</button>
+          <button data-k=".">.</button><button data-k="0">0</button><button data-k="del">⌫</button>
         </div>
         <div style="display:flex;gap:9px;margin-top:14px;flex-wrap:wrap;justify-content:center">
-          <button class="btn emerald" id="mg-check">Periksa</button>
-          ${s.hint ? '<button class="btn ghost sm" id="mg-hint">💡 Petunjuk</button>' : ''}
+          <button class="btn emerald" id="mg-check">Check</button>
+          ${s.hint ? '<button class="btn ghost sm" id="mg-hint">💡 Hint</button>' : ''}
         </div>
         <div id="mg-fb"></div>`;
       buf = '';
@@ -2347,24 +2547,24 @@ const MiniGame = (() => {
       else if (buf.replace('.', '').length < 12) buf += k;
       Audio2.hover();
       const [a, b] = (buf || '0').split('.');
-      $('#numval').textContent = Number(a || 0).toLocaleString('id-ID') + (b !== undefined ? ',' + b : '');
+      $('#numval').textContent = Number(a || 0).toLocaleString('en-US') + (b !== undefined ? '.' + b : '');
     }
     function submit() {
       const s = cfg.steps[i];
       const val = parseFloat(buf || '0');
       const ok = Math.abs(val - s.ans) < 0.011;
-      if (ok) { right++; bump(90); Audio2.correct(); burstStars($('#numdisp'), 8); }
+      if (ok) { right++; bump(90); Audio2.correct(); burstStars($('#numdisp'), 6); }
       else { Audio2.wrong(); }
       $('#mg-check').disabled = true;
       $$('.numpad button', card()).forEach(b => b.disabled = true);
       $('#mg-fb').innerHTML = `
         <div class="feedback ${ok ? 'good' : 'bad'}" style="margin-top:14px">
-          <b>${ok ? '✅ Tepat! +90 poin' : '❌ Belum tepat — jawabanmu ' + (s.unit === 'Rp' ? rupiah(val) : numberID(val) + ' ' + s.unit)}</b>
+          <b>${ok ? '✅ Right! +90 pts' : '❌ Not yet — you answered ' + (s.unit === 'Rp' ? cash(val) : numberFmt(val) + ' ' + s.unit)}</b>
           ${s.why}
         </div>`;
       const go = document.createElement('button');
       go.className = 'btn'; go.style.marginTop = '12px';
-      go.innerHTML = (i < cfg.steps.length - 1 ? 'Soal berikutnya' : 'Lanjut ke Hasil') + ' <span class="ico">›</span>';
+      go.innerHTML = (i < cfg.steps.length - 1 ? 'Next problem' : 'Continue to Results') + ' <span class="ico">›</span>';
       armButton(go, () => { if (i < cfg.steps.length - 1) { i++; paint(); } else { summary(right, cfg.steps.length); } });
       $('#mg-fb').appendChild(go);
     }
@@ -2374,13 +2574,13 @@ const MiniGame = (() => {
 
   function summary(right, total) {
     const all = right === total;
-    if (all) { Audio2.win(); setTimeout(() => burstStars($('#mini-card'), 14), 120); }
+    if (all) { Audio2.win(); setTimeout(() => burstStars($('#mini-card'), 10), 120); }
     card().innerHTML = `
       <div style="text-align:center;padding:10px 0">
         <div style="font-size:3rem">${all ? '🎉' : right > total / 2 ? '👏' : '📘'}</div>
-        <h3 style="font-size:1.4rem;margin:8px 0">${all ? 'Mini game sempurna!' : 'Mini game selesai'}</h3>
-        <p style="color:var(--ink-soft)">Benar <b>${right}</b> dari <b>${total}</b> · Bonus <b>+${GAME.miniScore}</b> poin</p>
-        <button class="btn" id="mg-done" style="margin-top:16px">Lihat Hasil Bab <span class="ico">›</span></button>
+        <h3 style="font-size:1.4rem;margin:8px 0">${all ? 'Flawless mini game!' : 'Mini game complete'}</h3>
+        <p style="color:var(--ink-soft)"><b>${right}</b> of <b>${total}</b> correct · Bonus <b>+${GAME.miniScore}</b> pts</p>
+        <button class="btn" id="mg-done" style="margin-top:16px">See Chapter Results <span class="ico">›</span></button>
       </div>`;
     armButton($('#mg-done'), finish);
   }
@@ -2390,7 +2590,7 @@ const MiniGame = (() => {
     GAME.miniScore = 0;
     activeKeyHandler = null;
     $('#mini-name').textContent = cfg.name;
-    $('#mini-score').textContent = GAME.score.toLocaleString('id-ID');
+    $('#mini-score').textContent = GAME.score.toLocaleString('en-US');
     Router.go('mini');
     if (cfg.type === 'sort') sort(cfg);
     else if (cfg.type === 'scale') scale(cfg);
@@ -2400,7 +2600,7 @@ const MiniGame = (() => {
 })();
 
 $('#btn-mini-quit').addEventListener('click', () => {
-  if (confirm('Keluar dari mini game? Skor bab ini tidak akan disimpan.')) {
+  if (confirm("Leave the mini game? This chapter's score will not be saved.")) {
     Router.go('map'); renderMap();
   }
 });
@@ -2439,7 +2639,8 @@ const Result = (() => {
       if (GAME.wrong === 0) { grantBadge('perfect'); SAVE.stats.perfect++; }
       if (GAME.hints === 0 && !ch.boss) grantBadge('nohint');
       if (doneCount() >= 4) grantBadge('half');
-      if (totalStars() >= 21) grantBadge('allstars');
+      if (totalStars() >= 24) grantBadge('allstars');
+      if (ch.id === 7) grantBadge('global');
       if (ch.boss) grantBadge('boss');
       persist(true);
     }
@@ -2450,41 +2651,41 @@ const Result = (() => {
     $('#result-card').innerHTML = `
       <div style="font-size:3.4rem;line-height:1">${completed ? (stars === 3 ? '🏆' : '🎊') : '💔'}</div>
       <span class="pill ${completed ? 'emerald' : 'gold'}" style="margin-top:8px">
-        ${completed ? (ch.boss ? 'UJIAN AKBAR TUNTAS' : 'BAB ' + ch.id + ' SELESAI') : 'NYAWA HABIS'}</span>
+        ${completed ? (ch.boss ? 'GRAND TEST COMPLETE' : 'CHAPTER ' + ch.id + ' COMPLETE') : 'OUT OF LIVES'}</span>
       <h2 style="font-size:1.75rem;margin:10px 0 2px">${escapeHTML(ch.title)}</h2>
       <p style="color:var(--ink-soft);font-size:.92rem">
         ${completed
-          ? (stars === 3 ? 'Sempurna! Tidak satu pun jawabanmu meleset.'
-            : stars === 2 ? 'Bagus sekali — tinggal sedikit lagi menuju sempurna.'
-            : 'Selesai! Ulangi untuk mengejar tiga bintang.')
-          : 'Jangan menyerah. Baca ulang materinya, lalu coba lagi.'}</p>
+          ? (stars === 3 ? 'Flawless. Not one answer missed.'
+            : stars === 2 ? 'Strong work — you are one step from perfect.'
+            : 'Chapter cleared. Replay it to chase all three stars.')
+          : 'Do not give up. Read the material again, then try once more.'}</p>
 
       <div class="stars-row">${[0, 1, 2].map(i => starSVG(i < stars, i)).join('')}</div>
       <div class="score-big" id="score-big">0</div>
-      <div style="font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);font-weight:700">Poin diperoleh</div>
-      ${isBest && completed ? '<div class="pill gold" style="margin-top:10px">✨ Rekor baru!</div>' : ''}
+      <div style="font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);font-weight:700">Points earned</div>
+      ${isBest && completed ? '<div class="pill gold" style="margin-top:10px">✨ New record!</div>' : ''}
 
       ${ornament('var(--sand)')}
       <div class="stat-grid">
-        <div><b>${GAME.correct}</b><span>Benar</span></div>
-        <div><b>${GAME.wrong}</b><span>Salah</span></div>
-        <div><b>${acc}%</b><span>Akurasi</span></div>
-        <div><b>${GAME.bestStreak}</b><span>Beruntun</span></div>
-        <div><b>${dur}s</b><span>Waktu</span></div>
-        <div><b>+${GAME.miniScore}</b><span>Mini Game</span></div>
+        <div><b>${GAME.correct}</b><span>Correct</span></div>
+        <div><b>${GAME.wrong}</b><span>Wrong</span></div>
+        <div><b>${acc}%</b><span>Accuracy</span></div>
+        <div><b>${GAME.bestStreak}</b><span>Best streak</span></div>
+        <div><b>${dur}s</b><span>Time</span></div>
+        <div><b>+${GAME.miniScore}</b><span>Mini game</span></div>
       </div>
 
       <div style="display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-top:6px">
-        ${completed && nextCh ? `<button class="btn" id="r-next">Bab ${nextCh.id}: ${escapeHTML(nextCh.title)} <span class="ico">›</span></button>` : ''}
-        ${completed && !nextCh ? `<button class="btn" id="r-cert">🎓 Lihat Rangkuman</button>` : ''}
-        <button class="btn emerald sm" id="r-retry">↻ Ulangi</button>
-        <button class="btn ghost sm" id="r-map">🗺 Peta</button>
+        ${completed && nextCh ? `<button class="btn" id="r-next">Chapter ${nextCh.id}: ${escapeHTML(nextCh.title)} <span class="ico">›</span></button>` : ''}
+        ${completed && !nextCh ? `<button class="btn" id="r-cert">🎓 See Summary</button>` : ''}
+        <button class="btn emerald sm" id="r-retry">↻ Replay</button>
+        <button class="btn ghost sm" id="r-map">🗺 Map</button>
       </div>`;
 
     countUp($('#score-big'), GAME.score);
     if (completed) {
       Audio2[stars === 3 ? 'win' : 'star']();
-      if (stars === 3) setTimeout(() => burstStars($('.stars-row'), 14), 480);
+      if (stars === 3) setTimeout(() => burstStars($('.stars-row'), 10), 480);
       stagger($$('#result-card .stat-grid div'), 'enter');
     } else Audio2.lose();
 
@@ -2498,7 +2699,7 @@ const Result = (() => {
 })();
 
 function recordScore(score) {
-  const name = SAVE.player || 'Pemain';
+  const name = SAVE.player || 'Player';
   SAVE.scores.push({ name, score, date: Date.now(), ch: GAME ? GAME.ch.id : 0 });
   SAVE.scores.sort((a, b) => b.score - a.score);
   SAVE.scores = SAVE.scores.slice(0, 12);
@@ -2509,239 +2710,238 @@ function showSummary() {
   openModal(`
     <div style="text-align:center">
       <div style="font-size:3rem">🎓</div>
-      <h2 id="modal-title" style="font-size:1.5rem;margin:6px 0">Rangkuman Zakat</h2>
-      <p style="color:var(--ink-soft);font-size:.9rem">Bekal yang sudah kamu kuasai</p>
+      <h2 id="modal-title" style="font-size:1.5rem;margin:6px 0">Zakat Summary</h2>
+      <p style="color:var(--ink-soft);font-size:.9rem">Everything you now carry with you</p>
     </div>
     ${ornament('var(--teal)')}
     <div style="font-size:.9rem;line-height:1.7">
-      <p><b>⚖️ Nisab &amp; kadar</b><br>Emas 85 g · Perak 595 g · Uang/dagang mengikuti 85 g emas → <b>2,5%</b>, haul 1 tahun.</p>
-      <p style="margin-top:10px"><b>🌾 Pertanian</b><br>Nisab 5 wasaq ≈ 653 kg gabah. Tadah hujan <b>10%</b>, irigasi berbiaya <b>5%</b>, tiap panen tanpa haul.</p>
-      <p style="margin-top:10px"><b>🐐 Ternak</b><br>Unta 5 ekor · Sapi 30 ekor · Kambing 40 ekor.</p>
-      <p style="margin-top:10px"><b>💎 Rikaz</b><br>Harta temuan/tambang <b>20%</b>, tanpa nisab &amp; haul.</p>
-      <p style="margin-top:10px"><b>🍚 Fitrah</b><br>1 sha‘ ≈ <b>2,5 kg</b> makanan pokok per jiwa, paling utama sebelum shalat Id.</p>
-      <p style="margin-top:10px"><b>🤲 8 Asnaf</b><br>Fakir · Miskin · Amil · Mualaf · Riqab · Gharim · Fi Sabilillah · Ibnu Sabil (QS At-Taubah 60).</p>
+      <p><b>⚖️ Nisab &amp; rate</b><br>Gold 85 g · Silver 595 g · Cash and trade follow 85 g of gold → <b>2.5%</b>, one lunar year.</p>
+      <p style="margin-top:10px"><b>🌾 Crops</b><br>Nisab 5 wasaq ≈ 653 kg. Rain-fed <b>10%</b>, paid irrigation <b>5%</b>, every harvest, no haul.</p>
+      <p style="margin-top:10px"><b>🐐 Livestock</b><br>Camels 5 · Cattle 30 · Sheep and goats 40.</p>
+      <p style="margin-top:10px"><b>💎 Rikaz</b><br>Buried or mined wealth <b>20%</b>, with no nisab and no haul.</p>
+      <p style="margin-top:10px"><b>🍚 Zakat al-Fitr</b><br>One sa‘ ≈ <b>2.5 kg</b> of staple food per person, best before the Eid prayer.</p>
+      <p style="margin-top:10px"><b>🤲 The 8 asnaf</b><br>Fakir · Miskin · Amil · Muallaf · Riqab · Gharim · Fi Sabilillah · Ibn Sabil (Qur’an 9:60).</p>
+      <p style="margin-top:10px"><b>🌍 Global reach</b><br>Zakat may cross borders when need is greater, and maps onto the SDGs — water, health, education, work.</p>
     </div>
     <div style="display:flex;gap:9px;margin-top:18px;justify-content:center;flex-wrap:wrap">
-      <button class="btn sm" id="s-calc">🧮 Coba Kalkulator</button>
-      <button class="btn ghost sm" id="s-close">Tutup</button>
+      <button class="btn sm" id="s-calc">🧮 Try the Calculator</button>
+      <button class="btn ghost sm" id="s-close">Close</button>
     </div>`);
   $('#s-calc').onclick = () => { closeModal(); Calc.open(); };
   $('#s-close').onclick = closeModal;
 }
 
 /* ---------------------------------------------------------------
-   16. KALKULATOR ZAKAT
-   Semua harga acuan bisa diubah pengguna dan tersimpan otomatis.
+   16. ZAKAT CALCULATOR
+   Every reference price is editable and saved automatically.
+   The currency label is editable too, so the tool works outside
+   Indonesia as well.
    --------------------------------------------------------------- */
 const Calc = (() => {
-  const NISAB_GOLD_G   = 85;    // gram emas
-  const NISAB_SILVER_G = 595;   // gram perak
-  const NISAB_FARM_KG  = 653;   // kg gabah kering (5 wasaq)
-  const FITRAH_KG      = 2.5;   // 1 sha' per jiwa
-  const RATE           = 0.025; // 2,5%
+  const NISAB_GOLD_G   = 85;    // grams of gold
+  const NISAB_SILVER_G = 595;   // grams of silver
+  const NISAB_FARM_KG  = 653;   // kg of dried unhusked rice (5 wasaq)
+  const FITRAH_KG      = 2.5;   // one sa' per person
+  const RATE           = 0.025; // 2.5%
 
-  let active = 'penghasilan';
+  let active = 'income';
   const vals = {};
 
-  const money = (id, label, hint, def = '') =>
-    ({ id, label, hint, kind: 'money', def });
-  const num = (id, label, hint, suf, def = '') =>
-    ({ id, label, hint, kind: 'num', suf, def });
-  const pick = (id, label, hint, options, def) =>
-    ({ id, label, hint, kind: 'select', options, def });
+  const money = (id, label, hint, def = '') => ({ id, label, hint, kind: 'money', def });
+  const num   = (id, label, hint, suf, def = '') => ({ id, label, hint, kind: 'num', suf, def });
+  const pick  = (id, label, hint, options, def) => ({ id, label, hint, kind: 'select', options, def });
 
   const TABS = {
-    penghasilan: {
-      icon: '💼', name: 'Penghasilan',
-      intro: 'Zakat profesi — Fatwa MUI No. 3 Tahun 2003. Nisab setara 85 gram emas per tahun, kadar 2,5%. Boleh ditunaikan bulanan.',
+    income: {
+      icon: '💼', name: 'Income',
+      intro: 'Zakat on professional income — MUI Fatwa No. 3 of 2003. Nisab equals 85 grams of gold per year, rate 2.5%. It may be paid monthly.',
       fields: [
-        money('gaji', 'Penghasilan pokok per bulan', 'Gaji, honor, atau upah rutin.'),
-        money('lain', 'Penghasilan lain per bulan', 'Bonus, tunjangan, usaha sampingan. Kosongkan jika tidak ada.'),
-        pick('metode', 'Metode perhitungan', 'Bruto mengikuti pedoman BAZNAS. Netto dipakai sebagian ulama dengan mengurangi kebutuhan pokok.',
-          [['bruto', 'Bruto — seluruh penghasilan'], ['netto', 'Netto — dikurangi kebutuhan pokok']], 'bruto'),
-        money('pokok', 'Kebutuhan pokok per bulan', 'Hanya dipakai bila metode Netto dipilih.')
+        money('gaji', 'Main income per month', 'Salary, fees or regular wages.'),
+        money('lain', 'Other income per month', 'Bonuses, allowances, side business. Leave empty if none.'),
+        pick('metode', 'Calculation method', 'Gross follows BAZNAS guidance. Net is used by scholars who deduct basic living costs first.',
+          [['bruto', 'Gross — all income'], ['netto', 'Net — after basic needs']], 'bruto'),
+        money('pokok', 'Basic needs per month', 'Used only when the Net method is selected.')
       ],
       compute(v, p) {
-        const bruto = v.gaji + v.lain;
-        const dasar = v.metode === 'netto' ? Math.max(0, bruto - v.pokok) : bruto;
-        const nisabTahun = NISAB_GOLD_G * p.gold;
-        const nisabBulan = nisabTahun / 12;
-        const wajib = dasar >= nisabBulan;
-        const zakat = wajib ? dasar * RATE : 0;
+        const gross = v.gaji + v.lain;
+        const base = v.metode === 'netto' ? Math.max(0, gross - v.pokok) : gross;
+        const nisabYear = NISAB_GOLD_G * p.gold;
+        const nisabMonth = nisabYear / 12;
+        const due = base >= nisabMonth;
+        const zakat = due ? base * RATE : 0;
         return {
-          amount: zakat, isMoney: true, wajib,
+          amount: zakat, isMoney: true, wajib: due,
           rows: [
-            ['Penghasilan bruto/bulan', rupiah(bruto)],
-            v.metode === 'netto' ? ['Kebutuhan pokok', '− ' + rupiah(v.pokok)] : null,
-            ['Dasar perhitungan', rupiah(dasar)],
-            ['Nisab per bulan (85 g emas ÷ 12)', rupiah(nisabBulan)],
-            ['Zakat 2,5%', rupiah(zakat)]
+            ['Gross income / month', cash(gross)],
+            v.metode === 'netto' ? ['Basic needs', '− ' + cash(v.pokok)] : null,
+            ['Calculation base', cash(base)],
+            ['Monthly nisab (85 g gold ÷ 12)', cash(nisabMonth)],
+            ['Zakat at 2.5%', cash(zakat)]
           ].filter(Boolean),
-          note: wajib
-            ? `Penghasilanmu melampaui nisab bulanan. Setahun berarti sekitar <b>${rupiah(zakat * 12)}</b>.`
-            : `Belum mencapai nisab bulanan (${rupiah(nisabBulan)}). Bila total setahun melampaui ${rupiah(nisabTahun)}, zakat tetap wajib ditunaikan di akhir haul. Sementara itu, infak &amp; sedekah tetap dianjurkan.`
+          note: due
+            ? `Your income clears the monthly nisab. Over a year that comes to roughly <b>${cash(zakat * 12)}</b>.`
+            : `This is below the monthly nisab of ${cash(nisabMonth)}. If your yearly total passes ${cash(nisabYear)}, zakat still falls due at the end of the haul. Voluntary sadaqah remains encouraged meanwhile.`
         };
       }
     },
 
-    emas: {
-      icon: '🪙', name: 'Emas & Perak',
-      intro: 'Nisab emas 85 gram, perak 595 gram, kadar 2,5% setelah dimiliki satu haul (1 tahun hijriah).',
+    gold: {
+      icon: '🪙', name: 'Gold & Silver',
+      intro: 'Nisab is 85 grams of gold or 595 grams of silver, at 2.5%, once held for one lunar year.',
       fields: [
-        num('gram', 'Emas yang dimiliki', 'Emas batangan/simpanan yang telah dimiliki 1 tahun.', 'gram'),
-        num('perak', 'Perak yang dimiliki', 'Kosongkan bila tidak memiliki perak.', 'gram')
+        num('gram', 'Gold held', 'Bullion or stored gold owned for a full year.', 'grams'),
+        num('perak', 'Silver held', 'Leave empty if you hold no silver.', 'grams')
       ],
       compute(v, p) {
-        const nisabE = NISAB_GOLD_G, nisabP = NISAB_SILVER_G;
-        const zE = v.gram >= nisabE ? v.gram * RATE : 0;
-        const zP = v.perak >= nisabP ? v.perak * RATE : 0;
-        const rp = zE * p.gold + zP * p.silver;
-        const wajib = zE > 0 || zP > 0;
+        const zG = v.gram >= NISAB_GOLD_G ? v.gram * RATE : 0;
+        const zS = v.perak >= NISAB_SILVER_G ? v.perak * RATE : 0;
+        const value = zG * p.gold + zS * p.silver;
+        const due = zG > 0 || zS > 0;
         return {
-          amount: rp, isMoney: true, wajib,
-          headline: (zE + zP) > 0 ? `${numberID(zE)} g emas${zP ? ' + ' + numberID(zP) + ' g perak' : ''}` : null,
+          amount: value, isMoney: true, wajib: due,
+          headline: (zG + zS) > 0 ? `${numberFmt(zG)} g gold${zS ? ' + ' + numberFmt(zS) + ' g silver' : ''}` : null,
           rows: [
-            ['Emas dimiliki', numberID(v.gram) + ' g'],
-            ['Nisab emas', nisabE + ' g'],
-            v.perak ? ['Perak dimiliki', numberID(v.perak) + ' g'] : null,
-            v.perak ? ['Nisab perak', nisabP + ' g'] : null,
-            ['Zakat emas 2,5%', numberID(zE) + ' g'],
-            v.perak ? ['Zakat perak 2,5%', numberID(zP) + ' g'] : null,
-            ['Nilai rupiah', rupiah(rp)]
+            ['Gold held', numberFmt(v.gram) + ' g'],
+            ['Gold nisab', NISAB_GOLD_G + ' g'],
+            v.perak ? ['Silver held', numberFmt(v.perak) + ' g'] : null,
+            v.perak ? ['Silver nisab', NISAB_SILVER_G + ' g'] : null,
+            ['Zakat on gold, 2.5%', numberFmt(zG) + ' g'],
+            v.perak ? ['Zakat on silver, 2.5%', numberFmt(zS) + ' g'] : null,
+            ['Cash value', cash(value)]
           ].filter(Boolean),
-          note: wajib
-            ? 'Zakat boleh ditunaikan berupa emas/perak itu sendiri atau nilai uangnya.'
-            : `Belum mencapai nisab (emas ${nisabE} g / perak ${nisabP} g). Perhiasan yang dipakai sewajarnya menurut mayoritas ulama tidak wajib dizakati.`
+          note: due
+            ? 'Zakat may be given as the metal itself or as its cash value.'
+            : `Below the nisab (gold ${NISAB_GOLD_G} g / silver ${NISAB_SILVER_G} g). Most scholars also exempt jewellery worn in reasonable amounts.`
         };
       }
     },
 
-    mal: {
-      icon: '🏦', name: 'Tabungan & Uang',
-      intro: 'Zakat mal atas uang, tabungan, deposito, dan investasi. Nisab setara 85 gram emas, kadar 2,5%, haul 1 tahun.',
+    savings: {
+      icon: '🏦', name: 'Savings & Cash',
+      intro: 'Zakat on cash, bank savings, deposits and investments. Nisab equals 85 grams of gold, rate 2.5%, held one lunar year.',
       fields: [
-        money('tabungan', 'Tabungan & deposito', 'Saldo terendah selama setahun lebih aman dipakai.'),
-        money('tunai', 'Uang tunai & e-wallet', ''),
-        money('investasi', 'Investasi & surat berharga', 'Saham, reksa dana, obligasi — nilai saat haul.'),
-        money('piutang', 'Piutang yang diharapkan kembali', 'Uang yang dipinjamkan dan hampir pasti tertagih.'),
-        money('utang', 'Utang jatuh tempo', 'Utang yang harus dibayar dalam waktu dekat — menjadi pengurang.')
+        money('tabungan', 'Savings & deposits', 'Using the lowest balance across the year is the safer approach.'),
+        money('tunai', 'Cash & e-wallets', ''),
+        money('investasi', 'Investments & securities', 'Shares, funds, bonds — valued at the end of the haul.'),
+        money('piutang', 'Receivables likely to be repaid', 'Money lent out that you reasonably expect back.'),
+        money('utang', 'Debt falling due', 'Debt payable in the near term — this is deducted.')
       ],
       compute(v, p) {
-        const kotor = v.tabungan + v.tunai + v.investasi + v.piutang;
-        const bersih = Math.max(0, kotor - v.utang);
+        const gross = v.tabungan + v.tunai + v.investasi + v.piutang;
+        const net = Math.max(0, gross - v.utang);
         const nisab = NISAB_GOLD_G * p.gold;
-        const wajib = bersih >= nisab;
+        const due = net >= nisab;
         return {
-          amount: wajib ? bersih * RATE : 0, isMoney: true, wajib,
+          amount: due ? net * RATE : 0, isMoney: true, wajib: due,
           rows: [
-            ['Total harta', rupiah(kotor)],
-            ['Utang jatuh tempo', '− ' + rupiah(v.utang)],
-            ['Harta bersih', rupiah(bersih)],
-            ['Nisab (85 g emas)', rupiah(nisab)],
-            ['Zakat 2,5%', rupiah(wajib ? bersih * RATE : 0)]
+            ['Total assets', cash(gross)],
+            ['Debt falling due', '− ' + cash(v.utang)],
+            ['Net wealth', cash(net)],
+            ['Nisab (85 g gold)', cash(nisab)],
+            ['Zakat at 2.5%', cash(due ? net * RATE : 0)]
           ],
-          note: wajib
-            ? 'Pastikan harta ini sudah dimiliki genap satu tahun hijriah (haul).'
-            : `Harta bersihmu belum mencapai nisab ${rupiah(nisab)}.`
+          note: due
+            ? 'Check that this wealth has been owned for one full lunar year (haul).'
+            : `Your net wealth has not reached the nisab of ${cash(nisab)}.`
         };
       }
     },
 
-    dagang: {
-      icon: '🏪', name: 'Perdagangan',
-      intro: 'Rumus: (modal berputar + laba + piutang lancar) − (utang jatuh tempo + kerugian) × 2,5%.',
+    trade: {
+      icon: '🏪', name: 'Trade',
+      intro: 'Formula: (working capital + profit + collectible receivables) − (debt due + losses), times 2.5%.',
       fields: [
-        money('stok', 'Nilai stok barang dagangan', 'Dihitung dengan harga jual saat haul tiba.'),
-        money('laba', 'Laba usaha selama setahun', ''),
-        money('piutang2', 'Piutang lancar', 'Tagihan yang diperkirakan tertagih.'),
-        money('utang2', 'Utang jatuh tempo', ''),
-        money('rugi', 'Kerugian usaha', 'Kosongkan bila tidak ada.')
+        money('stok', 'Value of inventory', 'Valued at selling price on the day the haul completes.'),
+        money('laba', 'Profit over the year', ''),
+        money('piutang2', 'Collectible receivables', 'Invoices you expect to be paid.'),
+        money('utang2', 'Debt falling due', ''),
+        money('rugi', 'Business losses', 'Leave empty if none.')
       ],
       compute(v, p) {
-        const bersih = Math.max(0, v.stok + v.laba + v.piutang2 - v.utang2 - v.rugi);
+        const net = Math.max(0, v.stok + v.laba + v.piutang2 - v.utang2 - v.rugi);
         const nisab = NISAB_GOLD_G * p.gold;
-        const wajib = bersih >= nisab;
+        const due = net >= nisab;
         return {
-          amount: wajib ? bersih * RATE : 0, isMoney: true, wajib,
+          amount: due ? net * RATE : 0, isMoney: true, wajib: due,
           rows: [
-            ['Stok + laba + piutang', rupiah(v.stok + v.laba + v.piutang2)],
-            ['Utang + kerugian', '− ' + rupiah(v.utang2 + v.rugi)],
-            ['Harta dagang bersih', rupiah(bersih)],
-            ['Nisab (85 g emas)', rupiah(nisab)],
-            ['Zakat 2,5%', rupiah(wajib ? bersih * RATE : 0)]
+            ['Inventory + profit + receivables', cash(v.stok + v.laba + v.piutang2)],
+            ['Debt + losses', '− ' + cash(v.utang2 + v.rugi)],
+            ['Net trading assets', cash(net)],
+            ['Nisab (85 g gold)', cash(nisab)],
+            ['Zakat at 2.5%', cash(due ? net * RATE : 0)]
           ],
-          note: wajib ? 'Zakat perdagangan ditunaikan setahun sekali saat haul terpenuhi.'
-                      : `Belum mencapai nisab ${rupiah(nisab)}.`
+          note: due ? 'Zakat on trade is paid once a year, when the haul completes.'
+                    : `Below the nisab of ${cash(nisab)}.`
         };
       }
     },
 
-    tani: {
-      icon: '🌾', name: 'Pertanian',
-      intro: 'Nisab 5 wasaq ≈ 653 kg gabah kering. Tadah hujan 10%, pengairan berbiaya 5%. Ditunaikan setiap panen.',
+    crops: {
+      icon: '🌾', name: 'Crops',
+      intro: 'Nisab is 5 wasaq ≈ 653 kg of dried grain. Rain-fed land pays 10%, paid irrigation pays 5%. Due at every harvest.',
       fields: [
-        num('panen', 'Hasil panen', 'Berat gabah/biji kering setelah panen.', 'kg'),
-        pick('air', 'Cara pengairan', 'Menentukan kadar 10% atau 5%.',
-          [['hujan', 'Tadah hujan / mata air — tanpa biaya (10%)'], ['biaya', 'Irigasi / pompa berbiaya (5%)']], 'hujan'),
-        money('hargakg', 'Harga per kg (opsional)', 'Untuk mengetahui nilai rupiahnya.')
+        num('panen', 'Harvest yield', 'Weight of dried grain after harvest.', 'kg'),
+        pick('air', 'Watering method', 'This decides whether the rate is 10% or 5%.',
+          [['hujan', 'Rain-fed or spring — no cost (10%)'], ['biaya', 'Paid irrigation or pump (5%)']], 'hujan'),
+        money('hargakg', 'Price per kg (optional)', 'Only to show the cash equivalent.')
       ],
       compute(v) {
-        const kadar = v.air === 'biaya' ? 0.05 : 0.10;
-        const wajib = v.panen >= NISAB_FARM_KG;
-        const kg = wajib ? v.panen * kadar : 0;
+        const rate = v.air === 'biaya' ? 0.05 : 0.10;
+        const due = v.panen >= NISAB_FARM_KG;
+        const kg = due ? v.panen * rate : 0;
         return {
-          amount: kg, isMoney: false, unit: 'kg', wajib,
+          amount: kg, isMoney: false, unit: 'kg', wajib: due,
           rows: [
-            ['Hasil panen', numberID(v.panen) + ' kg'],
+            ['Harvest', numberFmt(v.panen) + ' kg'],
             ['Nisab', NISAB_FARM_KG + ' kg'],
-            ['Kadar zakat', (kadar * 100) + '%'],
-            ['Zakat', numberID(kg) + ' kg'],
-            v.hargakg ? ['Setara rupiah', rupiah(kg * v.hargakg)] : null
+            ['Rate', (rate * 100) + '%'],
+            ['Zakat', numberFmt(kg) + ' kg'],
+            v.hargakg ? ['Cash equivalent', cash(kg * v.hargakg)] : null
           ].filter(Boolean),
-          note: wajib ? 'Zakat pertanian tidak menunggu haul — tunaikan saat panen.'
-                      : `Panen belum mencapai nisab ${NISAB_FARM_KG} kg gabah.`
+          note: due ? 'Zakat on crops does not wait for a haul — give it at harvest.'
+                    : `This harvest has not reached the nisab of ${NISAB_FARM_KG} kg.`
         };
       }
     },
 
-    fitrah: {
-      icon: '🍚', name: 'Fitrah',
-      intro: '1 sha‘ ≈ 2,5 kg makanan pokok per jiwa. Wajib atas setiap jiwa muslim, paling utama sebelum shalat Idulfitri.',
+    fitr: {
+      icon: '🍚', name: 'Zakat al-Fitr',
+      intro: 'One sa‘ ≈ 2.5 kg of staple food per person. Due from every Muslim soul, best given before the Eid prayer.',
       fields: [
-        num('jiwa', 'Jumlah jiwa dalam tanggungan', 'Termasuk bayi yang lahir sebelum maghrib akhir Ramadan.', 'orang', '1'),
-        pick('bentuk', 'Dibayarkan dalam bentuk', 'Membayar dengan uang senilai makanan pokok diperbolehkan menurut mazhab Hanafi dan pedoman BAZNAS.',
-          [['beras', 'Beras / makanan pokok'], ['uang', 'Uang senilai beras']], 'beras')
+        num('jiwa', 'People in your household', 'Including a baby born before sunset on the last day of Ramadan.', 'people', '1'),
+        pick('bentuk', 'Given as', 'Paying the cash value is accepted in the Hanafi school and by BAZNAS guidance.',
+          [['beras', 'Rice or staple food'], ['uang', 'Cash equivalent']], 'beras')
       ],
       compute(v, p) {
-        const jiwa = Math.max(0, Math.round(v.jiwa));
-        const kg = jiwa * FITRAH_KG;
-        const rp = kg * p.rice;
-        const uang = v.bentuk === 'uang';
+        const people = Math.max(0, Math.round(v.jiwa));
+        const kg = people * FITRAH_KG;
+        const value = kg * p.rice;
+        const asCash = v.bentuk === 'uang';
         return {
-          amount: uang ? rp : kg, isMoney: uang, unit: 'kg', wajib: jiwa > 0,
+          amount: asCash ? value : kg, isMoney: asCash, unit: 'kg', wajib: people > 0,
           rows: [
-            ['Jumlah jiwa', jiwa + ' orang'],
-            ['Takaran per jiwa', FITRAH_KG + ' kg (1 sha‘)'],
-            ['Total beras', numberID(kg) + ' kg'],
-            ['Harga beras/kg', rupiah(p.rice)],
-            ['Setara uang', rupiah(rp)]
+            ['People', people],
+            ['Measure per person', FITRAH_KG + ' kg (one sa‘)'],
+            ['Total staple food', numberFmt(kg) + ' kg'],
+            ['Price per kg', cash(p.rice)],
+            ['Cash equivalent', cash(value)]
           ],
-          note: jiwa > 0
-            ? 'Tunaikan sebelum shalat Idulfitri. Bila dibayar setelahnya, ia dinilai sedekah biasa.'
-            : 'Isi jumlah jiwa terlebih dahulu.'
+          note: people > 0
+            ? 'Give it before the Eid prayer. Paid afterwards, it counts as ordinary sadaqah.'
+            : 'Enter the number of people first.'
         };
       }
     },
 
     rikaz: {
       icon: '💎', name: 'Rikaz',
-      intro: 'Harta temuan atau barang tambang dizakati 20% seketika — tanpa syarat nisab maupun haul.',
-      fields: [ money('nilai', 'Nilai harta temuan / tambang', 'Taksiran nilai pasar saat ditemukan.') ],
+      intro: 'Buried treasure or mined wealth carries 20%, payable at once — no nisab, no haul.',
+      fields: [ money('nilai', 'Value of the find', 'Estimated market value on the day it was found.') ],
       compute(v) {
         return {
           amount: v.nilai * 0.2, isMoney: true, wajib: v.nilai > 0,
-          rows: [['Nilai temuan', rupiah(v.nilai)], ['Kadar zakat', '20%'], ['Zakat', rupiah(v.nilai * 0.2)]],
-          note: v.nilai > 0 ? 'Ditunaikan langsung saat ditemukan, tanpa menunggu haul.' : 'Masukkan nilai temuan.'
+          rows: [['Value found', cash(v.nilai)], ['Rate', '20%'], ['Zakat', cash(v.nilai * 0.2)]],
+          note: v.nilai > 0 ? 'Payable immediately on discovery, without waiting for a haul.' : 'Enter the value of the find.'
         };
       }
     }
@@ -2757,24 +2957,24 @@ const Calc = (() => {
     }
     return `<div class="field"><label for="c-${f.id}">${escapeHTML(f.label)}</label>
       <div class="inputwrap" data-wrap="${f.id}">
-        ${f.kind === 'money' ? '<span class="pre">Rp</span>' : ''}
+        ${f.kind === 'money' ? `<span class="pre">${escapeHTML(SAVE.calcPrefs.cur)}</span>` : ''}
         <input id="c-${f.id}" data-f="${f.id}" inputmode="decimal" autocomplete="off"
                placeholder="0" value="${v !== undefined && v !== '' ? escapeHTML(String(v)) : ''}">
         ${f.suf ? `<span class="suf">${escapeHTML(f.suf)}</span>` : ''}
       </div>${f.hint ? `<span class="hint">${f.hint}</span>` : ''}</div>`;
   }
 
-  /** Menambahkan pemisah ribuan sambil mengetik, tanpa memindahkan kursor
-   *  bila pengguna sedang menyunting di tengah teks. */
+  /** Adds thousands separators while typing, without moving the caret
+   *  when the user is editing mid-string. */
   function attachThousandFormat(el) {
     const reformat = () => {
       const raw = el.value;
       if (!raw.trim()) return;
-      if (el.selectionStart !== raw.length) return;   // jangan ganggu penyuntingan di tengah
-      const { int, dec } = splitID(raw);
+      if (el.selectionStart !== raw.length) return;
+      const { int, dec } = splitNum(raw);
       if (!int && dec === null) { el.value = ''; return; }
-      let out = Number(int || 0).toLocaleString('id-ID');
-      if (dec !== null) out += ',' + dec;             // termasuk koma yang baru diketik
+      let out = Number(int || 0).toLocaleString('en-US');
+      if (dec !== null) out += '.' + dec;
       if (out !== raw) {
         el.value = out;
         el.setSelectionRange(out.length, out.length);
@@ -2802,14 +3002,13 @@ const Calc = (() => {
     if (!box) return;
     const head = res.headline
       ? res.headline
-      : (res.isMoney ? rupiah(res.amount) : numberID(res.amount) + ' ' + (res.unit || ''));
+      : (res.isMoney ? cash(res.amount) : numberFmt(res.amount) + ' ' + (res.unit || ''));
     box.innerHTML = `
       <div class="amt">${head}</div>
-      ${res.headline ? `<div style="font-size:.95rem;opacity:.9;margin-top:4px">≈ ${rupiah(res.amount)}</div>` : ''}
-      <div class="verdict">${res.wajib ? '✅ Zakat wajib ditunaikan' : 'ℹ️ Belum wajib zakat'}</div>
+      ${res.headline ? `<div style="font-size:.95rem;opacity:.9;margin-top:4px">≈ ${cash(res.amount)}</div>` : ''}
+      <div class="verdict">${res.wajib ? '✅ Zakat is due' : 'ℹ️ Not due yet'}</div>
       <div class="breakdown">${res.rows.map(r => `<div><span>${r[0]}</span><b>${r[1]}</b></div>`).join('')}</div>
       <div class="note">${res.note}</div>`;
-    box.classList.remove('bump'); void box.offsetWidth; box.classList.add('bump');
     grantBadge('calc');
   }
 
@@ -2825,31 +3024,34 @@ const Calc = (() => {
     const tab = TABS[active];
     const p = SAVE.calcPrefs;
     $('#calc-body').innerHTML = `
-      <div class="kicker">${tab.icon} Zakat ${escapeHTML(tab.name)}</div>
+      <div class="kicker">${tab.icon} Zakat on ${escapeHTML(tab.name)}</div>
       <p style="font-size:.9rem;color:var(--ink-soft);line-height:1.6;margin:8px 0 4px">${tab.intro}</p>
       <div class="divider"></div>
       <div id="calc-fields">${tab.fields.map(fieldHTML).join('')}</div>
       <div class="calc-result" id="calc-out"></div>
       <div class="divider"></div>
       <details id="calc-prefs">
-        <summary style="cursor:pointer;font-weight:700;font-size:.9rem;color:var(--teal-dark)">⚙️ Harga acuan (ubah sesuai harga hari ini)</summary>
+        <summary style="cursor:pointer;font-weight:700;font-size:.9rem;color:var(--teal-dark)">⚙️ Reference prices — set them to today's figures</summary>
         <div style="margin-top:12px">
-          <div class="field"><label for="p-gold">Harga emas per gram</label>
-            <div class="inputwrap"><span class="pre">Rp</span><input id="p-gold" inputmode="decimal" value="${p.gold}"><span class="suf">/gram</span></div>
-            <span class="hint">Nisab 85 gram saat ini = <b id="nisab-now">${rupiah(85 * p.gold)}</b></span></div>
-          <div class="field"><label for="p-silver">Harga perak per gram</label>
-            <div class="inputwrap"><span class="pre">Rp</span><input id="p-silver" inputmode="decimal" value="${p.silver}"><span class="suf">/gram</span></div></div>
-          <div class="field"><label for="p-rice">Harga beras per kg</label>
-            <div class="inputwrap"><span class="pre">Rp</span><input id="p-rice" inputmode="decimal" value="${p.rice}"><span class="suf">/kg</span></div>
-            <span class="hint">Dipakai untuk menghitung zakat fitrah berupa uang.</span></div>
-          <p style="font-size:.78rem;color:#5c7a6e;line-height:1.55">
-            Angka bawaan hanyalah contoh. Perbarui dengan harga emas &amp; beras terbaru di daerahmu agar hasilnya akurat,
-            lalu pastikan penyalurannya melalui amil/lembaga zakat resmi.</p>
+          <div class="field"><label for="p-cur">Currency label</label>
+            <div class="inputwrap"><input id="p-cur" maxlength="5" value="${escapeHTML(p.cur)}"></div>
+            <span class="hint">Any short label you like: Rp, $, RM, £. It only changes what is displayed.</span></div>
+          <div class="field"><label for="p-gold">Gold price per gram</label>
+            <div class="inputwrap"><span class="pre">${escapeHTML(p.cur)}</span><input id="p-gold" inputmode="decimal" value="${p.gold}"><span class="suf">/gram</span></div>
+            <span class="hint">The 85-gram nisab today is <b id="nisab-now">${cash(85 * p.gold)}</b></span></div>
+          <div class="field"><label for="p-silver">Silver price per gram</label>
+            <div class="inputwrap"><span class="pre">${escapeHTML(p.cur)}</span><input id="p-silver" inputmode="decimal" value="${p.silver}"><span class="suf">/gram</span></div></div>
+          <div class="field"><label for="p-rice">Staple food price per kg</label>
+            <div class="inputwrap"><span class="pre">${escapeHTML(p.cur)}</span><input id="p-rice" inputmode="decimal" value="${p.rice}"><span class="suf">/kg</span></div>
+            <span class="hint">Used to price zakat al-fitr when it is paid in cash.</span></div>
+          <p style="font-size:.78rem;color:var(--ink-soft);line-height:1.55">
+            The values shipped here are only examples. Replace them with today's gold and food prices
+            where you live, and give through a registered zakat body.</p>
         </div>
       </details>
       <div style="display:flex;gap:9px;margin-top:14px;flex-wrap:wrap">
-        <button class="btn emerald sm" id="calc-reset">↺ Kosongkan</button>
-        <button class="btn ghost sm" id="calc-copy">📋 Salin hasil</button>
+        <button class="btn emerald sm" id="calc-reset">↺ Clear form</button>
+        <button class="btn ghost sm" id="calc-copy">📋 Copy result</button>
       </div>`;
 
     $$('#calc-fields input, #calc-fields select').forEach(el => {
@@ -2857,38 +3059,45 @@ const Calc = (() => {
       el.addEventListener('input', compute);
       el.addEventListener('change', compute);
     });
-    // "Kebutuhan pokok" hanya relevan pada metode netto
-    const metode = $('#c-metode');
-    if (metode) {
+    // "Basic needs" only matters under the Net method
+    const method = $('#c-metode');
+    if (method) {
       const sync = () => {
-        const off = metode.value !== 'netto';
+        const off = method.value !== 'netto';
         const inp = $('#c-pokok'), wrap = $('[data-wrap="pokok"]');
         if (inp) inp.disabled = off;
         if (wrap) wrap.classList.toggle('off', off);
       };
-      metode.addEventListener('change', sync);
+      method.addEventListener('change', sync);
       sync();
     }
     [['p-gold', 'gold'], ['p-silver', 'silver'], ['p-rice', 'rice']].forEach(([id, key]) => {
       const el = $('#' + id);
-      el.value = parseNum(el.value).toLocaleString('id-ID');
+      el.value = parseNum(el.value).toLocaleString('en-US');
       attachThousandFormat(el);
       el.addEventListener('input', () => {
         SAVE.calcPrefs[key] = parseNum(el.value) || 0;
         persist();
-        const n = $('#nisab-now'); if (n) n.textContent = rupiah(85 * SAVE.calcPrefs.gold);
+        const n = $('#nisab-now'); if (n) n.textContent = cash(85 * SAVE.calcPrefs.gold);
         compute();
       });
     });
+    $('#p-cur').addEventListener('input', () => {
+      SAVE.calcPrefs.cur = $('#p-cur').value.trim().slice(0, 5) || 'Rp';
+      persist();
+      compute();
+      $$('#calc-fields .pre, #calc-prefs .pre').forEach(e => e.textContent = SAVE.calcPrefs.cur);
+      const n = $('#nisab-now'); if (n) n.textContent = cash(85 * SAVE.calcPrefs.gold);
+    });
     $('#calc-reset').addEventListener('click', () => {
       tab.fields.forEach(f => { delete vals[f.id]; const el = $('#c-' + f.id); if (el && f.kind !== 'select') el.value = ''; });
-      compute(); toast('Formulir dikosongkan');
+      compute(); toast('Form cleared');
     });
     $('#calc-copy').addEventListener('click', () => {
-      const txt = `Zakat ${tab.name}\n` + $$('#calc-out .breakdown div').map(d => d.textContent.replace(/\s+/g, ' ')).join('\n');
+      const txt = `Zakat on ${tab.name}\n` + $$('#calc-out .breakdown div').map(d => d.textContent.replace(/\s+/g, ' ')).join('\n');
       if (navigator.clipboard) navigator.clipboard.writeText(txt).then(
-        () => toast('✅ Hasil disalin', 'gold'), () => toast('Gagal menyalin', 'bad'));
-      else toast('Peramban tidak mendukung salin otomatis', 'bad');
+        () => toast('✅ Result copied', 'gold'), () => toast('Could not copy', 'bad'));
+      else toast('This browser cannot copy automatically', 'bad');
     });
     compute();
   }
@@ -2913,30 +3122,30 @@ function renderProgress() {
              display:grid;place-items:center;font-size:2rem">🧒</div>
         <div style="flex:1;min-width:150px">
           <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-            <h3 style="font-size:1.3rem">${escapeHTML(SAVE.player || 'Pemain')}</h3>
-            <button class="btn ghost sm" id="p-name" style="padding:5px 12px">✏️ Ubah</button>
+            <h3 style="font-size:1.3rem">${escapeHTML(SAVE.player || 'Player')}</h3>
+            <button class="btn ghost sm" id="p-name" style="padding:5px 12px">✏️ Edit</button>
           </div>
           <span class="pill emerald" style="margin-top:6px">${rankOf(SAVE.totalScore)}</span>
         </div>
         <div style="text-align:right">
           <div style="font-family:var(--font-display);font-weight:800;font-size:1.8rem;color:var(--teal-dark)">
-            ${SAVE.totalScore.toLocaleString('id-ID')}</div>
-          <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft);font-weight:700">Total Poin</div>
+            ${SAVE.totalScore.toLocaleString('en-US')}</div>
+          <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-soft);font-weight:700">Total points</div>
         </div>
       </div>
       <div class="timerbar" style="margin-top:14px;height:12px;background:var(--line)">
         <i style="width:${pct}%"></i></div>
       <p style="font-size:.84rem;color:var(--ink-soft);margin-top:7px">
-        ⭐ ${stars} dari ${CHAPTERS.length * 3} bintang · ${done} dari ${CHAPTERS.length} bab tuntas (${pct}%)</p>
+        ⭐ ${stars} of ${CHAPTERS.length * 3} stars · ${done} of ${CHAPTERS.length} chapters complete (${pct}%)</p>
       <div class="stat-grid" style="margin-bottom:0">
-        <div><b>${s.correct}</b><span>Benar</span></div>
-        <div><b>${acc}%</b><span>Akurasi</span></div>
-        <div><b>${s.perfect}</b><span>Bab Sempurna</span></div>
+        <div><b>${s.correct}</b><span>Correct</span></div>
+        <div><b>${acc}%</b><span>Accuracy</span></div>
+        <div><b>${s.perfect}</b><span>Flawless runs</span></div>
       </div>
     </div>
 
     <div class="panel" style="padding:18px;margin-bottom:12px">
-      <div class="kicker">🗺 Perjalanan Bab</div>
+      <div class="kicker">🗺 Chapter progress</div>
       <div style="margin-top:12px">
         ${CHAPTERS.map(c => {
           const st = lv(c.id), open = isUnlocked(c.id);
@@ -2944,28 +3153,28 @@ function renderProgress() {
             <div class="rank" style="background:${open ? 'var(--sand)' : '#e2e8f0'}">${open ? c.emoji : '🔒'}</div>
             <div class="who"><b>${c.id}. ${escapeHTML(c.title)}</b><span>${escapeHTML(c.topic)}</span></div>
             <div style="text-align:right">
-              <div style="font-size:.9rem">${st.done ? '⭐'.repeat(st.stars) + '<span style="opacity:.3">' + '⭐'.repeat(3 - st.stars) + '</span>' : (open ? '<span style="font-size:.76rem;color:var(--teal);font-weight:700">Terbuka</span>' : '<span style="font-size:.76rem;color:#94a3b8">Terkunci</span>')}</div>
-              ${st.best ? `<div class="pts" style="font-size:.9rem">${st.best.toLocaleString('id-ID')}</div>` : ''}
+              <div style="font-size:.9rem">${st.done ? '⭐'.repeat(st.stars) + '<span style="opacity:.3">' + '⭐'.repeat(3 - st.stars) + '</span>' : (open ? '<span style="font-size:.76rem;color:var(--teal);font-weight:700">Unlocked</span>' : '<span style="font-size:.76rem;color:#94a3b8">Locked</span>')}</div>
+              ${st.best ? `<div class="pts" style="font-size:.9rem">${st.best.toLocaleString('en-US')}</div>` : ''}
             </div></div>`;
         }).join('')}
       </div>
     </div>
 
     <div class="panel" style="padding:18px;margin-bottom:12px">
-      <div class="kicker">🏆 Papan Skor Lokal</div>
-      <p style="font-size:.8rem;color:var(--ink-soft);margin:6px 0 12px">Sepuluh perolehan terbaik dari perangkat ini.</p>
+      <div class="kicker">🏆 Local scoreboard</div>
+      <p style="font-size:.8rem;color:var(--ink-soft);margin:6px 0 12px">The ten best runs recorded on this device.</p>
       ${SAVE.scores.length ? SAVE.scores.slice(0, 10).map((r, i) => `
         <div class="lb-row ${i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : ''}">
           <div class="rank">${i + 1}</div>
           <div class="who"><b>${escapeHTML(r.name)}</b>
-            <span>Bab ${r.ch || '-'} · ${new Date(r.date).toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' })}</span></div>
-          <div class="pts">${r.score.toLocaleString('id-ID')}</div>
+            <span>Chapter ${r.ch || '-'} · ${new Date(r.date).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</span></div>
+          <div class="pts">${r.score.toLocaleString('en-US')}</div>
         </div>`).join('')
-        : '<p style="color:var(--ink-soft);font-size:.9rem">Belum ada skor. Selesaikan satu bab untuk mengisi papan ini.</p>'}
+        : '<p style="color:var(--ink-soft);font-size:.9rem">No scores yet. Finish a chapter to fill this board.</p>'}
     </div>
 
     <div class="panel" style="padding:18px;margin-bottom:20px">
-      <div class="kicker">🎖 Lencana (${SAVE.badges.length}/${BADGES.length})</div>
+      <div class="kicker">🎖 Badges (${SAVE.badges.length}/${BADGES.length})</div>
       <div class="badges" style="margin-top:12px">
         ${BADGES.map(b => `
           <div class="badge ${SAVE.badges.includes(b.id) ? 'got' : ''}" title="${escapeHTML(b.desc)}">
@@ -2981,21 +3190,21 @@ function renderProgress() {
 
 function askName(onDone) {
   openModal(`
-    <h2 id="modal-title" style="font-size:1.3rem">Siapa namamu?</h2>
-    <p style="color:var(--ink-soft);font-size:.88rem;margin-top:6px">Nama ini dipakai pada papan skor di perangkat ini.</p>
+    <h2 id="modal-title" style="font-size:1.3rem">What should we call you?</h2>
+    <p style="color:var(--ink-soft);font-size:.88rem;margin-top:6px">This name appears on the scoreboard on this device.</p>
     <div class="field" style="margin-top:14px">
-      <div class="inputwrap"><input id="nm" maxlength="20" placeholder="Nama panggilan" value="${escapeHTML(SAVE.player)}"></div>
+      <div class="inputwrap"><input id="nm" maxlength="20" placeholder="Your name" value="${escapeHTML(SAVE.player)}"></div>
     </div>
     <div style="display:flex;gap:9px;justify-content:flex-end">
-      <button class="btn ghost sm" id="nm-x">Batal</button>
-      <button class="btn sm" id="nm-ok">Simpan</button>
+      <button class="btn ghost sm" id="nm-x">Cancel</button>
+      <button class="btn sm" id="nm-ok">Save</button>
     </div>`);
   $('#nm').focus();
   const save = () => {
-    SAVE.player = $('#nm').value.trim().slice(0, 20) || 'Pemain';
+    SAVE.player = $('#nm').value.trim().slice(0, 20) || 'Player';
     persist(true); closeModal();
     if (Router.current === 'progress') renderProgress();
-    toast('✅ Nama tersimpan');
+    toast('✅ Name saved');
     if (onDone) onDone();
   };
   $('#nm-ok').onclick = save;
@@ -3024,19 +3233,20 @@ function openSettings() {
              style="width:22px;height:22px;accent-color:var(--teal)">
     </label>`;
   openModal(`
-    <h2 id="modal-title" style="font-size:1.4rem">⚙️ Pengaturan</h2>
+    <h2 id="modal-title" style="font-size:1.4rem">⚙️ Settings</h2>
     <div class="divider"></div>
-    ${row('sound', '🔊', 'Efek suara', 'Nada untuk jawaban benar, salah, dan bintang.')}
-    ${row('bigText', '🔠', 'Teks lebih besar', 'Memperbesar seluruh teks permainan.')}
-    ${row('contrast', '🌓', 'Kontras tinggi', 'Mempertegas garis dan latar untuk keterbacaan.')}
+    ${row('sound', '🔊', 'Sound effects', 'Tones for right answers, wrong answers and stars.')}
+    ${row('music', '🎵', 'Ambient music', 'A quiet drone and slow melody in maqam Hijaz. Switch it off any time.')}
+    ${row('bigText', '🔠', 'Larger text', 'Increases the text size across the game.')}
+    ${row('contrast', '🌓', 'High contrast', 'Strengthens borders and backgrounds for readability.')}
     <div class="divider"></div>
-    <div style="font-weight:700;font-size:.95rem;font-family:var(--font-display);margin-bottom:4px">✨ Animasi</div>
+    <div style="font-weight:700;font-size:.95rem;font-family:var(--font-display);margin-bottom:4px">✨ Animation</div>
     <p style="font-size:.78rem;color:var(--ink-soft);line-height:1.45;margin-bottom:9px">
-      Turunkan bila perangkat terasa berat atau kamu sensitif terhadap gerakan.</p>
+      Turn it down if the device struggles, or if motion bothers you.</p>
     <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px">
-      ${[['full', 'Penuh', 'Latar bergerak, transisi bintang'],
-         ['lite', 'Ringan', 'Hanya transisi seperlunya'],
-         ['off', 'Mati', 'Diam sepenuhnya']].map(([v, t, d]) => `
+      ${[['full', 'Full', 'Moving backdrop, star transitions'],
+         ['lite', 'Light', 'Only essential transitions'],
+         ['off', 'Off', 'Completely still']].map(([v, t, d]) => `
         <button class="btn ${SAVE.settings.anim === v ? '' : 'ghost'} sm" data-anim="${v}"
                 style="flex-direction:column;gap:2px;padding:10px 6px" title="${d}">
           <span>${t}</span>
@@ -3044,12 +3254,13 @@ function openSettings() {
         </button>`).join('')}
     </div>
     <div class="divider"></div>
-    <button class="btn ghost sm block" id="set-name">✏️ Ubah nama pemain</button>
-    <button class="btn sm block" id="set-close" style="margin-top:10px">Selesai</button>`);
+    <button class="btn ghost sm block" id="set-name">✏️ Change player name</button>
+    <button class="btn sm block" id="set-close" style="margin-top:10px">Done</button>`);
   $$('#modal-card [data-s]').forEach(c => c.addEventListener('change', () => {
     SAVE.settings[c.dataset.s] = c.checked;
     persist(true); applySettings();
     if (c.dataset.s === 'sound' && c.checked) Audio2.coin();
+    if (c.dataset.s === 'music') Music.sync();
   }));
   $$('#modal-card [data-anim]').forEach(b => b.addEventListener('click', () => {
     SAVE.settings.anim = b.dataset.anim;
@@ -3063,23 +3274,23 @@ function openSettings() {
 
 function openHowTo() {
   openModal(`
-    <h2 id="modal-title" style="font-size:1.4rem">❓ Cara Bermain</h2>
+    <h2 id="modal-title" style="font-size:1.4rem">❓ How to Play</h2>
     <div class="divider"></div>
     <div style="font-size:.92rem;line-height:1.75">
-      <p><b>1. Ikuti peta.</b> Tujuh bab terhubung dalam satu jalur. Selesaikan sebuah bab untuk membuka bab berikutnya.</p>
-      <p style="margin-top:9px"><b>2. Simak cerita.</b> Setiap bab dibuka dengan dialog bergambar. Ketuk layar untuk mempercepat teks.</p>
-      <p style="margin-top:9px"><b>3. Jawab kuis.</b> Kamu punya <b>3 nyawa</b> dan waktu terbatas tiap soal.
-         Makin cepat menjawab benar dan makin panjang rentetan benarmu, makin besar poinnya.</p>
-      <p style="margin-top:9px"><b>4. Taklukkan mini game.</b> Ada tiga jenis: menyortir kartu, menimbang nisab, dan menghitung cepat.</p>
-      <p style="margin-top:9px"><b>5. Kumpulkan bintang.</b> 3 bintang bila tanpa salah, 2 bintang bila salah satu kali.</p>
+      <p><b>1. Follow the path.</b> Eight chapters sit along one road. Finish one to unlock the next.</p>
+      <p style="margin-top:9px"><b>2. Read the story.</b> Each chapter opens with an illustrated dialogue. Tap the screen to skip ahead.</p>
+      <p style="margin-top:9px"><b>3. Answer the quiz.</b> You have <b>3 lives</b> and a clock on every question.
+         Faster correct answers and longer streaks are worth more points.</p>
+      <p style="margin-top:9px"><b>4. Clear the mini game.</b> Three kinds: sorting cards, weighing the nisab, and quick calculation.</p>
+      <p style="margin-top:9px"><b>5. Collect stars.</b> Three stars for a flawless run, two if you slip once.</p>
       <div class="divider"></div>
-      <p><b>⌨️ Pintasan papan ketik</b><br>
-        <b>A–D</b> atau <b>1–4</b> memilih jawaban · <b>H</b> petunjuk · <b>Enter</b> lanjut · <b>Esc</b> menutup jendela.</p>
+      <p><b>⌨️ Keyboard shortcuts</b><br>
+        <b>A–D</b> or <b>1–4</b> to answer · <b>H</b> for a hint · <b>Enter</b> to continue · <b>Esc</b> to close a dialog.</p>
       <div class="divider"></div>
-      <p style="font-size:.84rem;color:var(--ink-soft)">Progres tersimpan otomatis di peramban perangkat ini.
-         Menghapus data situs akan menghapus progres.</p>
+      <p style="font-size:.84rem;color:var(--ink-soft)">Progress is saved automatically in this browser.
+         Clearing site data will erase it.</p>
     </div>
-    <button class="btn sm block" id="ht-x" style="margin-top:16px">Mengerti</button>`);
+    <button class="btn sm block" id="ht-x" style="margin-top:16px">Got it</button>`);
   $('#ht-x').onclick = closeModal;
 }
 
@@ -3103,32 +3314,33 @@ $('#btn-map-progress').addEventListener('click', () => { Router.go('progress'); 
 $('#btn-settings').addEventListener('click', openSettings);
 $('#btn-howto').addEventListener('click', openHowTo);
 $('#btn-calc-help').addEventListener('click', () => openModal(`
-  <h2 id="modal-title" style="font-size:1.3rem">🧮 Tentang Kalkulator</h2>
+  <h2 id="modal-title" style="font-size:1.3rem">🧮 About the Calculator</h2>
   <div class="divider"></div>
   <div style="font-size:.9rem;line-height:1.7">
-    <p>Kalkulator ini memakai ketentuan fikih zakat yang lazim dipakai di Indonesia:</p>
+    <p>This calculator follows mainstream zakat fiqh as applied in Indonesia:</p>
     <ul style="margin:10px 0 0 18px;padding:0">
-      <li>Nisab emas <b>85 gram</b>, perak <b>595 gram</b>, kadar <b>2,5%</b>.</li>
-      <li>Zakat penghasilan mengikuti <b>Fatwa MUI No. 3 Tahun 2003</b>.</li>
-      <li>Pertanian: nisab <b>653 kg</b> gabah, kadar <b>10%</b> (tanpa biaya) atau <b>5%</b> (berbiaya).</li>
-      <li>Fitrah <b>2,5 kg</b> makanan pokok per jiwa (1 sha‘).</li>
-      <li>Rikaz <b>20%</b> tanpa nisab dan haul.</li>
+      <li>Nisab of <b>85 g</b> gold or <b>595 g</b> silver, rate <b>2.5%</b>.</li>
+      <li>Zakat on income follows <b>MUI Fatwa No. 3 of 2003</b>.</li>
+      <li>Crops: nisab <b>653 kg</b>, rate <b>10%</b> (no watering cost) or <b>5%</b> (paid irrigation).</li>
+      <li>Zakat al-fitr: <b>2.5 kg</b> of staple food per person (one sa‘).</li>
+      <li>Rikaz: <b>20%</b>, with no nisab and no haul.</li>
     </ul>
-    <p style="margin-top:12px"><b>Penting:</b> harga emas, perak, dan beras berubah setiap hari. Perbarui angka acuan
-       pada bagian <i>Harga acuan</i> agar hasilnya sesuai. Untuk kasus yang rumit, tetap rujuk amil atau ustaz setempat.</p>
+    <p style="margin-top:12px"><b>Important:</b> gold, silver and food prices move every day. Update the figures under
+       <i>Reference prices</i> — and set the currency label to your own — so the result reflects where you live.
+       For complicated cases, consult a qualified amil or scholar.</p>
   </div>
-  <button class="btn sm block" id="ch-x" style="margin-top:16px">Mengerti</button>`)
+  <button class="btn sm block" id="ch-x" style="margin-top:16px">Got it</button>`)
   , null);
 document.addEventListener('click', e => { if (e.target && e.target.id === 'ch-x') closeModal(); });
 
 $('#btn-reset').addEventListener('click', () => {
   openModal(`
-    <h2 id="modal-title" style="font-size:1.3rem">🗑 Hapus seluruh progres?</h2>
+    <h2 id="modal-title" style="font-size:1.3rem">🗑 Erase all progress?</h2>
     <p style="color:var(--ink-soft);margin-top:8px;line-height:1.6;font-size:.92rem">
-      Bintang, poin, lencana, dan papan skor di perangkat ini akan hilang permanen. Tindakan ini tidak dapat dibatalkan.</p>
+      Stars, points, badges and the scoreboard on this device will be gone for good. This cannot be undone.</p>
     <div style="display:flex;gap:9px;margin-top:18px;justify-content:flex-end">
-      <button class="btn ghost sm" id="rs-x">Batal</button>
-      <button class="btn danger sm" id="rs-ok">Ya, hapus</button>
+      <button class="btn ghost sm" id="rs-x">Cancel</button>
+      <button class="btn danger sm" id="rs-ok">Yes, erase</button>
     </div>`);
   $('#rs-x').onclick = closeModal;
   $('#rs-ok').onclick = () => {
@@ -3136,7 +3348,7 @@ $('#btn-reset').addEventListener('click', () => {
     SAVE = defaultSave();
     SAVE.calcPrefs = prefs; SAVE.settings = settings;
     persist(true); closeModal(); renderProgress(); refreshHUD();
-    toast('Progres dihapus', 'bad');
+    toast('Progress erased', 'bad');
   };
 });
 
@@ -3148,14 +3360,21 @@ function boot() {
   applySettings();
   buildSky();
   $('#title-orn').innerHTML = ornament('rgba(251,230,200,.8)');
+  const qCount = CHAPTERS.reduce((n, c) => n + c.questions.length, 0);
+  $('#title-facts').innerHTML = [
+    ['📖', CHAPTERS.length, 'chapters'],
+    ['❓', qCount, 'questions'],
+    ['🎮', CHAPTERS.length, 'mini-games'],
+    ['🧮', 7, 'zakat calculators']
+  ].map(([em, n, label]) => `<span>${em} <b>${n}</b> ${label}</span>`).join('');
   refreshHUD();
 
   const done = doneCount();
   if (done > 0 || SAVE.totalScore > 0) {
-    $('#play-label').textContent = done >= CHAPTERS.length ? 'Main Lagi' : 'Lanjutkan Petualangan';
+    $('#play-label').textContent = done >= CHAPTERS.length ? 'Play Again' : 'Continue the Journey';
     const note = $('#saved-note');
     note.hidden = false;
-    note.innerHTML = `💾 Progres tersimpan · ${done}/${CHAPTERS.length} bab · ⭐ ${totalStars()} · ${SAVE.totalScore.toLocaleString('id-ID')} poin`;
+    note.innerHTML = `💾 Progress saved · ${done}/${CHAPTERS.length} chapters · ⭐ ${totalStars()} · ${SAVE.totalScore.toLocaleString('en-US')} pts`;
   }
   Router.go('title', { replace: true, force: true });
 }

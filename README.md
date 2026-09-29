@@ -1,187 +1,183 @@
-# 🌙 Zakat Quest — Petualangan Cahaya Berbagi
+# 🌙 Zakat Quest — The Path of Prosperity
 
-Game edukasi **zakat** berbasis web untuk pelajar **SMP & SMA**. Tujuh bab petualangan berisi
-cerita bergambar, kuis berbatas waktu, mini-game interaktif, dan **kalkulator zakat** yang
-benar-benar bisa dipakai menghitung zakat sungguhan.
+An HTML5 learning game about **zakat**, built for secondary school students (ages 13–18).
+Eight illustrated chapters carry the player from their own pocket to the wider world:
+story, timed quizzes, mini-games, and a **zakat calculator that actually works**.
 
-Dibuat untuk **Kompetisi Cendekia-EDU**.
+Built for **IZE-FEST 10th 2026 — International Zakat Education Festival**, MABAR competition,
+on the theme **“The Path of Prosperity”**, for the **Cendekia Edu** platform.
 
----
-
-## ✨ Isi Permainan
-
-### Tujuh bab perjalanan
-| Bab | Judul | Materi |
-|-----|-------|--------|
-| 1 | 🕌 Gerbang Ilmu | Makna zakat, dasar hukum, beda zakat–infak–sedekah |
-| 2 | 🪙 Pasar Barokah | Nisab, haul, zakat emas, perak, dan uang |
-| 3 | 🌾 Sawah Hijau | Zakat pertanian (5% & 10%), peternakan, rikaz |
-| 4 | 🏢 Kantor Amil | Zakat penghasilan/profesi dan perdagangan |
-| 5 | 🤲 Kampung Asnaf | Delapan golongan penerima zakat |
-| 6 | 🌙 Malam Takbir | Zakat fitrah: takaran dan waktu |
-| 7 | 🏅 Ujian Akbar | Ujian campuran — waktu ketat, tanpa petunjuk |
-
-Setiap bab terdiri atas **cerita → kuis → mini-game → hasil**.
-
-### Tiga jenis mini-game
-- **Sortir kartu** — seret (atau ketuk) kartu ke keranjang yang tepat. Mendukung *drag & drop*
-  di desktop dan *ketuk-lalu-pilih* di ponsel.
-- **Timbangan Nisab** — timbangan menukik mengikuti berat harta terhadap nisab; pemain memutuskan
-  wajib zakat atau belum.
-- **Hitung Cepat** — papan angka untuk menghitung zakat, bisa juga diketik dari papan ketik.
-
-### Kalkulator zakat (7 jenis)
-Penghasilan · Emas & Perak · Tabungan & Uang · Perdagangan · Pertanian · Fitrah · Rikaz.
-
-Harga acuan **emas, perak, dan beras dapat diubah pengguna** dan tersimpan otomatis — angka bawaan
-hanyalah contoh dan **harus diperbarui** agar hasilnya akurat.
-
-### Progres & motivasi
-Bintang per bab (maksimal 21), poin, tingkatan (Pemula → Ahli Zakat), **8 lencana**,
-papan skor lokal, dan statistik akurasi. Semua tersimpan di `localStorage`.
-
-### Gaya visual
-Desain **datar (flat) bernuansa Islami**: warna blok, sudut membulat, tanpa gradien
-maupun bayangan tebal. Palet dikunci pada tiga warna — teal, pasir, dan krem — dengan
-merah hanya untuk keadaan salah.
-
-Unsur Islaminya dibangun dari motif, bukan tempelan:
-- **Anyaman bintang delapan (girih)** pada latar, bergeser sangat lambat dan mulus.
-- **Bulan sabit & bintang** di sudut langit, serta **lentera (fanoos)** yang naik perlahan.
-- **Ornamen arabesque** sebagai pemisah pada layar judul, kartu hasil, dan rangkuman.
-- **Motif bintang delapan** samar di sudut setiap panel.
-- **Transisi antar layar berbentuk irisan bintang delapan.**
-- Nada efek suara memakai tangga nada **maqam Hijaz** agar terdengar bernuansa Timur Tengah.
-
-### Tingkat animasi
-Animasi bisa diatur pemain lewat **Pengaturan → Animasi**:
-
-| Tingkat | Isi |
-|---------|-----|
-| **Penuh** (bawaan) | Latar bergerak, transisi bintang, mesin ketik cerita, bintang penghargaan, ilustrasi beranimasi |
-| **Ringan** | Hanya gerak yang membantu membaca keadaan: unsur muncul bergiliran, penekanan jawaban, bilah waktu |
-| **Mati** | Diam sepenuhnya |
-
-Pilihan tersimpan otomatis, dan `prefers-reduced-motion` pada sistem tetap dihormati.
-
-### Aksesibilitas
-- Pintasan papan ketik: `A–D` / `1–4` memilih jawaban, `H` petunjuk, `Enter` lanjut, `Esc` tutup.
-- Sakelar **efek suara**, **teks besar**, **kontras tinggi**, dan tiga tingkat **animasi**.
-- Menghormati `prefers-reduced-motion` bawaan sistem.
-- Efek suara disintesis lewat Web Audio API — tidak ada berkas audio yang perlu diunduh.
+**▶ Play:** `https://kanwjpg.github.io/Game_Zakat_Competition_Cendekia-EDU/`
+*(live once GitHub Pages is enabled — see Deployment below)*
 
 ---
 
-## 🚀 Menjalankan
+## ✨ What is in the game
 
-Tidak ada proses *build*, tidak ada dependensi.
+### Eight chapters along one path
+| # | Chapter | Topic |
+|---|---------|-------|
+| 1 | 🕌 Gate of Knowledge | Meaning of zakat, its ruling, zakat vs sadaqah |
+| 2 | 🪙 Barokah Market | Nisab, haul, zakat on gold, silver and cash |
+| 3 | 🌾 Green Fields | Crops at 5% / 10%, livestock, rikaz |
+| 4 | 🏢 The Amil’s Office | Zakat on professional income and on trade |
+| 5 | 🤲 Asnaf Village | The eight categories of recipients |
+| 6 | 🌙 Night of Takbir | Zakat al-fitr: measure and timing |
+| 7 | 🌍 **World of Giving** | Zakat as a global instrument: the SDGs, refugees, cross-border giving |
+| 8 | 🏅 Final Test | Mixed trial — tighter clock, no hints |
+
+Every chapter runs **story → quiz → mini-game → results**.
+**52 questions** in total, each with an explanation and, where relevant, its scriptural source.
+
+### Three kinds of mini-game
+- **Card sorting** — drag and drop on desktop, tap-then-choose on phones.
+- **The Nisab Scale** — a balance that tips with the weight of the wealth against the nisab.
+- **Quick Calculation** — a number pad, also usable straight from the keyboard.
+
+### Zakat calculator (7 types)
+Income · Gold & Silver · Savings & Cash · Trade · Crops · Zakat al-Fitr · Rikaz.
+
+Gold, silver and staple-food prices are **editable and saved**, and so is the **currency label** —
+set it to `Rp`, `$`, `RM` or anything else, so the tool works outside Indonesia too.
+The shipped figures are examples and **must be updated** to today's prices.
+
+### Progress and motivation
+24 stars, points, six ranks (Beginner → Zakat Expert), **9 badges**, a local scoreboard,
+and accuracy statistics. All stored in `localStorage`.
+
+### Visual style
+Flat design with an Islamic vocabulary: a slowly drifting **eight-point star (girih) weave**,
+a crescent and lanterns, **arabesque dividers**, an eight-point star motif in panel corners,
+and screen transitions shaped like an eight-point star. The palette is held to three colours —
+teal, sand and cream — with red reserved for mistakes.
+
+### Sound
+Every sound is **synthesised with the Web Audio API** — the game ships with no audio files at all.
+Effects use the **maqam Hijaz** scale (D–E♭–F♯–G–A–B♭–C), and an optional ambient drone and slow
+melody play underneath. Both can be switched off.
+
+### Accessibility
+- Keyboard: `A–D` / `1–4` to answer, `H` for a hint, `Enter` to continue, `Esc` to close.
+- Toggles for **sound**, **ambient music**, **larger text**, **high contrast**.
+- Three **animation levels** — Full, Light, Off — and `prefers-reduced-motion` is respected.
+
+---
+
+## 🚀 Running it
+
+No build step, no dependencies, one file.
 
 ```bash
-# cara tercepat
-buka index.html di peramban
+# fastest
+open index.html in a browser
 ```
 
-Atau lewat server lokal (disarankan agar penyimpanan progres berperilaku persis seperti saat daring):
+Or through a local server, which mirrors how it behaves when hosted:
 
 ```bash
 python3 -m http.server 8000
-# lalu buka http://localhost:8000
+# then open http://localhost:8000
 ```
 
-### Publikasi ke GitHub Pages
-`Settings → Pages → Source: Deploy from a branch → main / (root)`.
-Karena seluruh permainan berada dalam satu berkas, tidak ada langkah tambahan.
+### Deployment — GitHub Pages
+1. Open **Settings → Pages** in this repository.
+2. Under *Source*, choose **Deploy from a branch**.
+3. Pick the branch holding this code and the folder **`/ (root)`**, then **Save**.
+4. After a minute the game is live at
+   `https://kanwjpg.github.io/Game_Zakat_Competition_Cendekia-EDU/`
 
-Permainan tetap berjalan **sepenuhnya luring**. Berkas font dimuat dari Google Fonts bila
-tersedia; jika tidak, permainan otomatis memakai font sistem tanpa ada yang rusak.
+A `.nojekyll` file is included so GitHub serves the files as they are.
+That URL is what you hand to Cendekia Edu, or embed in an `<iframe>`.
+
+The only network request the game makes is for Google Fonts. If that is blocked, the layout
+falls back to system fonts and everything still works.
 
 ---
 
-## 🧱 Struktur Kode
+## 🧱 Code structure
 
-Seluruh permainan berada di `index.html`, disusun berurutan agar mudah ditelusuri:
+Everything lives in `index.html`, laid out in reading order:
 
-| Bagian | Isi |
-|--------|-----|
-| `<style>` | Token desain datar, komponen, tata letak responsif |
-| 1–6 | Util, penyimpanan, audio (maqam Hijaz), sistem gerak, pembantu UI, *router* layar |
-| 7 | `sceneSVG()` — tujuh latar cerita SVG datar beranimasi, digambar lewat kode |
-| 8 | **`CHAPTERS`** — seluruh materi: cerita, soal, mini-game |
-| 9–13 | Progres, peta, keadaan permainan, mesin cerita, mesin kuis |
-| 14 | Mesin mini-game (`sort`, `scale`, `calc`) |
-| 15–16 | Layar hasil, kalkulator zakat |
-| 17–19 | Papan skor & lencana, pengaturan, *boot* |
+| Section | Contents |
+|---------|----------|
+| `<style>` | Flat design tokens, components, motion system, responsive layout |
+| 1–3b | Utilities, storage, sound effects, ambient music |
+| 4–6 | Motion helpers, UI helpers, the screen router |
+| 7 | `sceneSVG()` — eight flat animated story backdrops, drawn in code |
+| 8 | **`CHAPTERS`** — all content: story, questions, mini-games |
+| 9–13 | Progress, the map, game state, the story engine, the quiz engine |
+| 14 | Mini-game engines (`sort`, `scale`, `calc`) |
+| 15–16 | Results screen, zakat calculator |
+| 17–19 | Scoreboard and badges, settings, boot |
 
-### Menambah bab baru
-Cukup tambahkan satu objek ke larik `CHAPTERS` — peta, pembukaan kunci, bintang, dan papan skor
-menyesuaikan sendiri:
+### Adding a chapter
+Append one object to `CHAPTERS` — the map, unlocking, stars and scoreboard all adjust by themselves:
 
 ```js
 {
-  id: 8, title: 'Bab Baru', topic: 'Topik', emoji: '📗', scene: 'market',
-  blurb: 'Ringkasan singkat untuk kartu bab.',
-  story: [{ c: 'ustadz', t: 'Dialog pembuka…' }],
+  id: 9, title: 'New Chapter', topic: 'Topic', emoji: '📗', scene: 'market',
+  blurb: 'One line for the chapter card.',
+  story: [{ c: 'ustadz', t: 'Opening line…' }],
   questions: [{
-    q: 'Pertanyaan?',
+    q: 'Question?',
     opts: ['A', 'B', 'C', 'D'],
-    a: 0,                       // indeks jawaban benar (opsi diacak saat dimainkan)
-    hint: 'Petunjuk singkat.',
-    why: 'Penjelasan setelah dijawab.',
-    dalil: 'Rujukan (opsional).'
+    a: 0,                       // index of the correct option (options are shuffled at runtime)
+    hint: 'A short nudge.',
+    why: 'The explanation shown after answering.',
+    dalil: 'Source reference (optional).'
   }],
-  mini: { type: 'sort', /* atau 'scale' / 'calc' */ name: '…', desc: '…', /* … */ }
+  mini: { type: 'sort', /* or 'scale' / 'calc' */ name: '…', desc: '…', /* … */ }
 }
 ```
 
-Lalu tambahkan satu koordinat pada `NODE_POS` untuk titiknya di peta.
+Then add one coordinate to `NODE_POS` for its stop on the map.
 
----
-
-## 📚 Dasar Materi
-
-Ketentuan yang dipakai mengikuti fikih zakat arus utama di Indonesia:
-
-- Nisab emas **85 gram**, perak **595 gram**, kadar **2,5%**, haul 1 tahun hijriah.
-- Zakat penghasilan — **Fatwa MUI No. 3 Tahun 2003**; diperkuat UU No. 23 Tahun 2011.
-- Pertanian — nisab **5 wasaq ≈ 653 kg** gabah; **10%** tanpa biaya pengairan, **5%** bila berbiaya.
-- Ternak — unta 5 ekor, sapi 30 ekor, kambing 40 ekor.
-- Rikaz — **20%**, tanpa nisab dan haul.
-- Zakat fitrah — **1 sha‘ ≈ 2,5 kg** makanan pokok per jiwa.
-- Delapan asnaf — **QS At-Taubah 60**.
-
-> **Catatan.** Kalkulator ini alat bantu belajar. Harga emas, perak, dan beras berubah tiap hari —
-> perbarui angka acuannya sebelum dipakai. Untuk kasus yang rumit, rujuk amil atau ustaz setempat.
-
----
-
-## 🧭 Rencana Pengembangan
-
-Fondasi berikut sudah siap dipakai untuk pengembangan lanjutan:
-
-- **Mode guru** — satu berkas ekspor/impor progres kelas dari `localStorage`.
-- **Bank soal lebih besar** — `questions` sudah berupa data murni, tinggal ditambah.
-- **Mode turnamen** — papan skor sudah menyimpan nama, skor, bab, dan tanggal.
-- **Sertifikat cetak** — layar rangkuman sudah ada, tinggal ditambah `window.print()` bergaya.
-- **Ensiklopedia zakat** — istilah sudah tersebar di `why`/`dalil`, siap dikumpulkan jadi glosarium.
-
----
-
-## 🎨 Mengubah Warna
-
-Seluruh warna berada pada satu blok `:root` di bagian atas `<style>`. Mengganti tiga token
-berikut sudah cukup untuk mengubah keseluruhan tampilan:
+### Changing the colours
+All colours sit in one `:root` block at the top of `<style>`. Three tokens carry the whole look:
 
 ```css
---teal:#1e9184;   /* warna latar utama  */
---sand:#e8a75f;   /* aksen & tombol     */
---cream:#fff7ec;  /* bidang terang      */
+--teal:#1e9184;   /* background      */
+--sand:#e8a75f;   /* accents, buttons */
+--cream:#fff7ec;  /* light surfaces  */
 ```
 
-Ilustrasi latar cerita memakai palet yang sama lewat objek `PAL` di bagian 7.
+Story illustrations read the same palette through the `PAL` object in section 7.
 
 ---
 
-## 🖥 Dukungan Peramban
+## 📚 Sources for the rulings
 
-Chrome, Edge, Firefox, dan Safari versi mutakhir, di desktop maupun ponsel.
-Tata letak diuji pada lebar 390 px hingga 1440 px.
+The game follows mainstream zakat fiqh as applied in Indonesia:
+
+- Nisab of **85 g** gold, **595 g** silver, rate **2.5%**, one lunar year (haul).
+- Zakat on income — **MUI Fatwa No. 3 of 2003**, reinforced by Law No. 23 of 2011.
+- Crops — nisab **5 wasaq ≈ 653 kg**; **10%** without watering cost, **5%** with paid irrigation.
+- Livestock — camels 5, cattle 30, sheep and goats 40.
+- Rikaz — **20%**, with no nisab and no haul.
+- Zakat al-fitr — **one sa‘ ≈ 2.5 kg** of staple food per person.
+- The eight recipients — **Qur’an 9:60**.
+
+Chapter 7 covers zakat beyond one country: the permissibility of transferring zakat abroad,
+refugees and displaced families as fakir, miskin and ibn sabil, the mapping of zakat programmes
+onto the **Sustainable Development Goals**, and UNHCR's Refugee Zakat Fund. Figures for global
+zakat potential are presented as **estimates that vary widely**, because they genuinely do.
+
+> **Note.** This is a learning tool. Gold, silver and food prices change daily — update the
+> reference figures before relying on a result. For complicated cases, consult a qualified
+> amil or scholar.
+
+---
+
+## 🖥 Browser support
+
+Current Chrome, Edge, Firefox and Safari, on desktop and mobile.
+Layout tested from 390 px to 1440 px wide.
+
+---
+
+## 🤖 How it was built
+
+Written with **AI-assisted development** using Claude Code, as the competition intends.
+Each build was verified by driving a real Chromium browser with Playwright: completing
+chapters end to end, all three mini-game types, the out-of-lives path, every calculator tab,
+all three animation levels, and the mobile layout.
