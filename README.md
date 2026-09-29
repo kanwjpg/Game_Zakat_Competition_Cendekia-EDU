@@ -177,6 +177,24 @@ Layout tested from 390 px to 1440 px wide.
 
 ---
 
+## 🎯 Design audit
+
+The interface was put through a formal design audit (typography, colour and surfaces,
+layout, interactive states, code quality) and the findings fixed: display tracking and
+balanced text wrapping, tabular figures so changing numbers stop jittering, prose capped
+near 65 characters a line, a documented corner-radius rule, a named z-index scale, a custom
+motion curve in place of the browser default, `100dvh` for iOS Safari, a fine paper grain
+over the whole surface, and social preview cards.
+
+Deliberately **not** applied, because they fight the brief: marketing-page archetypes
+(scroll-pinned heroes, floating glass navbars, hamburger menus) — this is a fixed-viewport
+game with no page scroll; nested "double-bezel" card shells — they would fight the flat
+poster look the artwork is modelled on; and swapping the hand-drawn SVG illustrations for
+an icon library — those drawings are the original work being judged, and a library would
+break the single-file, zero-dependency build.
+
+---
+
 ## 🤖 How it was built
 
 Written with **AI-assisted development** using Claude Code, as the competition intends.

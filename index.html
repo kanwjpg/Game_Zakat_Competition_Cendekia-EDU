@@ -6,6 +6,21 @@
 <meta name="theme-color" content="#0e6b46" />
 <meta name="description" content="Zakat Quest: The Path of Prosperity — an HTML5 learning game on zakat for secondary students. Eight illustrated chapters, quizzes, mini-games, and a working zakat calculator." />
 <title>Zakat Quest — The Path of Prosperity</title>
+<!-- Kartu pratinjau saat tautan dibagikan ke juri atau di media sosial -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Zakat Quest" />
+<meta property="og:title" content="Zakat Quest — The Path of Prosperity" />
+<meta property="og:description" content="An HTML5 learning game on zakat for secondary students. Eight illustrated chapters, 52 questions, mini-games, and a working zakat calculator." />
+<meta property="og:url" content="https://kanwjpg.github.io/Game_Zakat_Competition_Cendekia-EDU/" />
+<meta property="og:image" content="https://kanwjpg.github.io/Game_Zakat_Competition_Cendekia-EDU/og-cover.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Zakat Quest title screen: a crescent emblem on deep green with a gold calendar grid." />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Zakat Quest — The Path of Prosperity" />
+<meta name="twitter:description" content="An HTML5 learning game on zakat for secondary students. Eight illustrated chapters, 52 questions, mini-games, and a working zakat calculator." />
+<meta name="twitter:image" content="https://kanwjpg.github.io/Game_Zakat_Competition_Cendekia-EDU/og-cover.jpg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -46,19 +61,28 @@
   --paper:0 10px 28px -12px rgba(3,30,20,.45), 0 2px 6px rgba(3,30,20,.10);
   --paper-lg:0 22px 48px -18px rgba(3,30,20,.55), 0 3px 10px rgba(3,30,20,.12);
 
+  /* Aturan sudut, dipatuhi di seluruh berkas:
+     kontrol (tombol, pil, simpul)  → --r-pill
+     kartu & panel                  → --r-lg
+     unsur di dalam kartu           → --r        */
   --r:18px;
   --r-lg:26px;
   --r-pill:999px;
 
   --font-display:'Baloo 2','Trebuchet MS',system-ui,sans-serif;
   --font-body:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
-  --t:.16s ease;
+  /* Kurva gerak: sedikit melenting, bukan `ease` bawaan peramban. */
+  --t:.18s cubic-bezier(.34,1.12,.46,1);
+  --t-slow:.42s cubic-bezier(.22,1,.36,1);
+
+  /* Skala z-index. Tidak ada angka lepas di luar daftar ini. */
+  --z-sky:0; --z-grain:3; --z-app:2; --z-fx:60; --z-modal:70; --z-toast:80; --z-wipe:90;
 
   --stage-w:min(1080px,100vw);
 }
 
 *,*::before,*::after{box-sizing:border-box;}
-html,body{height:100%;}
+html,body{height:100%;height:100dvh;}
 body{
   margin:0;
   font-family:var(--font-body);
@@ -70,14 +94,25 @@ body{
   touch-action:manipulation;
 }
 button{font:inherit;color:inherit;}
-h1,h2,h3,h4{font-family:var(--font-display);margin:0;line-height:1.15;}
+h1,h2,h3,h4{font-family:var(--font-display);margin:0;line-height:1.15;
+  letter-spacing:-.012em;text-wrap:balance;}
+p{text-wrap:pretty;}
 p{margin:0;}
 :focus-visible{outline:3px solid var(--yellow);outline-offset:2px;border-radius:6px;}
 [hidden]{display:none !important;}
+/* Angka yang berubah terus — waktu, skor, nominal — memakai lebar digit tetap
+   agar tidak bergoyang setiap kali nilainya berganti. */
+.hud-stat,.timerbar,.score-big,.stat-grid b,.numdisplay,.breakdown,.calc-result .amt,
+.lb-row .pts,.lb-row .rank,.case-card .amount,.node .label,.title-facts b,.combo{
+  font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;}
 
 /* ---------- Latar: warna solid + bercak putih diam ---------- */
-#sky{position:fixed;inset:0;z-index:0;overflow:hidden;
+/* Butiran halus di atas segalanya, meniru tekstur cetak pada poster acuan.
+   Dipasang tetap dan tak bisa diklik agar tidak memicu pengecatan ulang. */
+#grain{position:fixed;inset:0;z-index:var(--z-grain);pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");}
+#sky{position:fixed;inset:0;z-index:var(--z-sky);overflow:hidden;
   background:radial-gradient(125% 95% at 50% 28%, #178a5c 0%, #0d6042 46%, #063b28 100%);}
 #sky-pattern{position:absolute;inset:0;width:100%;height:100%;}
 #sky-moon{position:absolute;inset:auto;right:3%;top:2%;
@@ -91,7 +126,7 @@ body.anim-full .hang{animation:hangSway var(--sway,6s) ease-in-out infinite;}
 .skystar{position:absolute;background:#fff;border-radius:50%;opacity:.5;}
 
 /* ---------- Panggung & layar ---------- */
-#app{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;align-items:center;}
+#app{position:relative;z-index:var(--z-app);height:100%;display:flex;flex-direction:column;align-items:center;}
 .stage{position:relative;width:var(--stage-w);height:100%;margin:0 auto;}
 .screen{
   position:absolute;inset:0;display:flex;flex-direction:column;
@@ -168,10 +203,12 @@ body.anim-full .hang{animation:hangSway var(--sway,6s) ease-in-out infinite;}
 .logo-badge{width:clamp(118px,21vw,158px);aspect-ratio:1;display:grid;place-items:center;margin-bottom:14px;}
 .logo-badge .core{width:56%;aspect-ratio:1;background:var(--white);border-radius:50%;
   display:grid;place-items:center;padding:12%;}
-.game-title{font-size:clamp(2.4rem,8vw,4rem);font-weight:800;line-height:1;color:var(--white);}
+.game-title{font-size:clamp(2.4rem,8vw,4rem);font-weight:800;line-height:.98;
+  letter-spacing:-.022em;color:var(--white);text-wrap:balance;}
 .game-sub{color:var(--sand-pale);font-weight:700;letter-spacing:.2em;text-transform:uppercase;
   font-size:clamp(.62rem,2vw,.78rem);margin-top:6px;}
-.title-tag{color:rgba(255,255,255,.82);font-size:.94rem;max-width:42ch;margin-top:12px;line-height:1.6;}
+.title-tag{color:rgba(255,255,255,.82);font-size:.94rem;max-width:46ch;margin-top:12px;
+  line-height:1.6;text-wrap:balance;}
 .title-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:24px;}
 .title-foot{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;}
 .saved-note{margin-top:16px;color:var(--sand-pale);font-size:.84rem;font-weight:600;}
@@ -226,7 +263,8 @@ body.anim-full .hang{animation:hangSway var(--sway,6s) ease-in-out infinite;}
 .story-who{display:flex;align-items:center;gap:9px;margin-bottom:7px;}
 .story-who .avatar{width:36px;height:36px;border-radius:50%;background:var(--sand-pale);display:grid;place-items:center;flex:none;}
 .story-who b{font-family:var(--font-display);color:var(--teal-dark);font-size:1rem;}
-.story-text{color:var(--ink);line-height:1.65;font-size:clamp(.94rem,2.3vw,1.04rem);min-height:4.6em;}
+.story-text{color:var(--ink);line-height:1.65;font-size:clamp(.94rem,2.3vw,1.04rem);
+  min-height:4.6em;max-width:68ch;}
 .caret{display:none;}
 .story-nav{display:flex;align-items:center;gap:9px;margin-top:12px;}
 .dots{display:flex;gap:5px;}
@@ -257,7 +295,9 @@ body.anim-full .hang{animation:hangSway var(--sway,6s) ease-in-out infinite;}
 .opt.dim{opacity:.45;}
 .opt:disabled{cursor:default;}
 
-.feedback{margin-top:14px;padding:14px 16px;border-radius:var(--r);font-size:.93rem;line-height:1.6;}
+.feedback{margin-top:14px;padding:14px 16px;border-radius:var(--r);font-size:.93rem;
+  line-height:1.6;}
+.feedback > *,.feedback{max-width:78ch;}
 .feedback.good{background:var(--teal-pale);color:var(--teal-darker);}
 .feedback.bad{background:#fdeceb;color:#8f2a25;}
 .feedback b{font-family:var(--font-display);display:block;margin-bottom:3px;font-size:1.02rem;}
@@ -269,7 +309,7 @@ body.anim-full .hang{animation:hangSway var(--sway,6s) ease-in-out infinite;}
 /* ---------- Mini game ---------- */
 .mg-head{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
 .mg-title{font-family:var(--font-display);font-weight:700;font-size:clamp(1.06rem,2.8vw,1.3rem);}
-.mg-desc{font-size:.89rem;color:var(--ink-soft);line-height:1.55;}
+.mg-desc{font-size:.89rem;color:var(--ink-soft);line-height:1.55;max-width:70ch;}
 
 .tray{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;min-height:70px;padding:11px;
   border-radius:var(--r);background:var(--cream);border:2px dashed var(--line);}
@@ -376,12 +416,12 @@ body.anim-full .hang{animation:hangSway var(--sway,6s) ease-in-out infinite;}
 .badge span{font-size:.67rem;color:var(--ink-soft);line-height:1.35;display:block;margin-top:2px;}
 
 /* ---------- Modal & toast ---------- */
-#modal{position:fixed;inset:0;z-index:70;display:none;place-items:center;padding:18px;background:rgba(9,48,43,.62);}
+#modal{position:fixed;inset:0;z-index:var(--z-modal);display:none;place-items:center;padding:18px;background:rgba(9,48,43,.62);}
 #modal.on{display:grid;}
 .modal-card{max-width:500px;width:100%;max-height:86vh;overflow-y:auto;padding:clamp(18px,4vw,26px);
   box-shadow:var(--paper-lg);}
 
-#toasts{position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:80;display:flex;flex-direction:column;
+#toasts{position:fixed;left:50%;top:14px;transform:translateX(-50%);z-index:var(--z-toast);display:flex;flex-direction:column;
   gap:8px;align-items:center;pointer-events:none;width:min(92vw,420px);}
 .toast{padding:10px 18px;border-radius:var(--r-pill);font-weight:700;font-size:.88rem;
   background:var(--teal-dark);color:var(--cream);display:flex;align-items:center;gap:8px;}
@@ -462,7 +502,7 @@ body.anim-full .lantern{animation:riseUp var(--rise,30s) linear infinite;}
 /* ---------- Transisi layar: irisan bintang delapan ---------- */
 #wipe{
   position:fixed;left:50%;top:50%;width:150vmax;height:150vmax;margin:-75vmax 0 0 -75vmax;
-  z-index:90;pointer-events:none;background:var(--teal-dark);transform:scale(0);
+  z-index:var(--z-wipe);pointer-events:none;background:var(--teal-dark);transform:scale(0);
   clip-path:polygon(50% 0%,61% 30%,93% 25%,74% 50%,93% 75%,61% 70%,50% 100%,
                     39% 70%,7% 75%,26% 50%,7% 25%,39% 30%);
 }
@@ -471,9 +511,9 @@ body.anim-full .lantern{animation:riseUp var(--rise,30s) linear infinite;}
 body.anim-off #wipe,body.anim-lite #wipe{display:none;}
 
 /* ---------- Bintang penghargaan yang memancar ---------- */
-.burst{position:fixed;z-index:60;pointer-events:none;font-size:1rem;line-height:1;opacity:0;
+.burst{position:fixed;z-index:var(--z-fx);pointer-events:none;font-size:1rem;line-height:1;opacity:0;
   animation:flyOut 1s cubic-bezier(.25,.9,.4,1) forwards;}
-.floatscore{position:fixed;pointer-events:none;z-index:61;font-family:var(--font-display);
+.floatscore{position:fixed;pointer-events:none;z-index:calc(var(--z-fx) + 1);font-family:var(--font-display);
   font-weight:800;font-size:1.5rem;color:var(--sand-dark);opacity:0;
   text-shadow:0 0 7px rgba(255,255,255,.95), 0 2px 5px rgba(255,255,255,.9);
   animation:floatScore 1.05s cubic-bezier(.25,.9,.4,1) forwards;}
@@ -587,6 +627,7 @@ body.high-contrast .panel{border:2px solid var(--teal-dark);}
 </div>
 
 <!-- ===================== APP ===================== -->
+<div id="grain" aria-hidden="true"></div>
 <div id="app">
 <div class="stage">
 
