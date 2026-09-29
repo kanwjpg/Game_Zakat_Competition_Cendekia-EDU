@@ -46,10 +46,12 @@ The shipped figures are examples and **must be updated** to today's prices.
 and accuracy statistics. All stored in `localStorage`.
 
 ### Visual style
-Flat design with an Islamic vocabulary: a slowly drifting **eight-point star (girih) weave**,
-a crescent and lanterns, **arabesque dividers**, an eight-point star motif in panel corners,
-and screen transitions shaped like an eight-point star. The palette is held to three colours —
-teal, sand and cream — with red reserved for mistakes.
+Modelled on Indonesian Ramadan poster design: **deep pesantren green and gold**, a thin
+**gold calendar grid**, oversized chapter numerals sitting in the grid cells like dates,
+**gold lanterns hanging on chains** with a soft glow, a crescent and stars, and white cards
+that read like pinned paper. Islamic detail carries through in **arabesque dividers**, an
+eight-point star (girih) motif, and screen transitions shaped like an eight-point star.
+The palette holds to green, gold and cream, with red reserved for mistakes.
 
 ### Sound
 Every sound is **synthesised with the Web Audio API** — the game ships with no audio files at all.
