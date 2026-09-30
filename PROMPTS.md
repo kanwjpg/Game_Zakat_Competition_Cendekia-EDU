@@ -163,6 +163,13 @@ original work being judged.
 5. **Errors were found and reported, not hidden.** Ten defects across six rounds were
    caught by browser testing and named in the commit messages.
 
+## Rebuilding it by prompt
+
+[`MASTER-PROMPT.md`](MASTER-PROMPT.md) holds a single, paste-ready prompt that regenerates
+the whole game from an empty file. It is there for an environment where pasting code is
+blocked but pasting a prompt is not. The result will be faithful to the specification
+without being byte-identical — which is the point: it is prompted, not copied.
+
 ## Reproducing the evidence
 
 ```bash
