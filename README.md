@@ -197,7 +197,13 @@ break the single-file, zero-dependency build.
 
 ## 🤖 How it was built
 
-Written with **AI-assisted development** using Claude Code, as the competition intends.
+Written with **AI-assisted development** using Claude Code, as the competition intends,
+and under **Competition Integrity Mode**: no code was copied or pasted in from a template,
+tutorial, generator or other project. The repository started empty and the whole game was
+produced from prompt instruction.
+
+**[`PROMPTS.md`](PROMPTS.md) is the full build log** — six prompt rounds, six commits, each
+one traceable with `git log --reverse --stat`.
 Each build was verified by driving a real Chromium browser with Playwright: completing
 chapters end to end, all three mini-game types, the out-of-lives path, every calculator tab,
 all three animation levels, and the mobile layout.
