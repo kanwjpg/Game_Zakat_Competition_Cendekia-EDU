@@ -1,0 +1,270 @@
+================================================================================
+ZAKAT QUEST — BUILD IN 5 PROMPTS
+Budget: 9 prompts. Five to build, four kept in reserve.
+Paste ONE block at a time. Check the result before sending the next.
+================================================================================
+
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  PROMPT 1 of 5 — SHELL AND LOOK                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Build the shell of an HTML5 educational game about zakat for students aged 13-18, in
+English. ONE `index.html`, all HTML/CSS/JS inline. No build step, no frameworks, no
+libraries, no image or audio files. Must run by opening the file, offline.
+
+Title: **Zakat Quest — The Path of Prosperity**
+
+This prompt builds everything EXCEPT chapter content, the quiz, and the calculator. Leave
+`const CHAPTERS = []` as an empty array with a comment saying content arrives later. The
+file must already open and look finished.
+
+**Constraints.** Plain JS, no modules. Only outbound request: Google Fonts (Baloo 2 + Plus
+Jakarta Sans) with system fallback. All art is inline SVG you write. All sound synthesised
+with Web Audio. Progress in localStorage, every access in try/catch. Fixed viewport, no page
+scroll — panels scroll internally. `100dvh` not `100vh`. Works 390px to 1440px.
+
+**Palette** (CSS custom properties on `:root`, used everywhere):
+```
+--green #0e6b46  --green-dark #0a5238  --green-deep #063b28  --green-pale #dcefe4
+--gold  #d4a94e  --gold-dark  #9a7726  --gold-pale  #f6e7bc
+--cream #fdf8ee  --ink #10352a  --red #d9534f (wrong answers only)
+```
+
+**Look** — deep Islamic green and gold, styled like an Indonesian Ramadan calendar poster.
+Flat fills, no component gradients, soft green-tinted shadows on cards only.
+- Background: radial green gradient + thin gold calendar grid + oversized numerals 1-8
+  sitting in the cells at ~10% opacity, like dates on a poster.
+- Three gold lanterns hanging on chains from the top, swaying, different chain lengths.
+  A crescent and star in one corner. Faint eight-point star (girih) tiling.
+- Fixed `pointer-events:none` paper-grain overlay (inline SVG feTurbulence, ~5% opacity).
+- White cards with soft shadow, reading as pinned paper. Arabesque divider ornaments.
+- Radius: pill for controls, 26px for cards, 18px inside cards.
+- Display type `letter-spacing:-.02em` + `text-wrap:balance`. Prose max ~65ch.
+  Every changing number gets `font-variant-numeric: tabular-nums`.
+
+**Build these screens.**
+- A screen router. Transitions use an eight-point-star iris wipe (full-screen element with a
+  star `clip-path`, scaling up then down). Custom cubic-bezier easing, never browser default.
+- **Title:** emblem with a slowly rotating girih ring, subtitle, arabesque divider, fact
+  chips reading "8 chapters · 52 questions · 8 mini-games · 7 zakat calculators", one-line
+  blurb, and buttons: Start, Calculator, Progress, How to Play, Settings.
+- **Map:** green calendar panel with gold grid and chapter numerals in the cells, date palm
+  fronds in the corners, heading THE PATH OF PROSPERITY. Eight markers on a zig-zag gold
+  path — solid behind the player, dotted ahead. Cream circles with gold borders, padlock
+  when locked, red ring on the current one, stars under each label. Chapter 1 always open,
+  each unlocks when the previous is done. Read titles from CHAPTERS; with it empty, render
+  eight placeholder markers so the screen can be seen.
+- **Settings:** sound on/off, ambient music on/off, animation Full / Light / Off, larger
+  text, high contrast — all saved to localStorage. Respect `prefers-reduced-motion`.
+- **How to Play** and empty **Calculator** and **Progress** screens, reachable and styled.
+
+**Sound engine.** Oscillators only, tuned to maqam Hijaz (D E♭ F♯ G A B♭ C): click, a rising
+three-note figure for correct, falling for wrong, a flourish for finishing. Plus a quiet
+ambient drone and slow melody from the same scale, low-pass filtered, started on the first
+tap because browsers block audio before a gesture, with its own switch.
+
+**Traps:** add `[hidden]{display:none !important}` — a CSS `display` rule silently defeats
+the attribute. Never white text on a white surface, including ghost buttons on white bars.
+Nothing clipped at 390px. No console errors.
+
+Write the complete file. No placeholders, no `// ...`.
+
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  PROMPT 2 of 5 — GAME ENGINES AND CHAPTERS 1-2                               ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Keep everything already built. Add the playable loop and the first two chapters.
+
+**Chapter flow:** Story → Quiz → Mini-game → Results → back to Map.
+
+**Story screen.** Full-bleed SVG backdrop, dialogue box over it, text typing out character by
+character, a tap completes it instantly. One dot per line, a Skip button, named speakers with
+an emoji avatar.
+
+**Quiz screen.** Four options A-D, shuffled each time. Three hearts, a countdown timer bar, a
+live score. A Hint button costs 30 points and removes one wrong option. After every answer an
+explanation panel opens, with a scriptural source where one applies.
+Score = 100 base + up to 60 for speed + 15 per consecutive correct answer, capped at 75.
+Losing all three hearts ends the chapter.
+Keyboard: A-D or 1-4 answer, H hint, Enter continue, Esc close.
+**Disable the Next button for ~300ms after answering**, or the same Enter press that submits
+an answer also skips the explanation.
+
+**Three mini-game engines, each driven by data:**
+- **Sort** — cards into labelled baskets. Drag-and-drop *and* tap-card-then-tap-basket,
+  because drag does not work on phones. 60 points per correct card.
+- **Scale** — a balance beam where **the heavier side drops**; the player judges "Zakat is
+  due" or "Not yet due" and gets an explanation. 80 points.
+- **Calc** — a number pad, also usable from the keyboard. 90 points.
+
+**Results screen.** Three stars (3 flawless, 2 for one miss, 1 otherwise), the score counting
+up, an arabesque divider, and a stat grid: correct, wrong, accuracy, best streak, time,
+mini-game bonus. Buttons for next chapter, replay, map. Save stars and best score per chapter.
+
+**Now write chapters 1 and 2 in full** — story dialogue, 6 questions each with four options,
+a hint, an explanation and a source where relevant, one mini-game, and a distinct flat
+animated SVG backdrop. These facts must be exact:
+
+**1. Gate of Knowledge** — zakat means grow/purify/bless; it is the **3rd pillar** of Islam;
+zakat is obligatory while infaq and sadaqah are voluntary; muzakki gives, mustahik receives;
+it is fard 'ayn. Sources: Qur'an 2:43, Qur'an 9:103.
+Mini-game: sort cards into Obligatory versus Voluntary.
+
+**2. Barokah Market** — nisab is **85g of gold** or **595g of silver**; the rate is **2.5%**;
+**haul is one lunar year** of full ownership; cash and savings follow the gold nisab.
+Conditions: full ownership, growth potential, reaching nisab, above basic needs, free of debt
+falling due, haul complete.
+Mini-game: the nisab scale with five cases, including one below nisab and one where the haul
+is not yet complete.
+
+Output the complete updated file.
+
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  PROMPT 3 of 5 — CHAPTERS 3, 4 AND 5                                         ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Keep everything already built. Add three more chapters to CHAPTERS, in the same shape as 1
+and 2: story dialogue, 6 questions each with four options, hint, explanation, source where
+relevant, one mini-game, and its own flat animated SVG backdrop. These figures must be exact.
+
+**3. Green Fields** — crops, livestock, rikaz.
+Crop nisab **5 wasaq ≈ 653kg** of dried grain. **10%** where watering costs nothing (rain,
+spring), **5%** where irrigation is paid for. Due **at every harvest, no haul**.
+Livestock nisab: camels 5, cattle 30, sheep and goats 40.
+**Rikaz** (buried or mined wealth) is **20%**, immediately, with no nisab and no haul.
+Source: Qur'an 6:141. Mini-game: calculation.
+
+**4. The Amil's Office** — income and trade.
+Income zakat rests on **MUI Fatwa No. 3 of 2003**, nisab **85g of gold per year**, rate
+**2.5%**, payable monthly as an advance on the annual duty.
+Trade: **(working capital + profit + collectible receivables) − (debt falling due + losses),
+× 2.5%**, inventory valued at selling price when the haul completes.
+Mini-game: calculation.
+
+**5. Asnaf Village** — the **eight recipients, Qur'an 9:60**: fakir (no wealth or income),
+miskin (income that does not suffice), amil (administrators), muallaf (new Muslims, hearts
+reconciled), riqab (freeing from bondage), gharim (crushed by lawful debt), fi sabilillah
+(in the path of Allah), ibn sabil (stranded traveller).
+Not entitled: the wealthy, the able-bodied who can earn, and the parents, children and spouse
+the giver already supports.
+Mini-game: sort villagers into Fakir/Miskin, Gharim, Ibn Sabil, and Not Entitled.
+
+Output the complete updated file.
+
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  PROMPT 4 of 5 — CHAPTERS 6, 7 AND 8                                         ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Keep everything already built. Add the last three chapters, same shape as before.
+
+**6. Night of Takbir** — zakat al-fitr.
+**One sa' ≈ 2.5kg or 3.5 litres** of the local staple food **per person**. Due from every
+Muslim soul, including a baby born before sunset on the last day of Ramadan. Permitted from
+early Ramadan, obligatory at sunset on the final day, **best before the Eid prayer**; paid
+after that prayer it counts as ordinary sadaqah. It purifies the fast from idle talk and
+feeds the poor on the day of Eid.
+Mini-game: sort payment moments into Best, Permitted, and Too Late.
+
+**7. World of Giving** — zakat as a global instrument. This chapter carries the competition
+theme, so give it weight. Teach:
+- **naql al-zakat** — sending zakat abroad is generally permitted; local need normally comes
+  first, but many scholars prefer sending it where need is far more severe.
+- Refugees and displaced families qualify as **fakir, miskin and ibn sabil**, because the
+  categories are defined by **circumstance, not nationality**.
+- Zakat is **obligatory and annual**, so its flow is predictable enough to fund multi-year
+  programmes — unlike emergency appeals, which rise and fade with attention.
+- It maps onto the **Sustainable Development Goals**: 1 no poverty, 2 zero hunger, 3 health,
+  4 education, 6 clean water, 8 decent work.
+- **UNHCR's Refugee Zakat Fund**, launched 2019.
+- On the size of global zakat: say **hundreds of billions of US dollars a year, with
+  estimates varying widely**. Never state one figure as fact — the methods genuinely differ.
+
+Backdrop: a flat globe with dotted flight arcs between points, and four labelled aid icons
+around it — CLEAN WATER, EDUCATION, HEALTH CARE, FOOD RELIEF.
+Mini-game: sort real zakat programmes under the goals they serve.
+
+**8. Final Test** — ten mixed questions drawing on every chapter, including arithmetic and
+two on chapter 7. Shorter clock, **no hints**. Mini-game: four closing calculations.
+
+Output the complete updated file.
+
+
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  PROMPT 5 of 5 — CALCULATOR, 3D COIN, PROGRESS, FINAL CHECK                  ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+Keep everything already built. Add the last three pieces, then run the checklist.
+
+**Zakat calculator — seven tabs.** Results update live as the user types, showing the amount,
+a verdict of due or not due, a line-by-line breakdown, and a note explaining the outcome.
+- **Income** — monthly main and other income, Gross or Net method; Net deducts basic needs
+  and that field is disabled under Gross. Compare against the monthly nisab, 85g gold ÷ 12.
+- **Gold & Silver** — grams of each, checked against 85g and 595g separately.
+- **Savings & Cash** — savings, cash, investments, receivables, minus debt falling due.
+- **Trade** — the chapter 4 formula.
+- **Crops** — yield in kg, watering method choosing 10% or 5%, optional price per kg.
+- **Zakat al-Fitr** — people × 2.5kg, payable in food or its cash value.
+- **Rikaz** — value × 20%.
+
+A collapsible "Reference prices" panel holds an editable **currency label** (Rp, $, RM…) plus
+gold, silver and staple-food prices, all saved. State plainly that the shipped figures are
+examples and must be updated to today's local prices.
+
+**Numbers — get this right.** English convention: comma for thousands, dot for decimals. Add
+separators **while the user types**, but only when the caret is at the end of the field, so
+editing mid-string is not disrupted. Write the parser and the formatter as an exact pair, so
+anything formatted reads back to the same value. Do not guess whether a dot is a separator.
+
+**3D gold coin** — CSS transforms only, no library, no model files. A spinning coin bursts
+from the chosen option on every correct answer, replacing any flat star.
+Two circular faces at `translateZ(±t/2)`, plus a rim of about 12 short segments, each placed
+at **`rotateZ(i*30deg) translateY(-r) rotateX(90deg)`**, each only as tall as the coin is
+thick. Using `rotateY + translateZ` instead builds a standing drum, not a coin — that is the
+trap. Shade each segment by the angle it faces: `brightness(0.70 + 0.45*cos(angle))`. Spin as
+`rotateX(-18deg) rotateY(360deg)` so the thickness stays visible. The outer element flies and
+carries `perspective`; the inner element spins. Animate transform and opacity only.
+It obeys the animation setting: Full spins it, Light and Off do not spawn it.
+
+**Progress screen.** 24 stars (3 per chapter), points, six ranks from Beginner to Zakat
+Expert, nine badges (first chapter, a flawless chapter, five correct in a row, using the
+calculator, four chapters done, finishing the global chapter, all 24 stars, beating the final
+test, finishing a chapter without hints), a local top-10 scoreboard, and accuracy statistics.
+Ask the player's name on first Start, not on load.
+
+**Final check — verify each before you answer.**
+- Every screen reachable, every button wired, no dead controls.
+- `[hidden]{display:none !important}` is present.
+- No white text on a white surface, ghost buttons included.
+- Typing `18000000` into a currency field shows `18,000,000`, not something mangled.
+- Pressing Enter to answer does not also skip the explanation.
+- The balance beam drops on the heavier side.
+- Nothing clipped at 390px. No console errors.
+
+Output the complete updated file.
+
+
+================================================================================
+YOUR FOUR SPARE PROMPTS — use only if needed
+================================================================================
+
+If the answer stops partway through a long file, do NOT start over. Send:
+
+    Continue from where you stopped. Output only the remaining part of the file,
+    no repetition, no summary.
+
+Repeat until the closing </html> appears. That costs one prompt each time.
+
+If a step produced only a skeleton:
+
+    Now write all the chapters and their questions out in full. No placeholders.
+
+If something is broken, name it exactly — one prompt, one clear fault:
+
+    The [thing] does not work: [what happens]. Fix only that and output the full file.
+
+Spend them in this order of value: finishing truncated output first, then anything
+unplayable, then anything that merely looks wrong.

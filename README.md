@@ -213,10 +213,11 @@ one traceable with `git log --reverse --stat`.
 Two prompts rebuild this entire game from an empty file. Both are prompt text and nothing
 else, so select-all and paste is safe.
 
-| File | Size | Use it when |
-|------|------|-------------|
-| [`PROMPT-SHORT.txt`](PROMPT-SHORT.txt) | 116 lines | The usual choice — every fact and trap, none of the prose |
-| [`PROMPT-PASTE.txt`](PROMPT-PASTE.txt) | 350 lines | The assistant needs more hand-holding, or you want the full reasoning |
+| File | Shape | Use it when |
+|------|-------|-------------|
+| [`PROMPT-5-STEPS.txt`](PROMPT-5-STEPS.txt) | 5 prompts | There is a cap on how many prompts you get, or one long answer keeps truncating |
+| [`PROMPT-SHORT.txt`](PROMPT-SHORT.txt) | 1 prompt, 116 lines | One shot — every fact and trap, none of the prose |
+| [`PROMPT-PASTE.txt`](PROMPT-PASTE.txt) | 1 prompt, 350 lines | The assistant needs more hand-holding |
 
 [`MASTER-PROMPT.md`](MASTER-PROMPT.md) is the long one with usage notes attached.
 Each build was verified by driving a real Chromium browser with Playwright: completing
