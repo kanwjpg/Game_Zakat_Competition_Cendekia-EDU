@@ -166,7 +166,11 @@ original work being judged.
 ## Rebuilding it by prompt
 
 [`MASTER-PROMPT.md`](MASTER-PROMPT.md) holds a single, paste-ready prompt that regenerates
-the whole game from an empty file. It is there for an environment where pasting code is
+the whole game from an empty file. It also specifies a set of **3D objects built from CSS
+transforms** — a coin, a lantern, the Kaaba, a globe — with no 3D library and no model
+files, so the single-file and offline guarantees survive. Those transforms were built and
+rendered in a browser before being written down; two of the first four were wrong and were
+corrected against what the screen actually showed. It is there for an environment where pasting code is
 blocked but pasting a prompt is not. The result will be faithful to the specification
 without being byte-identical — which is the point: it is prompted, not copied.
 

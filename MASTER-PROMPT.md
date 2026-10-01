@@ -14,8 +14,8 @@ that environment and it will generate the game from scratch.
    part of the file, no repetition, no summary."** Repeat until the closing `</html>` appears.
 
 Recommended order if the assistant struggles with one shot: paste the whole thing, and if it
-produces only a skeleton, follow with *"Now write Section 5 (all eight chapters) in full"*,
-then *"Now write Section 6 (the calculator) in full"*.
+produces only a skeleton, follow with *"Now write Section 6 (all eight chapters) in full"*,
+then *"Now write Section 7 (the calculator) in full"*.
 
 ---
 ## ⬇ PASTE EVERYTHING BELOW THIS LINE ⬇
@@ -38,6 +38,8 @@ The game is called **Zakat Quest**, subtitle **The Path of Prosperity**.
   link to stock images, do not use placeholder image services. Emoji are acceptable for
   small labels only.
 - All sound is **synthesised with the Web Audio API**. No audio files.
+- The 3D objects in Section 3 are built with **CSS 3D transforms only** — no Three.js, no
+  Babylon.js, no WebGL library, and no `.glb`, `.gltf` or `.obj` model files.
 - Progress saves to `localStorage`. Every read and write is wrapped in try/catch and the
   game must still run when storage is unavailable.
 - Layout works from 390 px to 1440 px wide. Fixed viewport, no page scrolling — individual
@@ -90,7 +92,83 @@ Typography: display type gets tight negative letter-spacing (about `-0.02em`) an
 changes on screen — clock, score, statistics, currency — uses
 `font-variant-numeric: tabular-nums` so digits stop jittering.
 
-## 3. Screens and flow
+## 3. Three-dimensional objects
+
+Build these with **CSS 3D transforms** — `perspective` on the container,
+`transform-style: preserve-3d` on the object, and faces placed with `rotateY()` and
+`translateZ()`. These are genuine 3D objects with real perspective and real rotation, made
+out of div faces. The single-file, offline, no-library rule still holds.
+
+**Shading decides whether this looks good or looks like a folded paper toy.** Give every
+object one light direction and keep it consistent. The simplest method that works: set each
+face's brightness from the angle it faces, with `filter: brightness(0.70 + 0.45 * cos(angle))`
+computed as you place it. Flat colour on all six sides of a cube is the failure mode — it
+stops reading as solid.
+
+Build these four.
+
+**Gold coin — the title emblem, and the reward object.**
+Two circular faces pushed apart by the coin's thickness — front at `translateZ(+t/2)`, back
+at `rotateY(180deg) translateZ(+t/2)` — with a rim of about 24 short segments around the
+edge. **Each rim segment is `rotateZ(i * 15deg) translateY(-r) rotateX(90deg)`**, and each
+is only as tall as the coin is thick (roughly 14px on a 150px coin), not as tall as the
+coin. Getting this wrong is the common mistake: `rotateY(i * 15deg) translateZ(r)` builds a
+standing drum, not a coin. Emboss the crescent-and-star on the front face. Animate it as
+`rotateX(-18deg) rotateY(360deg)` so the thickness stays visible as it turns. When the
+player answers correctly, spin one of these outward from the chosen option instead of a flat
+star.
+
+**Hanging lantern — a hexagonal prism, replacing the flat ones.**
+Six side panels at `rotateY(i * 60deg) translateZ(w/2)` — this is the standing-prism
+placement, which is correct here and wrong for the coin — in warm translucent gold, a small
+four-triangle pyramid cap above, a base below, and a bright core element in the middle so
+the light appears to come from inside the lantern rather than from the page. Hang it on a
+chain; let it sway on `rotateZ` while turning slowly on `rotateY`. Three on the title screen.
+
+**The Kaaba — a cube.**
+Six faces in the standard cube placement (`translateZ(s/2)` after each of the six
+rotations), near-black, with a gold band around the upper third — put it on **every** side
+face, not just the front, or it breaks the moment the cube turns — and gold detailing on one
+face for the door. Use it on the chapter card and as the
+loading object. A cube is the most honest 3D form CSS can make, so make this the one that is
+unmistakably solid.
+
+**Globe — for the World of Giving chapter.**
+A wireframe sphere built from **meridians**: about 12 full outlined circles of the same
+radius, each one `rotateY(i * 15deg)`. That is what produces a readable sphere. Do **not**
+stack latitude rings up the Y axis hoping the silhouette fills in — seen from the side they
+collapse into broken dashes and read as nothing. Add two or three latitude rings on top
+(`translateY(y) rotateX(90deg)`, radius `cos` of their angle) in a brighter gold, purely to
+firm up the shape. Rotate the whole thing on Y. Mark four points and draw the dotted arcs
+between them as a flat SVG layer in front, so the connections stay readable while the globe
+turns behind them.
+
+Optionally a **mosque** for the map or title screen: a box for the prayer hall, two minarets
+as cylinders built the same way as the coin rim, and a faceted dome from stacked rings of
+decreasing radius. Attempt this only after the four above work — it is the hardest of the
+set, and a bad dome looks worse than no mosque at all.
+
+Rules that keep this from going wrong:
+
+- Animate `transform` and `opacity` only. Never `top`, `left`, `width` or `height`.
+- Set one `perspective` on the container, somewhere around 800–1200px. Individual objects do
+  not each declare their own, or they will not share a vanishing point.
+- Keep face counts low. Twenty-four segments on the coin rim and twelve rings on the globe
+  is enough; doubling either buys nothing visible and costs frames on phones.
+- **These obey the animation setting.** Full spins them. Light holds them at a fixed
+  three-quarter angle, still. Off shows them flat-on and still. They are never removed from
+  the page, only stilled — the layout must not shift between the three levels.
+- Stop the rotation on any object whose screen is not the one being shown.
+- They are decoration. No information may exist only inside a 3D object, and nothing may
+  require rotating one in order to be read.
+
+**The alternative, and its price.** Three.js from a CDN would give real lighting and true
+spheres. It also adds a few hundred kilobytes of network dependency and ends the offline
+guarantee. Take it only if you have confirmed that both are acceptable in your environment.
+The CSS approach above keeps every constraint intact and, at this size on screen, gets very
+close.
+
+## 4. Screens and flow
 
 Title → Map → (per chapter: Story → Quiz → Mini-game → Results) → back to Map.
 Plus a Calculator screen and a Progress screen, reachable from the title and the map.
@@ -139,7 +217,7 @@ chapter, replay, and back to the map.
 
 **Keyboard:** A–D or 1–4 answers, H is a hint, Enter continues, Escape closes a dialog.
 
-## 4. Mini-games — write three engines, each driven by data
+## 5. Mini-games — write three engines, each driven by data
 
 **Sort.** Cards must be placed into labelled baskets. Support drag-and-drop on desktop
 **and** tap-card-then-tap-basket on touch, because drag-and-drop does not work on phones.
@@ -153,7 +231,7 @@ case and gets an explanation. 80 points per correct call.
 **Calc.** A number pad, also usable from the keyboard, for working out a zakat amount.
 Accepts an optional hint. 90 points per correct answer.
 
-## 5. The eight chapters
+## 6. The eight chapters
 
 Each chapter needs: a title, a topic label, an emoji, a one-line description, six to ten
 lines of illustrated story dialogue, six or more multiple-choice questions each with four
@@ -223,7 +301,7 @@ programmes under the goals they serve.
 **8. Final Test** — ten mixed questions drawing on every chapter, including arithmetic and
 two on the global material. Shorter clock, no hints. Mini-game: four closing calculations.
 
-## 6. Zakat calculator — seven types, genuinely usable
+## 7. Zakat calculator — seven types, genuinely usable
 
 Tabs: **Income, Gold & Silver, Savings & Cash, Trade, Crops, Zakat al-Fitr, Rikaz.**
 Results update live as the user types, showing the amount, a verdict of due or not due, a
@@ -249,7 +327,7 @@ the end of the field, so editing mid-string is not disrupted. Write the parser a
 formatter as an exact pair so anything formatted reads back to the same value — do not use
 heuristics that guess whether a dot is a separator or a decimal point.
 
-## 7. Progress, settings and accessibility
+## 8. Progress, settings and accessibility
 
 - **24 stars** (three per chapter), points, six ranks from Beginner to Zakat Expert.
 - **Nine badges:** first chapter, a flawless chapter, five correct in a row, using the
@@ -262,7 +340,7 @@ heuristics that guess whether a dot is a separator or a decimal point.
 - Respect `prefers-reduced-motion`. Visible focus rings. Ask the player's name once, when
   they first start, not on load.
 
-## 8. Sound
+## 9. Sound
 
 Synthesise everything from oscillators. Tune the effects to the **maqam Hijaz** scale
 (D, E♭, F♯, G, A, B♭, C) so they carry a Middle Eastern colour: short tones for clicks and
@@ -273,7 +351,7 @@ Add **ambient background music**: a quiet sustained drone plus a slow melody dra
 same scale, low-pass filtered, fading in gently. Browsers block audio until the first user
 gesture, so start it on the first tap rather than on load. Give it its own switch.
 
-## 9. Before you finish
+## 10. Before you finish
 
 Check each of these against what you wrote:
 
@@ -285,6 +363,9 @@ Check each of these against what you wrote:
 - Typing `18000000` into a currency field produces `18,000,000`, not something mangled.
 - Pressing Enter to answer does not also skip the explanation.
 - Nothing overflows or is clipped at 390 px wide.
+- Every 3D object has directional shading, not flat colour on each face.
+- The three animation levels change whether 3D objects move, never whether they exist, and
+  the layout does not shift between levels.
 - No console errors.
 
 Write the complete file. Do not abbreviate, do not leave `// ...` placeholders, and do not
