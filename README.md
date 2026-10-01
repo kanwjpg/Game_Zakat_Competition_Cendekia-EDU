@@ -215,9 +215,13 @@ else, so select-all and paste is safe.
 
 | File | Shape | Use it when |
 |------|-------|-------------|
-| [`PROMPT-5-STEPS.txt`](PROMPT-5-STEPS.txt) | 5 prompts | There is a cap on how many prompts you get, or one long answer keeps truncating |
+| [`PROMPT-PLATFORM.txt`](PROMPT-PLATFORM.txt) | 5 prompts, ~50 words each | **A hosted builder with a short prompt box.** Calls `startGame()` and reports back with `window.parent.kirimSkor(score)` |
+| [`PROMPT-5-STEPS.txt`](PROMPT-5-STEPS.txt) | 5 prompts, ~2–4 KB each | A capable assistant, built in stages |
 | [`PROMPT-SHORT.txt`](PROMPT-SHORT.txt) | 1 prompt, 116 lines | One shot — every fact and trap, none of the prose |
 | [`PROMPT-PASTE.txt`](PROMPT-PASTE.txt) | 1 prompt, 350 lines | The assistant needs more hand-holding |
+
+The last three assume an assistant that accepts a long prompt and writes a whole file. A
+hosted builder with a small prompt box will reject them outright — use the first.
 
 [`MASTER-PROMPT.md`](MASTER-PROMPT.md) is the long one with usage notes attached.
 Each build was verified by driving a real Chromium browser with Playwright: completing

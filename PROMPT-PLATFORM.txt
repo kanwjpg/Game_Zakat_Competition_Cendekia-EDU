@@ -1,0 +1,104 @@
+================================================================================
+ZAKAT QUEST — 5 PROMPT PENDEK UNTUK PLATFORM LOMBA
+Gaya mengikuti contoh resmi. Tiap prompt 40-60 kata.
+Jatah 9 prompt: 5 untuk membangun, 4 cadangan.
+Salin SATU kotak saja tiap kali. Cek hasilnya sebelum lanjut.
+================================================================================
+
+
+┌─ PROMPT 1 ─ GAME INTI (paling penting, jangan dilewati) ─────────────────────┐
+
+Buatlah game edukasi interaktif tentang zakat berjudul Zakat Quest. Semua teks
+dalam Bahasa Inggris. Tombol mulai memanggil startGame(). Ada 5 stage, tiap
+stage satu soal pilihan ganda dengan 4 opsi. Jawaban benar +20 poin, salah
+mengurangi nyawa dari 3. Tampilkan skor dan nyawa di layar. Di akhir panggil
+window.parent.kirimSkor(score).
+
+└──────────────────────────────────────────────────────────────────────────────┘
+   Setelah ini: game sudah utuh dan skor sudah terkirim. Kalau terpaksa berhenti
+   di sini, Anda tetap punya karya yang sah.
+
+
+┌─ PROMPT 2 ─ MATERI ZAKAT YANG BENAR ─────────────────────────────────────────┐
+
+Isi kelima soal dengan materi zakat yang akurat: nisab emas 85 gram dengan
+kadar 2,5% dan haul satu tahun; zakat pertanian nisab 653 kg, 10% bila tadah
+hujan dan 5% bila irigasi berbiaya; zakat fitrah 2,5 kg per jiwa; delapan asnaf
+dari QS At-Taubah 60; rikaz 20%. Setelah tiap jawaban tampilkan penjelasan
+singkat.
+
+└──────────────────────────────────────────────────────────────────────────────┘
+   Setelah ini: isinya benar secara fikih, bukan karangan.
+
+
+┌─ PROMPT 3 ─ TAMPILAN ────────────────────────────────────────────────────────┐
+
+Perbaiki tampilannya bertema hijau tua dan emas seperti poster Ramadan. Latar
+hijau dengan garis kisi emas tipis dan bulan sabit di sudut. Kartu soal putih
+bersudut membulat dengan bayangan lembut. Tombol emas. Tambah animasi halus
+saat berpindah soal. Pastikan rapi di layar HP selebar 390 piksel.
+
+└──────────────────────────────────────────────────────────────────────────────┘
+   Setelah ini: menyasar kriteria Kualitas Visual 25%.
+
+
+┌─ PROMPT 4 ─ GAMIFIKASI DAN KOIN 3D ──────────────────────────────────────────┐
+
+Tambahkan bilah waktu 20 detik tiap soal dengan bonus poin untuk jawaban cepat,
+dan layar akhir berbintang: 3 bintang bila tanpa salah, 2 bila salah sekali.
+Saat jawaban benar, pancarkan koin emas 3D yang berputar dari tombol pilihan.
+Koin dibuat dari CSS transform, bukan gambar.
+
+└──────────────────────────────────────────────────────────────────────────────┘
+   Setelah ini: menyasar kriteria Inovasi & Mekanisme 30%.
+
+
+┌─ PROMPT 5 ─ KALKULATOR DAN PEMERIKSAAN AKHIR ────────────────────────────────┐
+
+Tambahkan tombol Kalkulator Zakat di menu untuk menghitung zakat penghasilan,
+emas, dan fitrah: pengguna memasukkan jumlah, hasilnya tampil beserta rincian.
+Lalu periksa semuanya: setiap tombol berfungsi, tidak ada teks putih di atas
+latar putih, tidak ada yang terpotong di layar HP, dan window.parent.kirimSkor
+benar-benar terpanggil di akhir permainan.
+
+└──────────────────────────────────────────────────────────────────────────────┘
+   Setelah ini: selesai.
+
+
+================================================================================
+4 PROMPT CADANGAN — pakai hanya bila perlu
+================================================================================
+
+Kalau jawaban terpotong di tengah:
+
+    Lanjutkan dari bagian yang terpotong. Keluarkan sisa kodenya saja.
+
+Kalau ada yang rusak, sebut satu hal saja dengan jelas:
+
+    [Bagian apa] tidak berfungsi: [apa yang terjadi]. Perbaiki itu saja.
+
+Kalau skor tidak tercatat di platform — ini yang paling genting:
+
+    Pastikan window.parent.kirimSkor(score) dipanggil saat permainan berakhir.
+
+Urutan memakai cadangan: pertama yang membuat game tidak jalan atau skor tidak
+terkirim, baru yang sekadar kurang rapi.
+
+
+================================================================================
+CATATAN PENTING
+================================================================================
+
+1. window.parent.kirimSkor(score) adalah nyawa pengumpulan Anda. Game berjalan
+   di dalam iframe platform; tanpa baris itu skor tidak pernah sampai. Periksa
+   ini sebelum apa pun yang lain.
+
+2. startGame() harus tetap bernama persis itu. Platform kemungkinan memanggilnya
+   dari luar.
+
+3. Jangan menempel prompt panjang di platform ini. Contoh resminya 40 kata, dan
+   server menolak kiriman yang jauh lebih besar.
+
+4. Prompt 1 saja sudah menghasilkan karya yang sah. Prompt 2 sampai 5 menaikkan
+   nilai, bukan menyelamatkan dari nol. Jadi jangan pernah menukar prompt 1
+   dengan sesuatu yang lebih ambisius.
