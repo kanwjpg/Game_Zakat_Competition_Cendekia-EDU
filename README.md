@@ -210,9 +210,15 @@ produced from prompt instruction.
 **[`PROMPTS.md`](PROMPTS.md) is the full build log** — six prompt rounds, six commits, each
 one traceable with `git log --reverse --stat`.
 
-**[`PROMPT-PASTE.txt`](PROMPT-PASTE.txt)** is the prompt that rebuilds this entire game from
-an empty file — 350 lines, nothing in it but the prompt itself, so select-all and paste is
-safe. **[`MASTER-PROMPT.md`](MASTER-PROMPT.md)** is the same prompt with usage notes.
+Two prompts rebuild this entire game from an empty file. Both are prompt text and nothing
+else, so select-all and paste is safe.
+
+| File | Size | Use it when |
+|------|------|-------------|
+| [`PROMPT-SHORT.txt`](PROMPT-SHORT.txt) | 116 lines | The usual choice — every fact and trap, none of the prose |
+| [`PROMPT-PASTE.txt`](PROMPT-PASTE.txt) | 350 lines | The assistant needs more hand-holding, or you want the full reasoning |
+
+[`MASTER-PROMPT.md`](MASTER-PROMPT.md) is the long one with usage notes attached.
 Each build was verified by driving a real Chromium browser with Playwright: completing
 chapters end to end, all three mini-game types, the out-of-lives path, every calculator tab,
 all three animation levels, and the mobile layout.

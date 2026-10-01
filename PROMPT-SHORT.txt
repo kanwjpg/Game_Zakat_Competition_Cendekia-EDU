@@ -1,0 +1,116 @@
+Build a complete HTML5 educational game about zakat for students aged 13-18, in English.
+Deliver ONE `index.html` with all HTML, CSS and JS inline. No build step, no frameworks, no
+libraries, no image or audio files. It must run by opening the file, offline.
+
+Title: **Zakat Quest — The Path of Prosperity**
+
+## Constraints
+- Plain JS, no modules. Only outbound request allowed: Google Fonts (Baloo 2 + Plus Jakarta
+  Sans), with system fonts as fallback.
+- All art is inline SVG you write. All sound synthesised with Web Audio. No asset files.
+- Progress in localStorage, every access in try/catch, game still runs if storage fails.
+- Fixed viewport, no page scroll — panels scroll internally. `100dvh`, not `100vh`.
+  Works 390px to 1440px.
+
+## Look — deep Islamic green and gold, styled like an Indonesian Ramadan calendar poster
+Flat fills, no component gradients, soft green-tinted shadows on cards only.
+
+```
+--green #0e6b46  --green-dark #0a5238  --green-deep #063b28  --green-pale #dcefe4
+--gold  #d4a94e  --gold-dark  #9a7726  --gold-pale  #f6e7bc
+--cream #fdf8ee  --ink #10352a  --red #d9534f (wrong answers only)
+```
+
+- Background: radial green gradient + thin gold calendar grid + oversized numerals 1-8
+  sitting in the cells at ~10% opacity, like dates on a poster.
+- Three gold lanterns hanging on chains from the top, swaying, different chain lengths.
+  A crescent and star in one corner. Faint eight-point star (girih) tiling.
+- Fixed `pointer-events:none` paper-grain overlay (inline SVG feTurbulence, ~5% opacity).
+- White cards with soft shadow, reading as pinned paper. Arabesque divider ornaments.
+- Radius rule: pill for controls, 26px for cards, 18px inside cards.
+- Display type: `letter-spacing:-.02em` + `text-wrap:balance`. Prose max ~65ch.
+  Every changing number uses `font-variant-numeric: tabular-nums`.
+
+## 3D coin (CSS transforms only — no Three.js, no .glb)
+A spinning gold coin bursts from the chosen option on every correct answer.
+Two circular faces at `translateZ(±t/2)`, plus a rim of ~12 short segments, each placed at
+**`rotateZ(i*30deg) translateY(-r) rotateX(90deg)`** and only as tall as the coin is thick.
+Using `rotateY + translateZ` instead builds a standing drum, not a coin — that is the trap.
+Shade each segment by the angle it faces: `brightness(0.70 + 0.45*cos(angle))`.
+Spin as `rotateX(-18deg) rotateY(360deg)` so the thickness stays visible.
+Outer element flies and holds `perspective`; inner element spins. Transform/opacity only.
+
+## Flow
+Title → Map → per chapter (Story → Quiz → Mini-game → Results) → Map.
+Plus Calculator and Progress screens. Screen transitions: an eight-point-star iris wipe.
+
+- **Title:** emblem with rotating girih ring, subtitle, arabesque divider, fact chips
+  ("8 chapters · 52 questions · 8 mini-games · 7 zakat calculators"), 5 buttons.
+- **Map:** green calendar panel, gold grid, 8 markers on a zig-zag gold path — solid behind,
+  dotted ahead. Locked padlock, red ring on current, stars under each. Ch.1 always open.
+- **Story:** full-bleed SVG backdrop, dialogue box, text types out, tap to complete, Skip.
+- **Quiz:** 4 options A-D shuffled, 3 hearts, timer bar, live score. Hint costs 30 points and
+  removes a wrong option (no hints in ch.8). Explanation panel after every answer.
+  Score = 100 + up to 60 for speed + 15 per streak (max 75). No lives left ends the chapter.
+- **Results:** 3 stars (3 = flawless, 2 = one miss), score counts up, stat grid.
+- **Keyboard:** A-D or 1-4 answer, H hint, Enter continue, Esc close.
+
+## Mini-games — three data-driven engines
+- **Sort:** cards into labelled baskets. Drag-and-drop *and* tap-card-then-tap-basket,
+  because drag does not work on phones. 60 pts per correct card.
+- **Scale:** a balance beam where **the heavier side drops**; judge "due" or "not yet due".
+  80 pts.
+- **Calc:** number pad, also keyboard-usable. 90 pts.
+
+## The eight chapters
+Each needs: story dialogue, 6+ four-option questions with hint, explanation and source where
+relevant, one mini-game, and its own flat animated SVG backdrop. These facts must be exact.
+
+| # | Chapter | Must teach |
+|---|---------|-----------|
+| 1 | Gate of Knowledge | zakat = grow/purify/bless; **3rd pillar**; zakat obligatory vs infaq/sadaqah voluntary; muzakki vs mustahik; fard 'ayn. Qur'an 2:43, 9:103. Mini: sort Obligatory vs Voluntary |
+| 2 | Barokah Market | nisab **gold 85g, silver 595g**; rate **2.5%**; **haul = 1 lunar year**; cash follows gold nisab; conditions: full ownership, growth potential, nisab, above basic needs, free of due debt, haul. Mini: scale, 5 cases incl. one under nisab and one with haul incomplete |
+| 3 | Green Fields | crops nisab **5 wasaq ≈ 653kg**; **10%** rain-fed, **5%** paid irrigation; **every harvest, no haul**; camels 5, cattle 30, sheep/goats 40; **rikaz 20%** instantly, no nisab or haul. Qur'an 6:141. Mini: calc |
+| 4 | The Amil's Office | income zakat: **MUI Fatwa No. 3 of 2003**, nisab **85g gold/year**, 2.5%, monthly payment allowed as advance; trade: **(capital + profit + receivables) − (debt due + losses) × 2.5%**. Mini: calc |
+| 5 | Asnaf Village | the **8 asnaf, Qur'an 9:60**: fakir, miskin, amil, muallaf, riqab, gharim, fi sabilillah, ibn sabil. Not entitled: the wealthy, able-bodied earners, own dependants. Mini: sort villagers |
+| 6 | Night of Takbir | **1 sa' ≈ 2.5kg / 3.5L per person**; due from every Muslim soul incl. a baby born before sunset on the last day; **best before the Eid prayer**, after it counts as ordinary sadaqah. Mini: sort timings |
+| 7 | World of Giving | **naql al-zakat** (sending abroad) generally permitted, local need first but greater need abroad often preferred; refugees qualify as fakir/miskin/ibn sabil because the categories are **circumstance, not nationality**; zakat is **obligatory and annual** so its flow is predictable enough for multi-year programmes, unlike emergency appeals; maps to **SDGs 1, 2, 3, 4, 6, 8**; **UNHCR Refugee Zakat Fund, 2019**. Global potential: say **hundreds of billions USD a year, estimates vary widely** — never state one figure as fact. Mini: sort programmes under goals |
+| 8 | Final Test | 10 mixed questions incl. arithmetic and 2 on ch.7. Shorter clock, no hints. Mini: 4 calculations |
+
+## Calculator — 7 tabs, live results, breakdown and verdict
+Income (monthly, Gross or Net — Net deducts basic needs, field disabled under Gross; compare
+to 85g gold ÷ 12) · Gold & Silver (85g / 595g separately) · Savings & Cash (minus debt due) ·
+Trade (ch.4 formula) · Crops (kg × 10% or 5%) · Zakat al-Fitr (people × 2.5kg, food or cash) ·
+Rikaz (× 20%).
+
+Collapsible "Reference prices" panel: editable **currency label** (Rp, $, RM…) plus gold,
+silver and staple-food prices, all saved. Say plainly that the shipped figures are examples
+and must be updated.
+
+**Numbers:** English convention — comma thousands, dot decimal. Add separators *while typing*
+but only when the caret is at the end. Write the parser and formatter as an exact pair, so
+anything formatted reads back identical. Do not guess whether a dot is a separator.
+
+## Progress, settings, sound
+24 stars (3 per chapter), points, 6 ranks Beginner → Zakat Expert, 9 badges, local top-10
+scoreboard, accuracy stats. Settings: sound, ambient music, **animation Full / Light / Off**,
+larger text, high contrast — all saved. Respect `prefers-reduced-motion`. Visible focus
+rings. Ask the player's name on first Start, not on load.
+
+Sound: oscillators only, tuned to **maqam Hijaz** (D E♭ F♯ G A B♭ C) — clicks, a rising
+three-note figure for correct, falling for wrong, a flourish on finishing a chapter. Plus a
+quiet ambient drone and slow melody from the same scale, low-pass filtered, started on the
+first tap (browsers block audio before a gesture), with its own switch.
+
+## Traps to avoid — check each before you finish
+- `[hidden]{display:none !important}` — a CSS `display` rule silently defeats the attribute.
+- Never white text on a white surface. Check every button, including ghost buttons on
+  white bars.
+- Disable the Next button for ~300ms after answering, or the same Enter press that submits
+  also skips the explanation.
+- Typing `18000000` must show `18,000,000`, not something mangled.
+- The balance beam: heavier side drops.
+- Nothing clipped at 390px. No console errors.
+
+Write the complete file. No abbreviation, no `// ...` placeholders, no skeleton — all eight
+chapters and all their questions written out in full.
