@@ -1,30 +1,3 @@
-# Master Prompt — Rebuild Zakat Quest From Nothing
-
-**Use this if you must build inside the committee's own environment.** Pasting *code* is
-forbidden there; pasting a *prompt* is not. So paste the block below into the AI assistant in
-that environment and it will generate the game from scratch.
-
-**Two things to know before you start.**
-
-1. The result will be a working game faithful to this specification, but it will not be
-   byte-identical to the file in this repository. Different assistants write different code.
-   That is fine — and it is honest: it was prompted, not copied.
-2. If the assistant stops partway through (long files often get truncated), do not start
-   over. Say exactly this: **"Continue from where you stopped. Output only the remaining
-   part of the file, no repetition, no summary."** Repeat until the closing `</html>` appears.
-
-**If you just want to copy and paste, use [`PROMPT-PASTE.txt`](PROMPT-PASTE.txt) instead.**
-That file is the prompt and nothing else — no heading, no instructions about itself — so
-select-all and copy is safe. This file is the same prompt with these usage notes attached.
-
-Recommended order if the assistant struggles with one shot: paste the whole thing, and if it
-produces only a skeleton, follow with *"Now write Section 6 (all eight chapters) in full"*,
-then *"Now write Section 7 (the calculator) in full"*.
-
----
-## ⬇ PASTE EVERYTHING BELOW THIS LINE ⬇
----
-
 Build a complete HTML5 educational game about **zakat** for secondary school students aged
 13–18. Write it in English. Deliver it as **one single `index.html` file** containing all
 HTML, CSS and JavaScript — no build step, no npm, no frameworks, no external libraries, and
