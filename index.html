@@ -459,10 +459,12 @@ body.anim-full .hang{animation:hangSway var(--sway,6s) ease-in-out infinite;}
                      50%{transform:translateX(5px);}75%{transform:translateX(-3px);}}
 @keyframes pulseRing{0%{transform:scale(.92);opacity:.85;}70%{transform:scale(1.32);opacity:0;}100%{opacity:0;}}
 @keyframes beat     {0%,100%{transform:scale(1);}35%{transform:scale(1.22);}}
-@keyframes flyOut   {0%{opacity:0;transform:translate(0,0) scale(.35) rotate(0);}
-                     14%{opacity:1;transform:translate(calc(var(--dx) * .18),calc(var(--dy) * .18)) scale(1.15) rotate(30deg);}
+@keyframes coinFly  {0%{opacity:0;transform:translate(0,0) scale(.35);}
+                     14%{opacity:1;transform:translate(calc(var(--dx) * .18),calc(var(--dy) * .18)) scale(1.12);}
                      72%{opacity:.95;}
-                     100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.85) rotate(170deg);}}
+                     100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(.8);}}
+@keyframes coinSpin {from{transform:rotateX(-18deg) rotateY(0);}
+                     to{transform:rotateX(-18deg) rotateY(360deg);}}
 @keyframes floatScore{0%{opacity:0;transform:translateY(4px) scale(.7);}
                      16%{opacity:1;transform:translateY(-10px) scale(1.18);}
                      70%{opacity:1;transform:translateY(-38px) scale(1);}
@@ -511,8 +513,18 @@ body.anim-full .lantern{animation:riseUp var(--rise,30s) linear infinite;}
 body.anim-off #wipe,body.anim-lite #wipe{display:none;}
 
 /* ---------- Bintang penghargaan yang memancar ---------- */
-.burst{position:fixed;z-index:var(--z-fx);pointer-events:none;font-size:1rem;line-height:1;opacity:0;
-  animation:flyOut 1s cubic-bezier(.25,.9,.4,1) forwards;}
+/* Koin emas 3D: wadah luar menerbangkannya, badan di dalam memutarnya.
+   Dibangun dari sisi div — tanpa pustaka 3D, tanpa berkas model. */
+.coin3d{position:fixed;z-index:var(--z-fx);pointer-events:none;opacity:0;
+  perspective:420px;animation:coinFly 1s cubic-bezier(.25,.9,.4,1) forwards;}
+.coin3d .body{position:relative;width:100%;height:100%;transform-style:preserve-3d;
+  animation:coinSpin .85s linear infinite;}
+.coin3d .face{position:absolute;inset:0;border-radius:50%;display:grid;place-items:center;
+  background:radial-gradient(circle at 34% 30%,#f6e7bc,#d4a94e 58%,#9a7726);
+  color:#7a5c1c;font-weight:800;transform:translateZ(3px);}
+.coin3d .face.b{transform:rotateY(180deg) translateZ(3px);}
+.coin3d .seg{position:absolute;left:50%;top:50%;height:6px;margin-top:-3px;
+  background:linear-gradient(180deg,#e0bb63,#8d6c22);}
 .floatscore{position:fixed;pointer-events:none;z-index:calc(var(--z-fx) + 1);font-family:var(--font-display);
   font-weight:800;font-size:1.5rem;color:var(--sand-dark);opacity:0;
   text-shadow:0 0 7px rgba(255,255,255,.95), 0 2px 5px rgba(255,255,255,.9);
@@ -1067,25 +1079,58 @@ function stagger(nodes, cls = 'enter') {
   nodes.forEach((el, i) => { el.style.setProperty('--i', i); el.classList.add(cls); });
 }
 
-/** Bintang delapan kecil memancar dari sebuah unsur. */
+/** Satu koin emas 3D: dua muka ditambah pelek dari segmen melingkar.
+ *  Pelek diletakkan dengan rotateZ → translateY → rotateX. Memakai
+ *  rotateY + translateZ akan menghasilkan tabung berdiri, bukan koin. */
+function makeCoin(size) {
+  const SEGMENTS = 10, r = size / 2;
+  const wrap = document.createElement('div');
+  wrap.className = 'coin3d';
+  wrap.style.width = wrap.style.height = size + 'px';
+
+  const body = document.createElement('div');
+  body.className = 'body';
+
+  const front = document.createElement('div');
+  front.className = 'face';
+  front.textContent = '☪';
+  front.style.fontSize = (size * 0.52).toFixed(0) + 'px';
+  const back = document.createElement('div');
+  back.className = 'face b';
+  body.append(front, back);
+
+  const segWidth = (2 * Math.PI * r) / SEGMENTS + 2;   // sedikit tumpang tindih
+  for (let i = 0; i < SEGMENTS; i++) {
+    const seg = document.createElement('div');
+    seg.className = 'seg';
+    seg.style.width = segWidth.toFixed(1) + 'px';
+    seg.style.marginLeft = (-segWidth / 2).toFixed(1) + 'px';
+    seg.style.transform = `rotateZ(${i * (360 / SEGMENTS)}deg) translateY(${-r}px) rotateX(90deg)`;
+    // satu arah cahaya: sisi yang menghadap sumber lebih terang
+    seg.style.filter = `brightness(${(0.70 + 0.45 * Math.cos((i * 2 * Math.PI) / SEGMENTS)).toFixed(2)})`;
+    body.appendChild(seg);
+  }
+  wrap.appendChild(body);
+  return wrap;
+}
+
+/** Koin emas memancar dari sebuah unsur sebagai imbalan. */
 function burstStars(el, n = 5) {
   if (!animFull() || !el) return;
   const r = el.getBoundingClientRect();
   const cx = r.left + r.width / 2, cy = r.top + r.height / 2;
-  const glyphs = ['✦', '✧', '★', '✩'];
   for (let i = 0; i < n; i++) {
     const a = (Math.PI * 2 * i) / n + rand(-0.3, 0.3), d = rand(64, 128);
-    const sp = document.createElement('span');
-    sp.className = 'burst';
-    sp.textContent = glyphs[randInt(0, glyphs.length - 1)];
-    sp.style.left = cx + 'px';
-    sp.style.top = cy + 'px';
-    sp.style.color = ['#f6c445', '#e8a75f', '#fbe6c8'][randInt(0, 2)];
-    sp.style.fontSize = rand(1.05, 1.9).toFixed(2) + 'rem';
-    sp.style.setProperty('--dx', (Math.cos(a) * d).toFixed(1) + 'px');
-    sp.style.setProperty('--dy', (Math.sin(a) * d - 18).toFixed(1) + 'px');
-    document.body.appendChild(sp);
-    setTimeout(() => sp.remove(), 1050);
+    const size = randInt(22, 36);
+    const coin = makeCoin(size);
+    coin.style.left = (cx - size / 2) + 'px';
+    coin.style.top = (cy - size / 2) + 'px';
+    coin.style.setProperty('--dx', (Math.cos(a) * d).toFixed(1) + 'px');
+    coin.style.setProperty('--dy', (Math.sin(a) * d - 18).toFixed(1) + 'px');
+    coin.style.animationDelay = (i * 0.035).toFixed(3) + 's';
+    coin.querySelector('.body').style.animationDelay = (-rand(0, 0.85)).toFixed(2) + 's';
+    document.body.appendChild(coin);
+    setTimeout(() => coin.remove(), 1120 + i * 35);
   }
 }
 

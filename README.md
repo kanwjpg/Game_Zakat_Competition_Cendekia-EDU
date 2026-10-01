@@ -53,6 +53,11 @@ that read like pinned paper. Islamic detail carries through in **arabesque divid
 eight-point star (girih) motif, and screen transitions shaped like an eight-point star.
 The palette holds to green, gold and cream, with red reserved for mistakes.
 
+### A touch of 3D
+Correct answers scatter **spinning gold coins** built from CSS 3D transforms — two circular
+faces and a ten-segment rim, with one consistent light direction. Real perspective, real
+rotation, no 3D library and no model files, so the single-file and offline guarantees hold.
+
 ### Sound
 Every sound is **synthesised with the Web Audio API** — the game ships with no audio files at all.
 Effects use the **maqam Hijaz** scale (D–E♭–F♯–G–A–B♭–C), and an optional ambient drone and slow
